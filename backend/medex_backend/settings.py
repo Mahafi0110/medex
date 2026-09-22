@@ -166,6 +166,37 @@ if not DEBUG:
     CSRF_COOKIE_SAMESITE = "None"
     CSRF_COOKIE_SECURE = True
 # ---------------------------------------------------------------------------
+# Logging — with DEBUG=False Django otherwise prints nothing to console on
+# a 500 error, so unhandled exceptions show up in Render's log stream here
+# instead of vanishing.
+# ---------------------------------------------------------------------------
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
+}
+
+# ---------------------------------------------------------------------------
 # Django REST Framework
 # ---------------------------------------------------------------------------
 REST_FRAMEWORK = {
