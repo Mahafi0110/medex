@@ -1,4 +1,9 @@
 from rest_framework import viewsets, mixins, filters, generics
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.conf import settings
+from django.core.files.storage import default_storage
+from django.db import connection
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import (
@@ -43,6 +48,9 @@ from .serializers import (
     OfficeLocationSerializer,
     ContactPageContentSerializer,
 )
+
+from .emails import send_contact_notification
+from .throttles import ContactRateThrottle
 
 
 class ProductCategoryViewSet(viewsets.ReadOnlyModelViewSet):
@@ -178,8 +186,18 @@ class CompanyStatViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ContactMessageViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     """Public write-only endpoint: the contact form(s) POST here."""
+
     queryset = ContactMessage.objects.all()
     serializer_class = ContactMessageSerializer
+    # The only row-creating endpoint in the API, so the only one that needs a
+    # spam limit (per IP, see core/throttles.py).
+    throttle_classes = [ContactRateThrottle]
+
+    def perform_create(self, serializer):
+        # Store first, then notify: a mail failure must never lose the enquiry.
+        # send_contact_notification() catches and logs its own errors.
+        submission = serializer.save()
+        send_contact_notification(submission)
 
 
 class SiteSettingsView(generics.RetrieveAPIView):
@@ -223,3 +241,59 @@ class ContactPageContentView(generics.RetrieveAPIView):
 
     def get_object(self):
         return ContactPageContent.load()
+
+
+class HealthView(APIView):
+    """
+    GET /api/v1/health/ — deployment sanity check.
+
+    Answers, from outside Render, the two questions that matter when content
+    looks wrong on a deployed site: which database the backend is actually
+    talking to, and how much content is in it. If `database` reads "sqlite" on
+    a deployed service, that database lives on an ephemeral disk and every
+    deploy/restart wipes it.
+    """
+
+    def get(self, request):
+        try:
+            connection.ensure_connection()
+        except Exception as exc:  # noqa: BLE001 — report the error, never 500
+            return Response(
+                {
+                    "status": "error",
+                    "database": connection.vendor,
+                    "database_error": str(exc),
+                    "content_counts": {},
+                }
+            )
+
+        counts = {}
+        for label, model in (
+            ("products", Product),
+            ("product_categories", ProductCategory),
+            ("services", Service),
+            ("service_pages", ServicePage),
+            ("page_intros", PageIntro),
+            ("team_members", TeamMember),
+            ("company_stats", CompanyStat),
+            ("contact_messages", ContactMessage),
+        ):
+            try:
+                counts[label] = model.objects.count()
+            except Exception:  # noqa: BLE001 — a missing table must not 500
+                counts[label] = None
+
+        payload = {
+            "status": "ok",
+            "database": connection.vendor,
+            "media_storage": type(default_storage).__name__,
+            "media_served_by_django": getattr(settings, "SERVE_MEDIA", False),
+            "content_counts": counts,
+        }
+        if connection.vendor == "sqlite":
+            payload["warning"] = (
+                "SQLite is in use. On Render the filesystem is ephemeral, so all "
+                "content is wiped on every deploy/restart. Set USE_POSTGRES=True "
+                "plus DB_NAME, DB_USER, DB_PASSWORD, DB_HOST and DB_PORT."
+            )
+        return Response(payload)

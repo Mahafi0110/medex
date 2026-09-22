@@ -21,6 +21,7 @@ from .views import (
     AboutPageContentView,
     OfficeLocationViewSet,
     ContactPageContentView,
+    HealthView,
 )
 
 router = DefaultRouter()
@@ -40,6 +41,7 @@ router.register("page-intros", PageIntroViewSet, basename="page-intro")
 router.register("office-locations", OfficeLocationViewSet, basename="office-location")
 
 urlpatterns = [
+    path("health/", HealthView.as_view(), name="health"),
     path("home-hero/", HomeHeroView.as_view(), name="home-hero"),
     path("about-section/", AboutSectionView.as_view(), name="about-section"),
     path("vision-mission/", VisionMissionView.as_view(), name="vision-mission"),

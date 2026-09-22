@@ -3,7 +3,10 @@ __pycache__/
 .env
 db.sqlite3
 /staticfiles/
-/media/
+# NOTE: media/ is deliberately NOT ignored. Each Render deploy starts from a
+# fresh checkout, so images committed here are present again after every deploy
+# and are served by the /media/ route. Images uploaded through Django Admin are
+# NOT in git - see "Uploaded images" in README.md to make those permanent too.
 .venv/
 venv/
 

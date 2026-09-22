@@ -1,0 +1,5 @@
+# Normalise line endings: shell scripts must use LF, even when committed from
+# Windows (a CRLF build.sh fails on Render with "bad interpreter").
+* text=auto
+*.sh text eol=lf
+*.py text eol=lf

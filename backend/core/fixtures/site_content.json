@@ -1,0 +1,2251 @@
+[
+{
+  "model": "core.productcategory",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-17T10:01:51.139Z",
+    "updated_at": "2026-09-17T10:01:51.139Z",
+    "slug": "av-telemed-for-patients",
+    "name": "AV TeleMed For Patients",
+    "description": "Empowers individuals and families with secure virtual consultations, vital signs tracking, and instant medical records access.",
+    "icon": "heart",
+    "order": 0
+  }
+},
+{
+  "model": "core.productcategory",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.321Z",
+    "updated_at": "2026-09-18T01:52:01.321Z",
+    "slug": "mobile-applications",
+    "name": "Mobile Applications",
+    "description": "Patient and clinician apps for connected care.",
+    "icon": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.productcategory",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.327Z",
+    "updated_at": "2026-09-18T01:52:01.327Z",
+    "slug": "web-applications",
+    "name": "Web Applications",
+    "description": "Browser-based platforms for hospitals and diagnostic centers.",
+    "icon": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.productcategory",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.327Z",
+    "updated_at": "2026-09-18T01:52:01.327Z",
+    "slug": "desktop-software",
+    "name": "Desktop Software",
+    "description": "On-site tools for biomedical engineering teams.",
+    "icon": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.productcategory",
+  "pk": 5,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.327Z",
+    "updated_at": "2026-09-18T01:52:01.327Z",
+    "slug": "healthcare-tools",
+    "name": "Healthcare Tools",
+    "description": "Devices and utilities supporting clinical workflows.",
+    "icon": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.product",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-17T10:02:33.998Z",
+    "updated_at": "2026-09-19T09:09:32.910Z",
+    "slug": "av-telemed-for-patients",
+    "name": "AV TeleMed For Patients",
+    "category": 1,
+    "product_type": "device",
+    "tagline": "Your Health In Your Hands Anytime Anywhere",
+    "summary": "Empowers individuals and families with secure virtual consultations, vital signs tracking, and instant medical records access.",
+    "description": "AV TeleMed For Patients is a comprehensive mobile healthcare companion designed to bridge the gap between patients and medical professionals. It allows users to book instant or scheduled appointments, consult doctors via secure HD video calls, monitor vital signs like blood pressure and heart rate in real-time, and store encrypted medical history securely on their device.",
+    "key_features": "",
+    "specifications": "Platform: iOS & Android Mobile App\r\nUser Type: Patients & Family Members\r\nAccount Creation: Email / Mobile OTP\r\nAppointment Booking: Instant / Scheduled\r\nVideo Consultation: Yes\r\nVital Signs Tracking: BP, SpO2, Heart Rate\r\nMedical Records: Encrypted & Secure\r\nVerification: NABH Compliant\r\nEmergency SOS: One-Touch Emergency\r\nLanguage: Multiple (English & Regional)",
+    "cover_image": "",
+    "logo": "",
+    "hero_layout": "circular_image",
+    "hero_eyebrow": "Our Products",
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_badge_1": "",
+    "hero_badge_2": "",
+    "hero_badge_3": "",
+    "hero_badge_4": "",
+    "hero_tagline": "",
+    "hero_image": "",
+    "sidebar_note_title": "",
+    "sidebar_note_text": "",
+    "sidebar_note_phone": "",
+    "sidebar_note_email": "",
+    "sidebar_note_cta_label": "",
+    "sidebar_note_cta_url": "",
+    "website_url": "http://localhost:5173/products",
+    "app_store_url": "http://localhost:5173/products",
+    "play_store_url": "http://localhost:5173/products",
+    "download_url": "http://localhost:5173/products",
+    "is_featured": true,
+    "highlight_features": "",
+    "highlight_link_label": "",
+    "status": "archived",
+    "order": 1
+  }
+},
+{
+  "model": "core.product",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.341Z",
+    "updated_at": "2026-09-22T08:24:52.158Z",
+    "slug": "av-telemed-for-patients-2",
+    "name": "AV TeleMed – For Patients",
+    "category": 2,
+    "product_type": "mobile",
+    "tagline": "Your Health. Always Connected.",
+    "summary": "A user-friendly mobile app that helps patients track vitals, manage appointments, and access medical history.",
+    "description": "AV TeleMed for Patients empowers individuals and their families with easy access to quality healthcare through a secure and intuitive mobile app. It connects you with your doctors, enables virtual consultations, helps you monitor your health and keeps all your important medical information in one place. With AV TeleMed, you can manage your health conveniently, stay informed, and make better healthcare decisions — anytime, anywhere.",
+    "key_features": "Book appointments with your doctor\r\nJoin secure video consultations\r\nTrack and monitor your vital signs\r\nAccess medical history and reports\r\nManage medications and get reminders\r\nConnect with your healthcare providers\r\nEmergency SOS support\r\nEasy to use, anytime, anywhere",
+    "specifications": "Platform: iOS & Android (Mobile App)\r\nUser Type: Patients & Family Members\r\nAccount Creation: Email / Mobile OTP\r\nAppointment Booking: Yes\r\nVideo Consultation: Yes\r\nVital Signs Tracking: Yes (with compatible devices)\r\nMedication Reminders: Yes\r\nMedical History Access: Yes\r\nReports & Test Results: Yes\r\nEmergency SOS: Yes\r\nSupported Devices: Bluetooth-enabled devices (Glucose, BP, SpO2, etc.)\r\nData Sync: Real-time\r\nData Security: Encrypted & Secure (HIPAA Compliant)\r\nNotifications: Push Notifications\r\nMulti-user Support: Yes (Family Members)\r\nLanguages: Multiple (English & Regional)\r\nInternet Requirement: Wi-Fi / Mobile Data (3G/4G)\r\nApp Size: ~80 MB (varies by platform)\r\nCompatibility: Android 8.0+ / iOS 13.0+\r\nSupport: In-App Support / Email / Phone",
+    "cover_image": "products/covers/Smartphone_showing_VitaCare_Health_Companion_Patient_App_UI.png",
+    "logo": "products/logos/AV_telemed_logo.jpg",
+    "hero_layout": "circular_image",
+    "hero_eyebrow": "Our Products",
+    "hero_title": "Digital Healthcare Solutions for a Healthier Tomorrow",
+    "hero_subtitle": "Connected Care. Empowered Patients.",
+    "hero_badge_1": "Trusted Platform",
+    "hero_badge_2": "Patient-Centric",
+    "hero_badge_3": "Better Health Outcomes",
+    "hero_badge_4": "",
+    "hero_tagline": "Your Health. In Your Hands. Anytime Anywhere",
+    "hero_image": "",
+    "sidebar_note_title": "",
+    "sidebar_note_text": "",
+    "sidebar_note_phone": "",
+    "sidebar_note_email": "",
+    "sidebar_note_cta_label": "",
+    "sidebar_note_cta_url": "",
+    "website_url": "",
+    "app_store_url": "",
+    "play_store_url": "",
+    "download_url": "",
+    "is_featured": true,
+    "highlight_features": "Manage Vitals\r\nBook Appointments\r\nAccess Medical History",
+    "highlight_link_label": "Care Closer to You",
+    "status": "published",
+    "order": 0
+  }
+},
+{
+  "model": "core.product",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.346Z",
+    "updated_at": "2026-09-22T08:41:20.442Z",
+    "slug": "av-telemed-for-doctors",
+    "name": "AV TeleMed – For Doctors",
+    "category": 2,
+    "product_type": "mobile",
+    "tagline": "Consult. Connect. Care.",
+    "summary": "A companion app for clinicians to manage patients, consultations, and records remotely.",
+    "description": "AV TeleMed for Doctors empowers healthcare professionals with a secure and easy-to-use platform to conduct virtual consultations, manage patients, access medical history, and collaborate with care teams. It enhances clinical efficiency, improves patient outcomes, and makes quality healthcare more accessible across locations.",
+    "key_features": "Secure video consultations\r\nPatient management and medical history access\r\nE-prescriptions and clinical notes\r\nReal-time monitoring and alerts\r\nSeamless communication with patients\r\nAccessible anytime, anywhere",
+    "specifications": "Platform: iOS & Android (Mobile App)\r\nUser Type: Licensed Healthcare Professionals\r\nAccount Creation: Verified Credential Onboarding\r\nConsultation Scheduling: Yes\r\nVideo Consultation: Yes\r\nE-Prescriptions: Yes\r\nClinical Notes: Yes\r\nPatient Records Access: Yes\r\nReal-time Alerts: Yes\r\nSupported Devices: Smartphones & Tablets\r\nData Sync: Real-time\r\nData Security: Encrypted & Secure (HIPAA Compliant)\r\nNotifications: Push Notifications\r\nMulti-facility Support: Yes\r\nLanguages: Multiple (English & Regional)\r\nInternet Requirement: Wi-Fi / Mobile Data (3G/4G)\r\nApp Size: ~85 MB (varies by platform)\r\nCompatibility: Android 8.0+ / iOS 13.0+\r\nSupport: In-App Support / Email / Phone",
+    "cover_image": "products/covers/Economy_Type_Portable_Tripod__Laptop_Software.png",
+    "logo": "products/logos/AV_telemed_logo_BImVhnZ.jpg",
+    "hero_layout": "circular_image",
+    "hero_eyebrow": "Our Products",
+    "hero_title": "Digital Healthcare Solutions for a Smarter Tomorrow",
+    "hero_subtitle": "Connected. Efficient. Patient-Centric.",
+    "hero_badge_1": "Innovative Solutions",
+    "hero_badge_2": "Trusted Technology",
+    "hero_badge_3": "Better Healthcare",
+    "hero_badge_4": "",
+    "hero_tagline": "Technology That Connects Care Beyond Boundaries",
+    "hero_image": "",
+    "sidebar_note_title": "",
+    "sidebar_note_text": "",
+    "sidebar_note_phone": "",
+    "sidebar_note_email": "",
+    "sidebar_note_cta_label": "",
+    "sidebar_note_cta_url": "",
+    "website_url": "",
+    "app_store_url": "",
+    "play_store_url": "",
+    "download_url": "",
+    "is_featured": true,
+    "highlight_features": "Remote Consultations\r\nSpecialist Access\r\nConnected Care Records",
+    "highlight_link_label": "Bringing telemedicine and connected healthcare technology to facilities across the region.",
+    "status": "published",
+    "order": 0
+  }
+},
+{
+  "model": "core.product",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.355Z",
+    "updated_at": "2026-09-22T08:25:10.248Z",
+    "slug": "tehomed-for-patients",
+    "name": "TehoMed – For Patients",
+    "category": 2,
+    "product_type": "mobile",
+    "tagline": "Your Health. In Your Hands.",
+    "summary": "A simple and secure mobile app that lets patients manage their healthcare journey with ease.",
+    "description": "TehoMed for Patients empowers individuals and families to manage their healthcare journey with ease. It connects you with your trusted healthcare providers, allows you to book appointments, access medical records, receive medication reminders and stay updated on your health — anytime, anywhere. With TehoMed, quality healthcare is just a tap away.",
+    "key_features": "Book appointments with healthcare providers\r\nAccess your medical history and reports\r\nGet medication reminders\r\nTrack your health indicators\r\nSecure and easy-to-use mobile app\r\nStay connected with your care team\r\nReceive notifications and health tips\r\nAccess anytime, anywhere",
+    "specifications": "Platform: iOS & Android (Mobile App)\r\nUser Type: Patients & Family Members\r\nAccount Creation: Email / Mobile OTP\r\nAppointment Booking: Yes\r\nMedical Records Access: Yes\r\nMedication Reminders: Yes\r\nHealth Indicator Tracking: Yes\r\nCare Team Messaging: Yes\r\nSupported Devices: Smartphones\r\nData Sync: Real-time\r\nData Security: Encrypted & Secure\r\nNotifications: Push Notifications\r\nLanguages: Multiple (English & Regional)\r\nInternet Requirement: Wi-Fi / Mobile Data (3G/4G)\r\nApp Size: ~60 MB (varies by platform)\r\nCompatibility: Android 8.0+ / iOS 13.0+\r\nSupport: In-App Support / Email / Phone",
+    "cover_image": "products/covers/Medical_monitor_circuit_boards_cables_and_sensors_spare_parts.png",
+    "logo": "products/logos/tehomed_mobile_app_logo.jpg",
+    "hero_layout": "circular_image",
+    "hero_eyebrow": "Our Products",
+    "hero_title": "Digital Healthcare Solutions for a Healthier Tomorrow",
+    "hero_subtitle": "Connected Care. Empowered Patients.",
+    "hero_badge_1": "Trusted Platform",
+    "hero_badge_2": "Patient-Centric",
+    "hero_badge_3": "Better Health Outcomes",
+    "hero_badge_4": "",
+    "hero_tagline": "Better Care Closer to You With TehoMed",
+    "hero_image": "",
+    "sidebar_note_title": "",
+    "sidebar_note_text": "",
+    "sidebar_note_phone": "",
+    "sidebar_note_email": "",
+    "sidebar_note_cta_label": "",
+    "sidebar_note_cta_url": "",
+    "website_url": "",
+    "app_store_url": "",
+    "play_store_url": "",
+    "download_url": "",
+    "is_featured": true,
+    "highlight_features": "Wide Product Range\r\nVerified Suppliers\r\nReliable Procurement",
+    "highlight_link_label": "Right Part, Every Time",
+    "status": "published",
+    "order": 0
+  }
+},
+{
+  "model": "core.product",
+  "pk": 5,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.362Z",
+    "updated_at": "2026-09-22T08:26:12.585Z",
+    "slug": "thermocheck",
+    "name": "Thermocheck",
+    "category": 5,
+    "product_type": "device",
+    "tagline": "Reliable temperature monitoring for clinical environments.",
+    "summary": "A connected thermometry tool for monitoring cold-chain storage and patient temperature logs.",
+    "description": "Thermocheck pairs a compact hardware sensor with a companion app to keep vaccine and sample storage within safe temperature ranges, with automated alerts.",
+    "key_features": "",
+    "specifications": "",
+    "cover_image": "",
+    "logo": "",
+    "hero_layout": "circular_image",
+    "hero_eyebrow": "Our Products",
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_badge_1": "",
+    "hero_badge_2": "",
+    "hero_badge_3": "",
+    "hero_badge_4": "",
+    "hero_tagline": "",
+    "hero_image": "",
+    "sidebar_note_title": "",
+    "sidebar_note_text": "",
+    "sidebar_note_phone": "",
+    "sidebar_note_email": "",
+    "sidebar_note_cta_label": "",
+    "sidebar_note_cta_url": "",
+    "website_url": "",
+    "app_store_url": "",
+    "play_store_url": "",
+    "download_url": "",
+    "is_featured": true,
+    "highlight_features": "",
+    "highlight_link_label": "",
+    "status": "published",
+    "order": 0
+  }
+},
+{
+  "model": "core.productscreenshot",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-22T08:18:56.035Z",
+    "updated_at": "2026-09-22T08:18:56.035Z",
+    "product": 2,
+    "image": "products/screenshots/Economy_Type_Portable_Tripod__Laptop_Software.png",
+    "caption": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.productscreenshot",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-22T08:19:48.167Z",
+    "updated_at": "2026-09-22T08:39:20.893Z",
+    "product": 3,
+    "image": "products/screenshots/Left__Phone_Interactive_Mockup__Thumbnails.png",
+    "caption": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.productscreenshot",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-22T08:20:36.440Z",
+    "updated_at": "2026-09-22T08:20:36.441Z",
+    "product": 4,
+    "image": "products/screenshots/Medical_monitor_circuit_boards_cables_and_sensors_spare_parts.png",
+    "caption": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.productscreenshot",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-22T08:39:20.904Z",
+    "updated_at": "2026-09-22T08:41:20.450Z",
+    "product": 3,
+    "image": "products/screenshots/Medical_equipment_display.png",
+    "caption": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.productscreenshot",
+  "pk": 5,
+  "fields": {
+    "created_at": "2026-09-22T08:40:29.495Z",
+    "updated_at": "2026-09-22T08:40:29.495Z",
+    "product": 3,
+    "image": "products/screenshots/Preventive_Maintenance_Training.png",
+    "caption": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.productlink",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-17T10:02:34.002Z",
+    "updated_at": "2026-09-17T10:02:34.002Z",
+    "product": 1,
+    "label": "http://localhost:5173/products",
+    "url": "http://localhost:5173/products",
+    "order": 0
+  }
+},
+{
+  "model": "core.service",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.370Z",
+    "updated_at": "2026-09-18T01:52:01.370Z",
+    "slug": "preventive-maintenance",
+    "name": "Preventive Maintenance",
+    "icon": "wrench",
+    "summary": "Scheduled health checks and testing to prevent equipment failure before it happens.",
+    "description": "",
+    "image": "",
+    "is_featured": true,
+    "order": 0
+  }
+},
+{
+  "model": "core.service",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.371Z",
+    "updated_at": "2026-09-18T01:52:01.371Z",
+    "slug": "corrective-maintenance",
+    "name": "Corrective Maintenance",
+    "icon": "wrench",
+    "summary": "Rapid breakdown response to restore equipment to service quickly.",
+    "description": "",
+    "image": "",
+    "is_featured": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.service",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.371Z",
+    "updated_at": "2026-09-18T01:52:01.371Z",
+    "slug": "calibration-safety-testing",
+    "name": "Calibration & Safety Testing",
+    "icon": "check",
+    "summary": "Electrical safety verifications and precision calibration for clinical equipment.",
+    "description": "",
+    "image": "",
+    "is_featured": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.service",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.380Z",
+    "updated_at": "2026-09-18T01:52:01.380Z",
+    "slug": "equipment-repairs",
+    "name": "Equipment Repairs",
+    "icon": "monitor",
+    "summary": "Board and module-level repair for diagnostic and monitoring devices.",
+    "description": "",
+    "image": "",
+    "is_featured": true,
+    "order": 3
+  }
+},
+{
+  "model": "core.service",
+  "pk": 5,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.386Z",
+    "updated_at": "2026-09-18T01:52:01.386Z",
+    "slug": "amc-cmc",
+    "name": "AMC & CMC",
+    "icon": "file",
+    "summary": "Long-term maintenance contracts tailored to your facility's equipment fleet.",
+    "description": "",
+    "image": "",
+    "is_featured": false,
+    "order": 4
+  }
+},
+{
+  "model": "core.service",
+  "pk": 6,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.391Z",
+    "updated_at": "2026-09-18T01:52:01.391Z",
+    "slug": "technical-support",
+    "name": "Technical Support",
+    "icon": "clock",
+    "summary": "24/7 on-call technical support for critical care equipment.",
+    "description": "",
+    "image": "",
+    "is_featured": false,
+    "order": 5
+  }
+},
+{
+  "model": "core.servicepage",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.204Z",
+    "updated_at": "2026-09-21T10:17:43.772Z",
+    "slug": "equipment-installation-support",
+    "nav_label": "Equipment Installation & Support",
+    "nav_icon": "wrench",
+    "order": 0,
+    "hero_eyebrow": "Our Services",
+    "hero_title_main": "Equipment",
+    "hero_title_highlight": "Installation & Support",
+    "hero_subtitle": "Seamless setup. Expert support. For uninterrupted healthcare.",
+    "hero_badge_1_icon": "wrench",
+    "hero_badge_1_text": "Professional Installation",
+    "hero_badge_2_icon": "shield",
+    "hero_badge_2_text": "Reliable Support",
+    "hero_badge_3_icon": "users",
+    "hero_badge_3_text": "Experienced Service Team",
+    "hero_badge_4_icon": "",
+    "hero_badge_4_text": "",
+    "hero_cta_label": "",
+    "hero_tagline": "Your Equipment\r\nOur Expertise\r\nA Healthier Tomorrow",
+    "hero_image": "services/hero/service_hero1.png",
+    "overview_eyebrow": "",
+    "overview_title": "Service Overview",
+    "overview_subtitle": "End-to-end installation and support to keep your medical equipment performing at its best.",
+    "overview_description": "We provide professional installation, configuration and ongoing support for a wide range of medical equipment. Our expert biomedical engineers ensure smooth integration, proper setup and quick issue resolution.",
+    "process_title": "Our Installation Process",
+    "process_subtitle": "A structured approach to ensure safe and efficient installation.",
+    "equipment_title": "Equipment We Support",
+    "equipment_subtitle": "We install and support a wide range of medical equipment, including:",
+    "secondary_eyebrow": "",
+    "secondary_title": "",
+    "secondary_subtitle": "",
+    "gallery_title": "",
+    "gallery_subtitle": "",
+    "cta_icon": "headset",
+    "cta_title": "Need Support?",
+    "cta_subtitle": "Our team is just a call or message away. We're here to help you at every step.",
+    "cta_image": "",
+    "cta_button_label": "",
+    "cta_button_url": "",
+    "form_title": "Support & Demo Request",
+    "form_description": "Fill in your details and our team will get back to you shortly.",
+    "form_type": "support_demo"
+  }
+},
+{
+  "model": "core.servicepage",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.357Z",
+    "updated_at": "2026-09-21T10:18:25.816Z",
+    "slug": "amc-maintenance",
+    "nav_label": "AMC & Maintenance",
+    "nav_icon": "file",
+    "order": 1,
+    "hero_eyebrow": "Our Services",
+    "hero_title_main": "AMC &",
+    "hero_title_highlight": "Maintenance",
+    "hero_subtitle": "Reliable care for your critical equipment. Maximum uptime. Better patient care.",
+    "hero_badge_1_icon": "wrench",
+    "hero_badge_1_text": "Preventive Maintenance",
+    "hero_badge_2_icon": "clock",
+    "hero_badge_2_text": "Reduced Downtime",
+    "hero_badge_3_icon": "users",
+    "hero_badge_3_text": "Expert Service Team",
+    "hero_badge_4_icon": "",
+    "hero_badge_4_text": "",
+    "hero_cta_label": "",
+    "hero_tagline": "",
+    "hero_image": "services/hero/service_hero2.png",
+    "overview_eyebrow": "",
+    "overview_title": "Why Choose Our AMC?",
+    "overview_subtitle": "Comprehensive maintenance solutions to ensure uninterrupted healthcare operations.",
+    "overview_description": "Our AMC services help extend the life of your medical equipment, reduce unexpected breakdowns and ensure optimal performance. With our expert engineers and proactive maintenance approach, you can focus on what matters most — patient care.",
+    "process_title": "Our AMC Process",
+    "process_subtitle": "A proactive approach to keep your equipment in optimal condition.",
+    "equipment_title": "Equipment We Maintain",
+    "equipment_subtitle": "Comprehensive AMC for a wide range of medical equipment, including:",
+    "secondary_eyebrow": "",
+    "secondary_title": "",
+    "secondary_subtitle": "",
+    "gallery_title": "",
+    "gallery_subtitle": "",
+    "cta_icon": "headset",
+    "cta_title": "Need Assistance?",
+    "cta_subtitle": "Our team is just a call or message away. We're here to help you at every step.",
+    "cta_image": "",
+    "cta_button_label": "",
+    "cta_button_url": "",
+    "form_title": "Support & Demo Request",
+    "form_description": "Fill in your details and our team will get back to you shortly.",
+    "form_type": "support_demo"
+  }
+},
+{
+  "model": "core.servicepage",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.491Z",
+    "updated_at": "2026-09-21T10:36:52.512Z",
+    "slug": "training",
+    "nav_label": "Training",
+    "nav_icon": "users",
+    "order": 2,
+    "hero_eyebrow": "Professional Biomedical Training",
+    "hero_title_main": "Biomedical Equipment",
+    "hero_title_highlight": "Training",
+    "hero_subtitle": "Build practical knowledge and confidence in operating, maintaining, and understanding biomedical equipment with structured training from experienced professionals.",
+    "hero_badge_1_icon": "users",
+    "hero_badge_1_text": "Learn from Experts",
+    "hero_badge_2_icon": "wrench",
+    "hero_badge_2_text": "Hands-on Training",
+    "hero_badge_3_icon": "users",
+    "hero_badge_3_text": "Build Skills for a Healthier Tomorrow",
+    "hero_badge_4_icon": "",
+    "hero_badge_4_text": "",
+    "hero_cta_label": "Request Training",
+    "hero_tagline": "Knowledge Today.\r\nBetter Healthcare Tomorrow.",
+    "hero_image": "services/hero/service_hero3.png",
+    "overview_eyebrow": "",
+    "overview_title": "Training Programs",
+    "overview_subtitle": "Practical, focused training designed for healthcare teams, biomedical engineers, technicians, and learners.",
+    "overview_description": "",
+    "process_title": "How Training Works",
+    "process_subtitle": "A simple and structured approach to deliver effective learning.",
+    "equipment_title": "",
+    "equipment_subtitle": "",
+    "secondary_eyebrow": "",
+    "secondary_title": "",
+    "secondary_subtitle": "",
+    "gallery_title": "",
+    "gallery_subtitle": "",
+    "cta_icon": "headset",
+    "cta_title": "Need Support?",
+    "cta_subtitle": "Our team is just a call or message away. We're here to help you at every step.",
+    "cta_image": "",
+    "cta_button_label": "",
+    "cta_button_url": "",
+    "form_title": "Training Enquiry",
+    "form_description": "Fill in your details and our team will get back to you shortly.",
+    "form_type": "training_enquiry"
+  }
+},
+{
+  "model": "core.servicepage",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.564Z",
+    "updated_at": "2026-09-21T10:39:05.580Z",
+    "slug": "career",
+    "nav_label": "Career",
+    "nav_icon": "building",
+    "order": 3,
+    "hero_eyebrow": "Join MedEx",
+    "hero_title_main": "Build Your Career in",
+    "hero_title_highlight": "Biomedical Engineering",
+    "hero_subtitle": "We're always looking for skilled engineers and technicians who care about better healthcare.",
+    "hero_badge_1_icon": "users",
+    "hero_badge_1_text": "Great Team",
+    "hero_badge_2_icon": "chart",
+    "hero_badge_2_text": "Growth Opportunities",
+    "hero_badge_3_icon": "shield",
+    "hero_badge_3_text": "Meaningful Work",
+    "hero_badge_4_icon": "",
+    "hero_badge_4_text": "",
+    "hero_cta_label": "",
+    "hero_tagline": "",
+    "hero_image": "services/hero/service_hero4.png",
+    "overview_eyebrow": "",
+    "overview_title": "Why Work With Us",
+    "overview_subtitle": "Join a team solving real problems in healthcare technology.",
+    "overview_description": "At MedEx, engineers and technicians work on equipment and software that directly affects patient care. We invest in training, mentorship, and giving our team real ownership over the facilities they support.",
+    "process_title": "How to Apply",
+    "process_subtitle": "A simple process to join our team.",
+    "equipment_title": "",
+    "equipment_subtitle": "",
+    "secondary_eyebrow": "",
+    "secondary_title": "",
+    "secondary_subtitle": "",
+    "gallery_title": "",
+    "gallery_subtitle": "",
+    "cta_icon": "headset",
+    "cta_title": "Have Questions?",
+    "cta_subtitle": "Reach out to our team about current openings.",
+    "cta_image": "",
+    "cta_button_label": "",
+    "cta_button_url": "",
+    "form_title": "Application Enquiry",
+    "form_description": "Tell us a bit about yourself and we'll be in touch.",
+    "form_type": "general"
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.207Z",
+    "updated_at": "2026-09-19T01:14:49.207Z",
+    "service_page": 1,
+    "icon": "shield",
+    "title": "Site Assessment & Planning",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.214Z",
+    "updated_at": "2026-09-19T01:14:49.214Z",
+    "service_page": 1,
+    "icon": "wrench",
+    "title": "Professional Installation",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.226Z",
+    "updated_at": "2026-09-19T01:14:49.226Z",
+    "service_page": 1,
+    "icon": "chart",
+    "title": "Configuration & Testing",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.228Z",
+    "updated_at": "2026-09-19T01:14:49.228Z",
+    "service_page": 1,
+    "icon": "heart",
+    "title": "User Guidance & Training",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 5,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.240Z",
+    "updated_at": "2026-09-19T01:14:49.240Z",
+    "service_page": 1,
+    "icon": "monitor",
+    "title": "On-site Support",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 4
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 6,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.246Z",
+    "updated_at": "2026-09-19T01:14:49.246Z",
+    "service_page": 1,
+    "icon": "users",
+    "title": "Expert Service Team",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 5
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 7,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.246Z",
+    "updated_at": "2026-09-19T01:14:49.246Z",
+    "service_page": 1,
+    "icon": "file",
+    "title": "Service Records & Documentation",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 6
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 8,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.258Z",
+    "updated_at": "2026-09-19T01:14:49.258Z",
+    "service_page": 1,
+    "icon": "headset",
+    "title": "Ongoing Technical Support",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 7
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 9,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.363Z",
+    "updated_at": "2026-09-19T01:14:49.363Z",
+    "service_page": 2,
+    "icon": "wrench",
+    "title": "Preventive Maintenance",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 10,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.368Z",
+    "updated_at": "2026-09-19T01:14:49.368Z",
+    "service_page": 2,
+    "icon": "shield",
+    "title": "Reliable Performance",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 11,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.374Z",
+    "updated_at": "2026-09-19T01:14:49.374Z",
+    "service_page": 2,
+    "icon": "chart",
+    "title": "Cost Efficiency",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 12,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.381Z",
+    "updated_at": "2026-09-19T01:14:49.381Z",
+    "service_page": 2,
+    "icon": "headset",
+    "title": "Expert Support",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 13,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.385Z",
+    "updated_at": "2026-09-19T01:14:49.385Z",
+    "service_page": 2,
+    "icon": "clock",
+    "title": "Minimal Downtime",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 4
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 14,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.393Z",
+    "updated_at": "2026-09-19T01:14:49.393Z",
+    "service_page": 2,
+    "icon": "file",
+    "title": "Genuine Spare Parts",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 5
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 15,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.401Z",
+    "updated_at": "2026-09-19T01:14:49.401Z",
+    "service_page": 2,
+    "icon": "users",
+    "title": "On-site & Remote Support",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 6
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 16,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.406Z",
+    "updated_at": "2026-09-19T01:14:49.406Z",
+    "service_page": 2,
+    "icon": "monitor",
+    "title": "Service Reports",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 7
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 17,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.496Z",
+    "updated_at": "2026-09-21T10:36:52.516Z",
+    "service_page": 3,
+    "icon": "wrench",
+    "title": "Equipment Operation",
+    "image": "services/features/Equipment_Operation_Training.png",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 18,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.504Z",
+    "updated_at": "2026-09-21T10:36:52.549Z",
+    "service_page": 3,
+    "icon": "shield",
+    "title": "Preventive Maintenance",
+    "image": "services/features/Preventive_Maintenance_Training.png",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 19,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.508Z",
+    "updated_at": "2026-09-21T10:36:52.555Z",
+    "service_page": 3,
+    "icon": "check",
+    "title": "Calibration & Safety",
+    "image": "services/features/Calibration__Safety_Training.png",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 20,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.516Z",
+    "updated_at": "2026-09-19T01:14:49.516Z",
+    "service_page": 3,
+    "icon": "chart",
+    "title": "Troubleshooting Basics",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 21,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.523Z",
+    "updated_at": "2026-09-19T01:14:49.523Z",
+    "service_page": 3,
+    "icon": "file",
+    "title": "Biomedical Engineering Fundamentals",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 4
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 22,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.529Z",
+    "updated_at": "2026-09-19T01:14:49.529Z",
+    "service_page": 3,
+    "icon": "users",
+    "title": "Hands-on Learning",
+    "image": "",
+    "tag_label": "",
+    "focus_text": "",
+    "background_text": "",
+    "apply_url": "",
+    "order": 5
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 23,
+  "fields": {
+    "created_at": "2026-09-19T06:34:23.229Z",
+    "updated_at": "2026-09-21T10:39:05.593Z",
+    "service_page": 4,
+    "icon": "wrench",
+    "title": "Sales & Service Engineer",
+    "image": "services/features/Sales__Service_Engineer.png",
+    "tag_label": "Engineering & Field Ops",
+    "focus_text": "On-site installation, device calibration, emergency repairs, and technical maintenance at hospitals.",
+    "background_text": "Degree/Diploma in Biomedical or Electronics Engineering.",
+    "apply_url": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 24,
+  "fields": {
+    "created_at": "2026-09-19T06:34:23.236Z",
+    "updated_at": "2026-09-21T10:39:05.612Z",
+    "service_page": 4,
+    "icon": "monitor",
+    "title": "Android / Software Developer",
+    "image": "services/features/Biomedical_engineer_testing_hospital_patient_vital_sign_monitoring_device.png",
+    "tag_label": "Software & Digital Health",
+    "focus_text": "Application development for health-tech or tele-medicine platforms.",
+    "background_text": "Qualification in CS, IT, or Software Engineering.",
+    "apply_url": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 25,
+  "fields": {
+    "created_at": "2026-09-19T06:34:23.240Z",
+    "updated_at": "2026-09-21T10:39:05.622Z",
+    "service_page": 4,
+    "icon": "users",
+    "title": "Healthcare Sales Executive / Manager",
+    "image": "services/features/Calibration__Safety_Training_DBai067.png",
+    "tag_label": "Business & Commercial",
+    "focus_text": "Client acquisition, managing hospital procurement relationships, and product demonstrations.",
+    "background_text": "Healthcare sales experience or business background.",
+    "apply_url": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.servicefeatureitem",
+  "pk": 26,
+  "fields": {
+    "created_at": "2026-09-19T06:34:23.245Z",
+    "updated_at": "2026-09-19T06:34:23.245Z",
+    "service_page": 4,
+    "icon": "users",
+    "title": "Biomedical Instrumentation Trainer",
+    "image": "",
+    "tag_label": "Training & Development",
+    "focus_text": "Conducting hands-on training for engineers and hospital technicians through the Medex Training Institute.",
+    "background_text": "Senior experience in medical instrumentation and calibration.",
+    "apply_url": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.270Z",
+    "updated_at": "2026-09-19T01:14:49.270Z",
+    "service_page": 1,
+    "title": "Site Visit",
+    "description": "Assess requirements and site readiness",
+    "order": 0
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.276Z",
+    "updated_at": "2026-09-19T01:14:49.276Z",
+    "service_page": 1,
+    "title": "Planning",
+    "description": "Customize installation plan",
+    "order": 1
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.282Z",
+    "updated_at": "2026-09-19T01:14:49.282Z",
+    "service_page": 1,
+    "title": "Installation",
+    "description": "Professional setup and configuration",
+    "order": 2
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.291Z",
+    "updated_at": "2026-09-19T01:14:49.291Z",
+    "service_page": 1,
+    "title": "Testing",
+    "description": "Verify performance and safety",
+    "order": 3
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 5,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.297Z",
+    "updated_at": "2026-09-19T01:14:49.297Z",
+    "service_page": 1,
+    "title": "Handover",
+    "description": "User training and support documentation",
+    "order": 4
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 6,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.410Z",
+    "updated_at": "2026-09-19T01:14:49.410Z",
+    "service_page": 2,
+    "title": "Agreement",
+    "description": "Tailored AMC plan as per your needs",
+    "order": 0
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 7,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.418Z",
+    "updated_at": "2026-09-19T01:14:49.418Z",
+    "service_page": 2,
+    "title": "Preventive Maintenance",
+    "description": "Scheduled servicing and inspections",
+    "order": 1
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 8,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.428Z",
+    "updated_at": "2026-09-19T01:14:49.428Z",
+    "service_page": 2,
+    "title": "Issue Resolution",
+    "description": "Quick and efficient support",
+    "order": 2
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 9,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.434Z",
+    "updated_at": "2026-09-19T01:14:49.434Z",
+    "service_page": 2,
+    "title": "Performance Check",
+    "description": "Calibration and safety verification",
+    "order": 3
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 10,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.439Z",
+    "updated_at": "2026-09-19T01:14:49.439Z",
+    "service_page": 2,
+    "title": "Continuous Support",
+    "description": "Ongoing assistance and reporting",
+    "order": 4
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 11,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.535Z",
+    "updated_at": "2026-09-19T01:14:49.535Z",
+    "service_page": 3,
+    "title": "Requirement Discussion",
+    "description": "Understand your team and learning needs.",
+    "order": 0
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 12,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.542Z",
+    "updated_at": "2026-09-19T01:14:49.542Z",
+    "service_page": 3,
+    "title": "Training Plan",
+    "description": "Define the right topics and approach.",
+    "order": 1
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 13,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.548Z",
+    "updated_at": "2026-09-19T01:14:49.548Z",
+    "service_page": 3,
+    "title": "Training Delivery",
+    "description": "Conduct structured practical/theory sessions.",
+    "order": 2
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 14,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.554Z",
+    "updated_at": "2026-09-19T01:14:49.554Z",
+    "service_page": 3,
+    "title": "Practical Learning",
+    "description": "Reinforce understanding through guided learning.",
+    "order": 3
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 15,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.554Z",
+    "updated_at": "2026-09-19T01:14:49.554Z",
+    "service_page": 3,
+    "title": "Completion & Support",
+    "description": "Share guidance and continue support as needed.",
+    "order": 4
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 16,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.572Z",
+    "updated_at": "2026-09-19T01:14:49.572Z",
+    "service_page": 4,
+    "title": "Apply",
+    "description": "Send us your resume and area of interest.",
+    "order": 0
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 17,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.580Z",
+    "updated_at": "2026-09-19T01:14:49.580Z",
+    "service_page": 4,
+    "title": "Screening",
+    "description": "Initial conversation with our team.",
+    "order": 1
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 18,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.590Z",
+    "updated_at": "2026-09-19T01:14:49.590Z",
+    "service_page": 4,
+    "title": "Interview",
+    "description": "Meet the engineering and leadership team.",
+    "order": 2
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 19,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.597Z",
+    "updated_at": "2026-09-19T01:14:49.597Z",
+    "service_page": 4,
+    "title": "Offer",
+    "description": "We extend an offer and discuss onboarding.",
+    "order": 3
+  }
+},
+{
+  "model": "core.serviceprocessstep",
+  "pk": 20,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.602Z",
+    "updated_at": "2026-09-19T01:14:49.602Z",
+    "service_page": 4,
+    "title": "Onboarding",
+    "description": "Start your journey with MedEx.",
+    "order": 4
+  }
+},
+{
+  "model": "core.serviceequipmentitem",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.306Z",
+    "updated_at": "2026-09-19T01:14:49.306Z",
+    "service_page": 1,
+    "icon": "heart",
+    "title": "Patient Monitors",
+    "order": 0
+  }
+},
+{
+  "model": "core.serviceequipmentitem",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.311Z",
+    "updated_at": "2026-09-19T01:14:49.311Z",
+    "service_page": 1,
+    "icon": "monitor",
+    "title": "Ventilators",
+    "order": 1
+  }
+},
+{
+  "model": "core.serviceequipmentitem",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.320Z",
+    "updated_at": "2026-09-19T01:14:49.320Z",
+    "service_page": 1,
+    "icon": "chart",
+    "title": "Imaging Systems",
+    "order": 2
+  }
+},
+{
+  "model": "core.serviceequipmentitem",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.328Z",
+    "updated_at": "2026-09-19T01:14:49.328Z",
+    "service_page": 1,
+    "icon": "building",
+    "title": "ICU Equipment",
+    "order": 3
+  }
+},
+{
+  "model": "core.serviceequipmentitem",
+  "pk": 5,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.328Z",
+    "updated_at": "2026-09-19T01:14:49.328Z",
+    "service_page": 1,
+    "icon": "bolt",
+    "title": "OT Equipment",
+    "order": 4
+  }
+},
+{
+  "model": "core.serviceequipmentitem",
+  "pk": 6,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.340Z",
+    "updated_at": "2026-09-19T01:14:49.340Z",
+    "service_page": 1,
+    "icon": "flask",
+    "title": "Lab Analyzers",
+    "order": 5
+  }
+},
+{
+  "model": "core.serviceequipmentitem",
+  "pk": 7,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.345Z",
+    "updated_at": "2026-09-19T01:14:49.345Z",
+    "service_page": 1,
+    "icon": "shield",
+    "title": "Other Medical Devices",
+    "order": 6
+  }
+},
+{
+  "model": "core.serviceequipmentitem",
+  "pk": 8,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.445Z",
+    "updated_at": "2026-09-19T01:14:49.445Z",
+    "service_page": 2,
+    "icon": "heart",
+    "title": "Patient Monitors",
+    "order": 0
+  }
+},
+{
+  "model": "core.serviceequipmentitem",
+  "pk": 9,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.450Z",
+    "updated_at": "2026-09-19T01:14:49.450Z",
+    "service_page": 2,
+    "icon": "monitor",
+    "title": "Ventilators",
+    "order": 1
+  }
+},
+{
+  "model": "core.serviceequipmentitem",
+  "pk": 10,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.458Z",
+    "updated_at": "2026-09-19T01:14:49.458Z",
+    "service_page": 2,
+    "icon": "chart",
+    "title": "Imaging Systems",
+    "order": 2
+  }
+},
+{
+  "model": "core.serviceequipmentitem",
+  "pk": 11,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.465Z",
+    "updated_at": "2026-09-19T01:14:49.465Z",
+    "service_page": 2,
+    "icon": "building",
+    "title": "ICU Equipment",
+    "order": 3
+  }
+},
+{
+  "model": "core.serviceequipmentitem",
+  "pk": 12,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.473Z",
+    "updated_at": "2026-09-19T01:14:49.473Z",
+    "service_page": 2,
+    "icon": "bolt",
+    "title": "OT Equipment",
+    "order": 4
+  }
+},
+{
+  "model": "core.serviceequipmentitem",
+  "pk": 13,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.475Z",
+    "updated_at": "2026-09-19T01:14:49.475Z",
+    "service_page": 2,
+    "icon": "flask",
+    "title": "Lab Analyzers",
+    "order": 5
+  }
+},
+{
+  "model": "core.serviceequipmentitem",
+  "pk": 14,
+  "fields": {
+    "created_at": "2026-09-19T01:14:49.483Z",
+    "updated_at": "2026-09-19T01:14:49.483Z",
+    "service_page": 2,
+    "icon": "shield",
+    "title": "Other Medical Devices",
+    "order": 6
+  }
+},
+{
+  "model": "core.servicevalueitem",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-19T06:34:23.253Z",
+    "updated_at": "2026-09-19T06:34:23.253Z",
+    "service_page": 4,
+    "icon": "users",
+    "title": "Professional Growth",
+    "description": "Continuous learning & career development",
+    "order": 0
+  }
+},
+{
+  "model": "core.servicevalueitem",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-19T06:34:23.253Z",
+    "updated_at": "2026-09-19T06:34:23.253Z",
+    "service_page": 4,
+    "icon": "wrench",
+    "title": "Work on Advanced Technology",
+    "description": "Exposure to latest medical equipment",
+    "order": 1
+  }
+},
+{
+  "model": "core.servicevalueitem",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-19T06:34:23.263Z",
+    "updated_at": "2026-09-19T06:34:23.263Z",
+    "service_page": 4,
+    "icon": "heart",
+    "title": "Supportive Work Culture",
+    "description": "Collaborative and inclusive environment",
+    "order": 2
+  }
+},
+{
+  "model": "core.servicevalueitem",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-19T06:34:23.266Z",
+    "updated_at": "2026-09-19T06:34:23.266Z",
+    "service_page": 4,
+    "icon": "bolt",
+    "title": "Create Real Impact",
+    "description": "Be part of a healthier tomorrow",
+    "order": 3
+  }
+},
+{
+  "model": "core.homehero",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-22T04:29:26.493Z",
+    "updated_at": "2026-09-22T13:52:48.205Z",
+    "eyebrow": "Biomedical Engineering · Digital Health · Better Care",
+    "title_main": "Keeping Healthcare Technology Running ",
+    "title_highlight": "When It Matters Most.",
+    "subtitle": "Expert biomedical engineering, seamless equipment support and connected digital health solutions for hospitals, diagnostic centers and clinics.",
+    "background_image": "home/hero/Sales__Service_Engineer.png",
+    "primary_button_label": "Explore Our Services",
+    "primary_button_url": "/services",
+    "secondary_button_label": "Get a Quote",
+    "secondary_button_url": "/contact"
+  }
+},
+{
+  "model": "core.hometrustpoint",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.809Z",
+    "updated_at": "2026-09-22T13:41:34.809Z",
+    "home_hero": 1,
+    "icon": "shield",
+    "label": "Reliable Equipment",
+    "order": 0
+  }
+},
+{
+  "model": "core.hometrustpoint",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.816Z",
+    "updated_at": "2026-09-22T13:41:34.816Z",
+    "home_hero": 1,
+    "icon": "check",
+    "label": "Clinical Safety",
+    "order": 1
+  }
+},
+{
+  "model": "core.hometrustpoint",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.823Z",
+    "updated_at": "2026-09-22T13:41:34.823Z",
+    "home_hero": 1,
+    "icon": "clock",
+    "label": "Faster Response",
+    "order": 2
+  }
+},
+{
+  "model": "core.hometrustpoint",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.825Z",
+    "updated_at": "2026-09-22T13:41:34.825Z",
+    "home_hero": 1,
+    "icon": "users",
+    "label": "Trusted Partnership",
+    "order": 3
+  }
+},
+{
+  "model": "core.aboutsection",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.412Z",
+    "updated_at": "2026-09-22T13:52:48.323Z",
+    "eyebrow": "About MedEx",
+    "title": "Who We Are",
+    "paragraph_1": "Modern healthcare demands absolute equipment dependability and fluid digital continuity. MedEx Biomed was built to solve the most critical challenges facing hospitals, diagnostic centers, and clinics: <strong>prolonged equipment downtime</strong>, fragmented maintenance, and <strong>barriers to specialist care</strong>.",
+    "paragraph_2": "We combine hands-on biomedical field expertise with connected digital health technologies to protect patient safety, ensure regulatory compliance, and extend equipment operational lifespan.",
+    "image": "about/MedEx_Biomed_Corporate_Healthcare_Infrastructure_and_Facility.png",
+    "badge_icon": "shield",
+    "badge_title": "NABH & ISO Compliant",
+    "badge_subtitle": "Audited calibration precision"
+  }
+},
+{
+  "model": "core.ecosystempillar",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.421Z",
+    "updated_at": "2026-09-18T01:52:01.421Z",
+    "icon": "wrench",
+    "title": "Core Biomedical Field Engineering",
+    "bullets": "Preventive & Corrective Maintenance\nBoard-level Repairs\nAMC & CMC Contract Support",
+    "link_label": "Field Verified",
+    "link_url": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.ecosystempillar",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.421Z",
+    "updated_at": "2026-09-18T01:52:01.421Z",
+    "icon": "video",
+    "title": "AV Telemed Remote Care",
+    "bullets": "Specialist Doctor Direct Access\nEncrypted Audio-Video Suite\nDiagnostic Data Real-time Streaming",
+    "link_label": "Connected Telehealth",
+    "link_url": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.ecosystempillar",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.428Z",
+    "updated_at": "2026-09-18T01:52:01.428Z",
+    "icon": "chart",
+    "title": "Hepalpha Diagnostic Innovation",
+    "bullets": "Rapid, Non-invasive Screening\nLiver Health Assessment\nMetabolic Profiling Algorithms",
+    "link_label": "Next-Gen Analytics",
+    "link_url": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.ecosystempillar",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.428Z",
+    "updated_at": "2026-09-18T01:52:01.428Z",
+    "icon": "package",
+    "title": "Tehomed Equipment & Spares",
+    "bullets": "Verified Multi-vendor Access\nReplacement Boards & Modules\nCables, Sensors & Transducers",
+    "link_label": "OEM Grade Spares",
+    "link_url": "",
+    "order": 3
+  }
+},
+{
+  "model": "core.operatingpillar",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.436Z",
+    "updated_at": "2026-09-18T01:52:01.436Z",
+    "icon": "link",
+    "title": "Ecosystem Synergy",
+    "description": "A single, trusted single-point partner for service, spare supply chain, telehealth infrastructure, and diagnostics.",
+    "order": 0
+  }
+},
+{
+  "model": "core.operatingpillar",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.436Z",
+    "updated_at": "2026-09-18T01:52:01.436Z",
+    "icon": "file",
+    "title": "Regulatory Traceability",
+    "description": "Complete digital documentation and verifiable calibration certification prepared for NABH, NABL, and ISO audits.",
+    "order": 1
+  }
+},
+{
+  "model": "core.operatingpillar",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.436Z",
+    "updated_at": "2026-09-18T01:52:01.436Z",
+    "icon": "bolt",
+    "title": "Rapid Response SLA",
+    "description": "Fast-track stages and expedited on-site deployment to restore critical equipment and minimize critical downtime.",
+    "order": 2
+  }
+},
+{
+  "model": "core.operatingpillar",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.436Z",
+    "updated_at": "2026-09-18T01:52:01.436Z",
+    "icon": "shield",
+    "title": "Clinical Safety",
+    "description": "Rigorous electrical safety checks and performance verifications aligned with international clinical standards.",
+    "order": 3
+  }
+},
+{
+  "model": "core.visionmission",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.453Z",
+    "updated_at": "2026-09-22T13:52:48.360Z",
+    "vision_title": "To Be the Premier Clinical Technology & Biomedical Partner",
+    "vision_text": "To be the premier clinical technology and biomedical engineering partner across the healthcare continuum—building a future where medical equipment never fails at critical moments. Ensuring every hospital, physician, and patient experiences total confidence in the technology that sustains them.",
+    "mission_title": "Fortifying Healthcare Infrastructure & Protecting Patient Lives",
+    "mission_text": "To fortify healthcare infrastructure, optimize clinical outcomes, and protect patient lives through a unified ecosystem of precision engineering, transparent procurement, and decentralized care delivery. We achieve this by:",
+    "network_panel_title": "Live Asset Network Status",
+    "network_panel_status_label": "99.98% Active",
+    "network_panel_quote": "Building a healthcare future where life-support medical technology never fails at critical moments.",
+    "network_benchmark_title": "Zero Equipment Downtime",
+    "network_benchmark_subtitle": "Guaranteed uptime SLAs for critical care modalities",
+    "network_benchmark_tag": "Benchmark",
+    "ecosystem_eyebrow": "Unified Operational Framework",
+    "ecosystem_title": "The MedEx Biomed Ecosystem",
+    "ecosystem_subtitle": "Integrated solutions for an uninterrupted continuum",
+    "ecosystem_core_label": "Central Foundation",
+    "ecosystem_core_title": "MedEx Biomed Core",
+    "ecosystem_core_subtitle": "Precision Biomedical Engineering & AMC/CMC Contracts",
+    "ecosystem_footer_badge_1": "NABL & NABH Traceable",
+    "ecosystem_footer_badge_2": "ISO Standards Aligned"
+  }
+},
+{
+  "model": "core.visionhighlight",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.908Z",
+    "updated_at": "2026-09-22T13:41:34.908Z",
+    "vision_mission": 1,
+    "title": "Zero-Downtime Guarantee for Critical Care Units",
+    "description": "Rapid triage protocols keeping ICU, OT, and diagnostics active 24/7/365.",
+    "order": 0
+  }
+},
+{
+  "model": "core.visionhighlight",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.917Z",
+    "updated_at": "2026-09-22T13:41:34.917Z",
+    "vision_mission": 1,
+    "title": "Seamless Supply Chain Eliminating Procurement Bottlenecks",
+    "description": "Transparent access to OEM-verified component boards, transducers, and sensors.",
+    "order": 1
+  }
+},
+{
+  "model": "core.visionhighlight",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.927Z",
+    "updated_at": "2026-09-22T13:41:34.927Z",
+    "vision_mission": 1,
+    "title": "Decentralized Diagnostics Reaching Peripheral Clinics",
+    "description": "Empowering satellite clinics with teleconsultation and rapid point-of-care liver testing.",
+    "order": 2
+  }
+},
+{
+  "model": "core.visionstatusrow",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.933Z",
+    "updated_at": "2026-09-22T13:41:34.933Z",
+    "vision_mission": 1,
+    "label": "Intensive Care Ventilators (ICU)",
+    "value": "100% Calibrated",
+    "order": 0
+  }
+},
+{
+  "model": "core.visionstatusrow",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.943Z",
+    "updated_at": "2026-09-22T13:41:34.943Z",
+    "vision_mission": 1,
+    "label": "Multiparameter Patient Monitors",
+    "value": "Zero Faults",
+    "order": 1
+  }
+},
+{
+  "model": "core.visionstatusrow",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.949Z",
+    "updated_at": "2026-09-22T13:41:34.949Z",
+    "vision_mission": 1,
+    "label": "Point-of-Care Diagnostic Units",
+    "value": "Connected Telemed",
+    "order": 2
+  }
+},
+{
+  "model": "core.missionpillar",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.955Z",
+    "updated_at": "2026-09-22T13:41:34.955Z",
+    "vision_mission": 1,
+    "title": "Securing Clinical Uptime",
+    "description": "Delivering rapid-response biomedical field engineering, rigorous electrical safety testing, and lifecycle AMC/CMC asset management that maximize equipment longevity, satisfy accreditation benchmarks, and ensure life-support devices perform flawlessly when needed most.",
+    "order": 0
+  }
+},
+{
+  "model": "core.missionpillar",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.966Z",
+    "updated_at": "2026-09-22T13:41:34.966Z",
+    "vision_mission": 1,
+    "title": "Transforming Healthcare Supply Chains",
+    "description": "Leveraging Tehomed to dismantle procurement delays, giving healthcare institutions verified, transparent access to certified medical equipment, genuine component-level spare parts, and specialized biomedical accessories without compromise.",
+    "order": 1
+  }
+},
+{
+  "model": "core.missionpillar",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.974Z",
+    "updated_at": "2026-09-22T13:41:34.974Z",
+    "vision_mission": 1,
+    "title": "Bridging the Clinical Distance",
+    "description": "Deploying AV Telemed virtual care networks that integrate real-time diagnostic telemetry with high-definition audio-visual consultation, empowering primary clinics and rural centers to access tertiary specialist care.",
+    "order": 2
+  }
+},
+{
+  "model": "core.missionpillar",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.979Z",
+    "updated_at": "2026-09-22T13:41:34.979Z",
+    "vision_mission": 1,
+    "title": "Elevating Frontline Diagnostics",
+    "description": "Driving early disease interception through the Hepalpha diagnostic framework, equipping practitioners with non-invasive, rapid screening technologies that detect metabolic and organ risks early enough to alter clinical trajectories.",
+    "order": 3
+  }
+},
+{
+  "model": "core.missionpillar",
+  "pk": 5,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.989Z",
+    "updated_at": "2026-09-22T13:41:34.989Z",
+    "vision_mission": 1,
+    "title": "Championing Ethical Engineering",
+    "description": "Upholding uncompromising standards of transparency, metrological integrity, and technical stewardship, ensuring every hospital, physician, and patient experiences total confidence in the technology that sustains them.",
+    "order": 4
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.453Z",
+    "updated_at": "2026-09-22T08:49:38.915Z",
+    "name": "Veeramano Murugan",
+    "role": "Founder & Managing Director, MedEx Biomed",
+    "title": "DBCE, B.E (Bio Medical)",
+    "photo": "team/Veeramano.jpg.jpeg",
+    "bio": "",
+    "quote": "Driven by technology. Committed to better care.",
+    "quote_label": "Leadership Philosophy",
+    "badge_text": "Verified Bio-Engineer",
+    "years_text": "10+ Years Biomedical Leadership",
+    "prior_leadership": "",
+    "domain_expertise": "",
+    "operational_base": "",
+    "is_leadership": true,
+    "order": 0
+  }
+},
+{
+  "model": "core.companystat",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.398Z",
+    "updated_at": "2026-09-18T01:52:01.398Z",
+    "label": "Years of Expertise",
+    "value": "10+",
+    "icon": "clock",
+    "order": 0
+  }
+},
+{
+  "model": "core.companystat",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.403Z",
+    "updated_at": "2026-09-18T01:52:01.403Z",
+    "label": "Equipments Supported",
+    "value": "500+",
+    "icon": "monitor",
+    "order": 1
+  }
+},
+{
+  "model": "core.companystat",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.403Z",
+    "updated_at": "2026-09-18T01:52:01.403Z",
+    "label": "by Healthcare Facilities",
+    "value": "Trusted",
+    "icon": "building",
+    "order": 2
+  }
+},
+{
+  "model": "core.companystat",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.859Z",
+    "updated_at": "2026-09-22T13:41:34.859Z",
+    "label": "Healthcare Facilities Supported",
+    "value": "500+",
+    "icon": "building",
+    "order": 0
+  }
+},
+{
+  "model": "core.companystat",
+  "pk": 5,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.866Z",
+    "updated_at": "2026-09-22T13:41:34.866Z",
+    "label": "Years of Specialized Experience",
+    "value": "10+",
+    "icon": "clock",
+    "order": 1
+  }
+},
+{
+  "model": "core.companystat",
+  "pk": 6,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.873Z",
+    "updated_at": "2026-09-22T13:41:34.873Z",
+    "label": "Customer Satisfaction",
+    "value": "99%",
+    "icon": "chart",
+    "order": 2
+  }
+},
+{
+  "model": "core.companystat",
+  "pk": 7,
+  "fields": {
+    "created_at": "2026-09-22T13:41:34.883Z",
+    "updated_at": "2026-09-22T13:41:34.883Z",
+    "label": "Key Hubs (Chennai & Madurai)",
+    "value": "2",
+    "icon": "link",
+    "order": 3
+  }
+},
+{
+  "model": "core.sitesettings",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-17T12:34:00.193Z",
+    "updated_at": "2026-09-22T13:52:48.389Z",
+    "site_name": "MedEx",
+    "logo": "site/medex_logo_1.jpg",
+    "footer_tagline": "Precision biomedical engineering. Connected healthcare. Better tomorrows.",
+    "address": "Chennai | Madurai | Others",
+    "phone": "+91 93037 06371",
+    "whatsapp_number": "919303706371",
+    "email": "support@medexbiomed.com",
+    "business_hours": "Mon–Sat, 9:00am – 7:00pm",
+    "facebook_url": "",
+    "instagram_url": "https://www.instagram.com/avtelemed",
+    "linkedin_url": "https://www.linkedin.com/company/medex-biomed-services-private-limited",
+    "youtube_url": "https://www.youtube.com/@AV_telemed"
+  }
+},
+{
+  "model": "core.pageintro",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.468Z",
+    "updated_at": "2026-09-21T15:06:26.424Z",
+    "page": "about",
+    "eyebrow": "About MedEx",
+    "title": "A biomedical engineering partner your hospital can rely on",
+    "title_highlight": "",
+    "description": "MedEx combines hands-on equipment expertise with modern software to keep clinical technology running safely and reliably — from the ICU to the diagnostics lab.",
+    "image": "page-intros/Biomedical_engineer_testing_hospital_patient_vital_sign_monitoring_device.png",
+    "cta_title": "",
+    "cta_text": ""
+  }
+},
+{
+  "model": "core.pageintro",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.468Z",
+    "updated_at": "2026-09-18T01:52:01.468Z",
+    "page": "services",
+    "eyebrow": "Services",
+    "title": "Support built around your equipment and software",
+    "title_highlight": "",
+    "description": "From preventive maintenance to custom digital health platforms, MedEx covers the full lifecycle of clinical technology.",
+    "image": "",
+    "cta_title": "Need a service not listed here?",
+    "cta_text": "Tell us what your facility needs and we'll scope it together."
+  }
+},
+{
+  "model": "core.pageintro",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.468Z",
+    "updated_at": "2026-09-21T15:10:50.368Z",
+    "page": "contact",
+    "eyebrow": "Contact Us",
+    "title": "Let's talk about your facility's needs",
+    "title_highlight": "",
+    "description": "Whether it's equipment support, a software project, or a general question — send us a message and we'll respond within one business day.",
+    "image": "page-intros/Doctor_Telemedicine_Video_Consultation_on_Monitor.png",
+    "cta_title": "",
+    "cta_text": ""
+  }
+},
+{
+  "model": "core.aboutpagecontent",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-18T01:52:01.484Z",
+    "updated_at": "2026-09-22T13:52:48.403Z",
+    "hero_badge_title": "Technology In Safe Hands",
+    "hero_highlight_value": "10y+",
+    "hero_highlight_label": "Operational Precision Standards",
+    "hero_status_text": "Emergency Clinical Support Available",
+    "story_eyebrow": "Our Story",
+    "story_title": "A Stronger Tomorrow Through Better Healthcare",
+    "story_paragraph_1": "Modern healthcare demands absolute equipment dependability and fluid digital continuity. Medex Biomed was built to solve the most critical challenges facing hospitals, diagnostic centers, and clinics: prolonged equipment downtime, fragmented maintenance, and barriers to specialist care.",
+    "story_paragraph_2": "We combine hands-on biomedical field expertise with connected digital health technologies. Whether maintaining critical life-support assets in an ICU or deploying remote diagnostic screening in satellite clinics, our integrated approach protects patient safety, ensures regulatory compliance, and extends equipment operational lifespan.",
+    "story_quote": "With years of experience in biomedical engineering, our team is driven by a passion for quality, safety, and long-term partnerships with healthcare institutions.",
+    "story_image": "about/story/MedEx_Biomed_modern_headquarters_facility_with_palm_trees_and_blue_sky.png",
+    "story_image_badge": "Medex Biomed Headquarters",
+    "story_caption_eyebrow": "Proven Excellence",
+    "story_caption_text": "Trusted by Healthcare Providers Across the Region",
+    "leadership_eyebrow": "About Director & Founder",
+    "leadership_title": "Leadership Driving Medical Excellence",
+    "why_choose_eyebrow": "Why Choose Us",
+    "why_choose_title_main": "More Than Service, ",
+    "why_choose_title_highlight": "A Long-Term Partnership",
+    "why_choose_description": "We don't just service equipment — we build lasting relationships. Our team of skilled professionals ensures that your medical equipment performs at its best, always."
+  }
+},
+{
+  "model": "core.whychooseusitem",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-22T13:41:35.012Z",
+    "updated_at": "2026-09-22T13:41:35.012Z",
+    "about_page_content": 1,
+    "icon": "wrench",
+    "title": "Expert Engineers",
+    "description": "Board-level diagnostics & multi-modality training.",
+    "order": 0
+  }
+},
+{
+  "model": "core.whychooseusitem",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-22T13:41:35.020Z",
+    "updated_at": "2026-09-22T13:41:35.022Z",
+    "about_page_content": 1,
+    "icon": "clock",
+    "title": "Reliable Support",
+    "description": "Fast-track response for critical ventilators & ICUs.",
+    "order": 1
+  }
+},
+{
+  "model": "core.whychooseusitem",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-22T13:41:35.028Z",
+    "updated_at": "2026-09-22T13:41:35.028Z",
+    "about_page_content": 1,
+    "icon": "users",
+    "title": "Customer Centric",
+    "description": "Flexible AMC / CMC contracts tailored to budgets.",
+    "order": 2
+  }
+},
+{
+  "model": "core.whychooseusitem",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-09-22T13:41:35.036Z",
+    "updated_at": "2026-09-22T13:41:35.036Z",
+    "about_page_content": 1,
+    "icon": "link",
+    "title": "Multi-Brand Field",
+    "description": "Independent servicing of all leading global OEMs.",
+    "order": 3
+  }
+},
+{
+  "model": "core.whychooseusitem",
+  "pk": 5,
+  "fields": {
+    "created_at": "2026-09-22T13:41:35.041Z",
+    "updated_at": "2026-09-22T13:41:35.041Z",
+    "about_page_content": 1,
+    "icon": "file",
+    "title": "Compliant & Quality",
+    "description": "NABH, NABL audit certificates provided digitally.",
+    "order": 4
+  }
+},
+{
+  "model": "core.whychooseusitem",
+  "pk": 6,
+  "fields": {
+    "created_at": "2026-09-22T13:41:35.046Z",
+    "updated_at": "2026-09-22T13:41:35.046Z",
+    "about_page_content": 1,
+    "icon": "chart",
+    "title": "Better Outcomes",
+    "description": "Zero downtime directly improving patient survival.",
+    "order": 5
+  }
+},
+{
+  "model": "core.officelocation",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-22T13:41:35.053Z",
+    "updated_at": "2026-09-22T13:41:35.053Z",
+    "name": "Head Office — Chennai",
+    "address": "No.134/2 C, Gandhi Road, Srinivasa Nagar Post, Alapakkam, near Perungalathur, Chennai - 600 063",
+    "phone": "",
+    "map_embed_url": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.officelocation",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-22T13:41:35.053Z",
+    "updated_at": "2026-09-22T13:41:35.053Z",
+    "name": "Branch — Madurai",
+    "address": "Vadipatti, Madurai, Tamil Nadu, India",
+    "phone": "",
+    "map_embed_url": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.contactpagecontent",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-21T10:46:20.427Z",
+    "updated_at": "2026-09-22T13:52:48.421Z",
+    "form_title": "Send Us an Enquiry",
+    "form_description": "Fill in the details and our team will get back to you shortly.",
+    "details_eyebrow": "Support & Reach",
+    "details_title": "Our Contact Details",
+    "details_subtitle": "Reach out to us.",
+    "highlights_intro": "We're always here to support your healthcare technology needs.",
+    "map_eyebrow": "Location",
+    "map_title": "Find Us on Map",
+    "map_description": "Get directions to our Head Office in Chennai or our Branch in Madurai."
+  }
+},
+{
+  "model": "core.contacthighlight",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-09-22T13:41:35.070Z",
+    "updated_at": "2026-09-22T13:41:35.070Z",
+    "contact_page_content": 1,
+    "text": "Quick Response",
+    "order": 0
+  }
+},
+{
+  "model": "core.contacthighlight",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-09-22T13:41:35.082Z",
+    "updated_at": "2026-09-22T13:41:35.082Z",
+    "contact_page_content": 1,
+    "text": "Expert Support",
+    "order": 1
+  }
+},
+{
+  "model": "core.contacthighlight",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-09-22T13:41:35.089Z",
+    "updated_at": "2026-09-22T13:41:35.089Z",
+    "contact_page_content": 1,
+    "text": "Reliable Partnership",
+    "order": 2
+  }
+}
+]

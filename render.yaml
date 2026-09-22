@@ -1,0 +1,95 @@
+# ---------------------------------------------------------------------------
+# Render Blueprint for the MedEX website.
+#
+# OPTIONAL but recommended: it makes the deploy reproducible instead of
+# depending on hand-typed dashboard settings.
+#
+#   Render Dashboard -> New + -> Blueprint -> pick this repo.
+#
+# If you already created the services by hand, either keep them and copy these
+# values across, or delete them and let this file recreate everything.
+# ---------------------------------------------------------------------------
+
+databases:
+  - name: medex-db
+    plan: free
+    databaseName: medex
+    user: medex
+
+services:
+  # -------------------------------------------------------------------------
+  # Django + DRF API, and Django Admin (the CMS used to write all content)
+  # -------------------------------------------------------------------------
+  - type: web
+    name: medex-backend
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: ./build.sh
+    startCommand: gunicorn medex_backend.wsgi:application --bind 0.0.0.0:$PORT
+    healthCheckPath: /api/v1/health/
+    envVars:
+      # Render does NOT read backend/runtime.txt. PYTHON_VERSION (or a
+      # .python-version file, which is also in this repo) is what pins the
+      # interpreter. Without it Render uses Python 3.14, where Django 5.0,
+      # psycopg2-binary and Pillow 10.4 have no wheels and the build fails.
+      - key: PYTHON_VERSION
+        value: "3.12.8"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: USE_POSTGRES
+        value: "True"
+      - key: DB_NAME
+        fromDatabase:
+          name: medex-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: medex-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: medex-db
+          property: password
+      - key: DB_HOST
+        fromDatabase:
+          name: medex-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: medex-db
+          property: port
+      # ALLOWED_HOSTS and CSRF_TRUSTED_ORIGINS do not need to be set here:
+      # settings.py adds the deployed hostname automatically from
+      # RENDER_EXTERNAL_HOSTNAME.
+      - key: FRONTEND_URL
+        sync: false # e.g. https://medex-frontend.onrender.com
+      - key: DJANGO_SUPERUSER_USERNAME
+        sync: false # your Django Admin login
+      - key: DJANGO_SUPERUSER_EMAIL
+        sync: false
+      - key: DJANGO_SUPERUSER_PASSWORD
+        sync: false
+
+  # -------------------------------------------------------------------------
+  # React + Vite static site
+  # -------------------------------------------------------------------------
+  - type: web
+    name: medex-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      # Must be the backend's API root, and is baked in at BUILD time (Vite
+      # inlines VITE_* variables), so changing it requires a rebuild.
+      - key: VITE_API_BASE_URL
+        sync: false # e.g. https://medex-backend-spat.onrender.com/api/v1
+    routes:
+      # React Router uses client-side routing: without this rewrite, opening
+      # /products/some-slug directly (or refreshing the page) returns a 404.
+      - type: rewrite
+        source: /*
+        destination: /index.html

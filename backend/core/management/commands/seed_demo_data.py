@@ -28,11 +28,58 @@ from core.models import (
     ContactHighlight,
 )
 
+# Subset used only to detect "this database already has content" (see the safety
+# guard in handle()). Contact-form submissions are deliberately excluded.
+CONTENT_MODELS = (
+    ProductCategory,
+    Product,
+    Service,
+    ServicePage,
+    HomeHero,
+    PageIntro,
+    TeamMember,
+    CompanyStat,
+    EcosystemPillar,
+    OperatingPillar,
+    VisionMission,
+    AboutSection,
+    AboutPageContent,
+    ContactPageContent,
+    SiteSettings,
+)
+
 
 class Command(BaseCommand):
     help = "Populates the database with sample MedEX content so the site and admin aren't empty."
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--force",
+            action="store_true",
+            help="Run even when the database already has content. NOTE: this rewrites the "
+                 "singleton content (hero, page intros, site settings...) and will destroy "
+                 "anything entered through Django Admin.",
+        )
+
     def handle(self, *args, **options):
+        # Safety guard: this command overwrites the site's singleton content.
+        # Running it against a database that already has content would wipe
+        # whatever the client typed in Django Admin, so it refuses by default
+        # and simply does nothing (instead of failing a deploy that still calls
+        # it). Use --force for a deliberate re-seed.
+        if not options["force"]:
+            existing = [model.__name__ for model in CONTENT_MODELS if model.objects.exists()]
+            if existing:
+                self.stdout.write(
+                    self.style.WARNING(
+                        "Existing content found ({}). seed_demo_data does nothing to protect "
+                        "your admin edits - pass --force to overwrite it anyway.".format(
+                            ", ".join(existing)
+                        )
+                    )
+                )
+                return
+
         home_hero = HomeHero.load()
         home_hero.eyebrow = "Biomedical Engineering · Digital Health · Better Care"
         home_hero.title_main = "Keeping Healthcare Technology Running "

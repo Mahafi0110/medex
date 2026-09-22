@@ -60,11 +60,19 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   }
 
   const res = await fetch(`${BASE_URL}${path}`, {
-    credentials: "include", // Required to send/receive cookies cross-origin or cross-port
+    // No `credentials: "include"` on purpose: every public endpoint is
+    // anonymous (DRF skips CSRF checks for anonymous requests) and the client
+    // never relies on cookies. Sending credentials would force the backend to
+    // answer with Access-Control-Allow-Credentials and would make the Contact
+    // form depend on third-party cookies, which Safari/iOS block by default.
     ...options,
     headers,
   });
 
+  if (res.status === 429) {
+    // The backend rate-limits the Contact/Career forms per IP.
+    throw new Error("Too many submissions from this device. Please wait a little while and try again.");
+  }
   if (!res.ok) {
     const body = await res.text().catch(() => "");
     throw new Error(`API error ${res.status} on ${path}: ${body}`);
@@ -83,11 +91,13 @@ async function requestMultipart<T>(path: string, formData: FormData): Promise<T>
 
   const res = await fetch(`${BASE_URL}${path}`, {
     method: "POST",
-    credentials: "include",
     body: formData,
     headers,
   });
 
+  if (res.status === 429) {
+    throw new Error("Too many submissions from this device. Please wait a little while and try again.");
+  }
   if (!res.ok) {
     const body = await res.text().catch(() => "");
     throw new Error(`API error ${res.status} on ${path}: ${body}`);

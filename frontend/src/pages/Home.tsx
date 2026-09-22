@@ -9,7 +9,6 @@ import ServicesPreview from "@/components/ServicesPreview";
 import ProductsHighlightSection from "@/components/ProductsHighlightSection";
 import PhilosophyLeadershipSection from "@/components/PhilosophyLeadershipSection";
 import ContactCTASection from "@/components/ContactCTASection";
-import FloatingContactButtons from "@/components/FloatingContactButtons";
 import { LoadingState, ErrorState } from "@/components/AsyncState";
 
 export default function Home() {
@@ -44,8 +43,6 @@ export default function Home() {
                 : "absolute inset-0 bg-blue-dark"
             }
           />
-
-          <FloatingContactButtons position="bottom-6 right-6" direction="col" />
 
           <div className="container-page relative py-24 lg:py-32">
             <div className="max-w-2xl">
