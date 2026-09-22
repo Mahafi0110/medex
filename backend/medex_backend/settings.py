@@ -124,6 +124,18 @@ CORS_ALLOWED_ORIGINS = config(
     cast=Csv(),
 )
 
+# Only needed if the frontend sends cookies / session auth (credentials:
+# 'include' or axios withCredentials: true). If your API is public
+# (AllowAny) and uses no cookies, leave this False and make sure the
+# frontend does NOT send credentials — that avoids the CORS credentials
+# handshake entirely. Flip CORS_ALLOW_CREDENTIALS=True in your Render env
+# vars only if you actually rely on Django session cookies.
+CORS_ALLOW_CREDENTIALS = config(
+    "CORS_ALLOW_CREDENTIALS",
+    default=False,
+    cast=bool,
+)
+
 CSRF_TRUSTED_ORIGINS = config(
     "CSRF_TRUSTED_ORIGINS",
     default="http://localhost:5173,http://127.0.0.1:5173",
