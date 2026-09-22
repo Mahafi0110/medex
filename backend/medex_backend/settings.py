@@ -16,6 +16,12 @@ SECRET_KEY = config("SECRET_KEY", default="dev-insecure-secret-key-change-me")
 DEBUG = config("DEBUG", default=True, cast=bool)
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=Csv())
 
+# Render terminates HTTPS at its proxy, so Django would otherwise see every
+# request as plain HTTP internally. This tells Django to trust the
+# X-Forwarded-Proto header from that proxy, so request.is_secure() and the
+# CSRF/session Secure-cookie checks work correctly.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 # ---------------------------------------------------------------------------
 # Applications
 # ---------------------------------------------------------------------------
@@ -124,12 +130,10 @@ CORS_ALLOWED_ORIGINS = config(
     cast=Csv(),
 )
 
-# Only needed if the frontend sends cookies / session auth (credentials:
-# 'include' or axios withCredentials: true). If your API is public
-# (AllowAny) and uses no cookies, leave this False and make sure the
-# frontend does NOT send credentials — that avoids the CORS credentials
-# handshake entirely. Flip CORS_ALLOW_CREDENTIALS=True in your Render env
-# vars only if you actually rely on Django session cookies.
+# The frontend's api client sends credentials: "include" on every request
+# (needed for the CSRF-token cookie flow on POST /contact/), so this must
+# be True. Set CORS_ALLOW_CREDENTIALS=True in Render's env vars for the
+# backend service.
 CORS_ALLOW_CREDENTIALS = config(
     "CORS_ALLOW_CREDENTIALS",
     default=False,
@@ -141,6 +145,20 @@ CSRF_TRUSTED_ORIGINS = config(
     default="http://localhost:5173,http://127.0.0.1:5173",
     cast=Csv(),
 )
+
+# ---------------------------------------------------------------------------
+# Cross-site cookies (needed because frontend/backend are on different
+# subdomains, e.g. *.onrender.com — the browser treats that as cross-site,
+# not just cross-origin. SameSite=Lax cookies get silently dropped there,
+# which breaks the CSRF-token flow even though CORS itself is fine).
+# In local dev over plain http, SameSite=None without Secure is rejected by
+# browsers, so these only kick in properly once DEBUG=False / HTTPS is used.
+# ---------------------------------------------------------------------------
+if not DEBUG:
+    SESSION_COOKIE_SAMESITE = "None"
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SAMESITE = "None"
+    CSRF_COOKIE_SECURE = True
 # ---------------------------------------------------------------------------
 # Django REST Framework
 # ---------------------------------------------------------------------------
