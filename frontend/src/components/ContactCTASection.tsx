@@ -42,9 +42,11 @@ export default function ContactCTASection({ services, products }: Props) {
         {/* Left: photo + quick contact */}
         <div className="flex flex-col">
           <div className="aspect-[4/3] overflow-hidden rounded-card bg-white">
-            <div className="flex h-full w-full items-center justify-center text-sm text-muted">
-              Clinical / patient-care photo goes here
-            </div>
+            <img
+              src="/contact-cta-image.png"
+              alt="Clinical & Patient Care Support"
+              className="h-full w-full object-cover"
+            />
           </div>
 
           <p className="section-eyebrow mt-6 mb-2">— Connect With Us</p>

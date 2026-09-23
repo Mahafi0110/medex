@@ -53,7 +53,7 @@ async function handleSubmit(e: FormEvent<HTMLFormElement>) {
           <div className="w-full lg:w-[460px]">
             <div className="rounded-2xl overflow-hidden shadow-lg border border-line bg-surface">
               <img
-                src="/image (2).jpg"
+                src="/contact-hero.png"
                 alt="MedEx Support & Biomedical Services"
                 className="w-full h-auto object-cover max-h-[300px]"
               />

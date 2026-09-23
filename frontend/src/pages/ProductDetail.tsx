@@ -11,13 +11,6 @@ import ProductHeroPhotoCard from "@/components/products/ProductHeroPhotoCard";
 import ProductHeroBadgeHeavy from "@/components/products/ProductHeroBadgeHeavy";
 import type { ProductDetail as ProductDetailType, ProductHeroLayout } from "@/types";
 
-const mediaIcons = [
-  { key: "screenshot", path: "M4 5h16v10H4z M9 19h6 M12 15v4" },
-  { key: "chart", path: "M4 20V10 M10 20V4 M16 20v-7 M20 20H4" },
-  { key: "video", path: "M4 6h11v12H4z M15 10l5-3v10l-5-3" },
-  { key: "file", path: "M6 3h8l4 4v14H6z M14 3v4h4 M9 13h6 M9 17h6" },
-];
-
 const heroLayouts: Record<ProductHeroLayout, React.ComponentType<{ product: ProductDetailType }>> = {
   circular_image: ProductHeroCircularImage,
   dashboard_mockup: ProductHeroDashboardMockup,
@@ -63,20 +56,18 @@ export default function ProductDetail() {
 
   const ActiveHeroLayout = getHeroComponent();
 
-  // const links = [
-  //   { label: "Visit Website", url: p.website_url },
-  //   { label: "App Store", url: p.app_store_url },
-  //   { label: "Google Play", url: p.play_store_url },
-  //   { label: "Download", url: p.download_url },
-  //   ...(p.extra_links ?? []).map((l) => ({ label: l.label, url: l.url })),
-  // ].filter((l) => l.url);
-
   const screenshots = p.screenshots ?? [];
   const keyFeatures = p.key_feature_list ?? [];
   const specRows = p.specification_rows ?? [];
 
-  const activeShot = mediaIndex === 0 ? null : screenshots[mediaIndex - 1];
-  const activeImage = mediaIndex === 0 ? p.cover_image : activeShot?.image ?? null;
+  // Combine cover image (index 0) and up to 3 screenshots to form exactly up to 4 interactive media tabs
+  const mediaItems = [
+    { type: "cover", image: p.cover_image },
+    ...screenshots.map((s) => ({ type: "screenshot", image: s.image }))
+  ].slice(0, 4);
+
+  const activeMedia = mediaItems[mediaIndex] || mediaItems[0];
+  const activeImage = activeMedia?.image ?? p.cover_image;
 
   return (
     <div className="bg-[#f8fafc] min-h-screen transition-opacity duration-300 ease-in-out">
@@ -134,18 +125,18 @@ export default function ProductDetail() {
               <div className="grid gap-8 lg:grid-cols-[minmax(0,340px)_1fr] items-start">
                 <div className="flex flex-col items-center justify-center rounded-2xl bg-slate-50 border border-slate-100 p-4">
                   <div className="w-full flex items-center justify-center min-h-[300px] bg-white rounded-xl border border-slate-200 p-2 shadow-sm">
-                    <img src={activeImage || p.cover_image || undefined} alt={p.name} className="max-h-72 w-auto object-contain rounded-lg" />
+                    <img src={activeImage || undefined} alt={p.name} className="max-h-72 w-auto object-contain rounded-lg" />
                   </div>
                   <div className="mt-4 grid grid-cols-4 gap-2 w-full">
-                    {[p.cover_image, ...screenshots.map(s => s.image)].slice(0, 4).map((imgUrl, i) => (
+                    {mediaItems.map((item, i) => (
                       <button
                         key={i}
                         onClick={() => setMediaIndex(i)}
-                        className={`h-16 rounded-lg border overflow-hidden transition-all ${
-                          mediaIndex === i ? "border-blue-600 ring-2 ring-blue-600/20" : "border-slate-200 opacity-70 hover:opacity-100"
+                        className={`h-16 rounded-lg border overflow-hidden transition-all bg-white ${
+                          mediaIndex === i ? "border-red ring-2 ring-red/20 shadow-sm" : "border-slate-200 opacity-70 hover:opacity-100"
                         }`}
                       >
-                        <img src={imgUrl || undefined} alt="Thumbnail" className="h-full w-full object-cover" />
+                        <img src={item.image || undefined} alt="Thumbnail" className="h-full w-full object-cover" />
                       </button>
                     ))}
                   </div>
@@ -203,18 +194,23 @@ export default function ProductDetail() {
                     )}
                   </div>
 
+                  {/* ================= 4 DYNAMIC PRODUCT MEDIA TABS ================= */}
                   <div className="mt-6 flex items-center justify-center gap-3">
-                    {mediaIcons.map((m, i) => (
+                    {mediaItems.map((item, i) => (
                       <button
-                        key={m.key}
+                        key={i}
                         onClick={() => setMediaIndex(i)}
-                        className={`flex h-11 w-11 items-center justify-center rounded-xl border transition-all duration-200 ${
-                          mediaIndex === i ? "border-blue-600 bg-white text-blue-600 shadow-md ring-2 ring-blue-600/10 scale-105" : "border-slate-200 bg-white/80 text-slate-400 hover:border-slate-300 hover:text-slate-600"
+                        className={`flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border-2 transition-all duration-200 bg-white ${
+                          mediaIndex === i 
+                            ? "border-red shadow-md ring-2 ring-red/20 scale-105" 
+                            : "border-slate-200 opacity-70 hover:opacity-100 hover:border-slate-300"
                         }`}
                       >
-                        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.8}>
-                          <path d={m.path} />
-                        </svg>
+                        {item.image ? (
+                          <img src={item.image} alt={`Thumbnail ${i + 1}`} className="h-full w-full object-cover" />
+                        ) : (
+                          <span className="text-xs font-bold text-slate-500">{i + 1}</span>
+                        )}
                       </button>
                     ))}
                   </div>
