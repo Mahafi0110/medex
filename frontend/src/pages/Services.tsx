@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { api } from "@/api/client";
 import { useAsync } from "@/hooks/useAsync";
@@ -25,26 +24,26 @@ export default function Services() {
 
 function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: ServicePageSidebarItem[] }) {
   const page = useAsync(() => api.getServicePage(slug), [slug]);
-  
-  // 👈 Added state for the poster popup modal without touching existing logic
-  const [selectedPoster, setSelectedPoster] = useState<{ image: string; caption?: string } | null>(null);
 
   if (page.loading && !page.data) return <LoadingState label="Loading…" />;
   if (page.error && !page.data) return <div className="container-page py-16"><ErrorState message={page.error} /></div>;
   if (!page.data) return null;
 
   const p = page.data;
-  const isCareer = slug.includes("career");
+  const isCareer = p.feature_items.some((f) => f.focus_text);
   const isTraining = slug.includes("training");
+  // const isIconOnlyService = !isCareer && !isTraining; // Services 1 & 2 (Installation & AMC)
 
   return (
     <div className="transition-opacity duration-300 ease-in-out bg-[#f8fafc] min-h-screen">
 
+      {/* ================= DYNAMIC HERO BANNER ================= */}
       {/* ================= DYNAMIC ADMIN-POWERED HERO BANNER ================= */}
       <section
         className="relative bg-cover bg-center text-ink min-h-[460px] lg:min-h-[500px] flex flex-col justify-center transition-all duration-300 shadow-md"
         style={p.hero_image ? { backgroundImage: `url(${p.hero_image})` } : undefined}
       >
+        {/* White-to-Transparent Gradient Overlay matching your mockup */}
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-transparent" />
 
         <div className="container-page relative grid gap-8 py-12 lg:grid-cols-[1fr_320px] lg:items-center z-10">
@@ -100,8 +99,8 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
                   key={item.slug}
                   to={`/services/${item.slug}`}
                   className={`flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-xs md:text-sm font-bold transition-all duration-200 ${active
-                    ? "bg-red text-white shadow-md shadow-red/20"
-                    : "bg-white text-slate-700 hover:text-blue-dark hover:bg-slate-100 border border-slate-200/60"
+                      ? "bg-red text-white shadow-md shadow-red/20"
+                      : "bg-white text-slate-700 hover:text-blue-dark hover:bg-slate-100 border border-slate-200/60"
                     }`}
                 >
                   <Icon name={item.nav_icon} className={`h-4 w-4 ${active ? "text-white" : "text-red"}`} />
@@ -122,7 +121,7 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
             <div className="space-y-12">
 
               {/* Overview Section */}
-              {!isCareer && (p.overview_title || p.overview_description) && (
+              {(p.overview_title || p.overview_description) && (
                 <div className="bg-white rounded-2xl border border-slate-200/80 p-6 md:p-8 shadow-sm">
                   {p.overview_eyebrow && <p className="section-eyebrow mb-2 text-red">— {p.overview_eyebrow}</p>}
                   {p.overview_title && <h2 className="text-2xl font-extrabold text-blue-dark">{p.overview_title}</h2>}
@@ -133,37 +132,54 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
                 </div>
               )}
 
-              {/* Dynamic Features Grid */}
+              {/* Dynamic Features Grid (Separated for Services 1&2 vs 3&4) */}
               {p.feature_items.length > 0 && (
                 <div>
                   {isCareer ? (
-                    // 👈 INJECTED SECTION 1: Career Bullet Cards + Highlighted Email Box matching your mockup
-                    <div className="space-y-8">
-                      <div className="space-y-4">
-                        {p.feature_items.map((f) => (
-                          <div key={f.id} className="flex items-start gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm transition-all hover:border-slate-300">
-                            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-pink-light text-red">
-                              <Icon name={f.icon || "check"} className="h-5 w-5" />
+                    // Service 4: Career Roles Grid
+                    <div className="grid gap-6 sm:grid-cols-2">
+                      {p.feature_items.map((f) => (
+                        <div key={f.id} className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm flex flex-col justify-between hover:shadow-md transition-all">
+                          <div>
+                            <div className="relative h-44 bg-slate-100 overflow-hidden">
+                              {f.image && <img src={f.image} alt={f.title} className="h-full w-full object-cover" />}
+                              {f.tag_label && (
+                                <span className="absolute left-3 top-3 rounded-md bg-red px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white shadow-md">
+                                  {f.tag_label}
+                                </span>
+                              )}
                             </div>
-                            <div className="flex-1 pt-1 text-sm font-semibold text-slate-700 leading-relaxed">
-                              {f.title}
+                            <div className="p-6">
+                              <div className="flex items-center gap-2.5">
+                                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-red/10 text-red">
+                                  <Icon name={f.icon} className="h-4 w-4" />
+                                </span>
+                                <h3 className="text-base font-bold text-blue-dark">{f.title}</h3>
+                              </div>
+                              {f.focus_text && (
+                                <div className="mt-4 space-y-1">
+                                  <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Typical Focus:</p>
+                                  <p className="text-xs text-slate-600 leading-relaxed">{f.focus_text}</p>
+                                </div>
+                              )}
+                              {f.background_text && (
+                                <div className="mt-3 space-y-1">
+                                  <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Target Background:</p>
+                                  <p className="text-xs text-slate-600 leading-relaxed">{f.background_text}</p>
+                                </div>
+                              )}
                             </div>
                           </div>
-                        ))}
-                      </div>
-
-                      {/* Highlighted Email Callout Box */}
-                      <div className="rounded-2xl border border-red/20 bg-pink-light/30 p-6 flex items-center gap-4 shadow-sm">
-                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-red text-white shadow-md">
-                          <Icon name="mail" className="h-6 w-6" />
+                          <div className="px-6 pb-6 pt-0">
+                            <a href={f.apply_url || "/contact"} className="inline-flex items-center gap-1.5 text-xs font-bold text-red hover:underline">
+                              Apply for Role ↗
+                            </a>
+                          </div>
                         </div>
-                        <p className="text-sm text-slate-700 leading-relaxed font-medium">
-                          Send your resume and cover letter to <span className="font-bold text-red">info@tehomed.com</span> and start your journey with Medex Biomedical Services.
-                        </p>
-                      </div>
+                      ))}
                     </div>
                   ) : isTraining ? (
-                    // Training Programs Grid
+                    // Service 3: Training Programs Grid (With Images & Floating Icons)
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                       {p.feature_items.map((f) => (
                         <div key={f.id} className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm flex flex-col justify-between group hover:shadow-md transition-all">
@@ -189,7 +205,7 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
                       ))}
                     </div>
                   ) : (
-                    // Services 1 & 2: Icon-Only Feature Cards
+                    // Services 1 & 2: Icon-Only Feature Cards (No Images, matching Mockups 1 & 2)
                     <div>
                       {p.overview_title && <h2 className="text-xl font-extrabold text-blue-dark mb-1">{p.overview_title}</h2>}
                       {p.overview_subtitle && <p className="text-sm text-muted mb-6">{p.overview_subtitle}</p>}
@@ -212,7 +228,7 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
                 </div>
               )}
 
-              {/* Process Steps */}
+              {/* Process Steps ("How Training Works" / Installation & AMC Process) */}
               {p.process_steps.length > 0 && (
                 <div className="bg-white rounded-2xl border border-slate-200/80 p-6 md:p-8 shadow-sm">
                   {p.process_title && <h2 className="text-xl font-bold text-blue-dark">{p.process_title}</h2>}
@@ -272,46 +288,21 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
                 </div>
               )}
 
-              {/* Gallery Images / Hiring Announcements Section */}
-              {p.gallery_images.length > 0 && (
+              {/* Gallery Images Section */}
+              {p.gallery_title && p.gallery_images.length > 0 && (
                 <div className="bg-white rounded-2xl border border-slate-200/80 p-6 md:p-8 shadow-sm">
-                  <h2 className="text-xl font-bold text-blue-dark">{p.gallery_title || "Hiring Announcements"}</h2>
+                  <h2 className="text-xl font-bold text-blue-dark">{p.gallery_title}</h2>
                   {p.gallery_subtitle && <p className="mt-1 text-sm text-muted">{p.gallery_subtitle}</p>}
-                  
-                  <div className="mt-6 grid gap-6 sm:grid-cols-3">
+                  <div className="mt-6 grid gap-4 sm:grid-cols-3">
                     {p.gallery_images.map((g) => (
-                      <div 
-                        key={g.id}
-                        onClick={() => setSelectedPoster(g)} // 👈 Triggers the popup modal on click
-                        className="group relative cursor-pointer overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-sm transition-all hover:shadow-md"
-                      >
-                        {/* 👈 INJECTED SECTION 2: Top Floating Badge */}
-                        {isCareer && (
-                          <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 rounded-full bg-red px-3 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white shadow-sm">
-                            Training & Development
-                          </div>
-                        )}
-
-                        <div className="aspect-[3/4] overflow-hidden pt-5">
-                          <img 
-                            src={g.image} 
-                            alt={g.caption || "Hiring Poster"} 
-                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" 
-                          />
-                        </div>
-
-                        {/* Hover Overlay */}
-                        <div className="absolute inset-0 bg-blue-dark/20 opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center">
-                          <span className="rounded-full bg-white px-3 py-1.5 text-xs font-bold text-blue-dark shadow-md">
-                            🔍 Click to Enlarge
-                          </span>
-                        </div>
+                      <div key={g.id}>
+                        <img src={g.image} alt={g.caption} className="h-40 w-full rounded-xl object-cover shadow-xs border border-slate-200" />
+                        {g.caption && <p className="mt-2 text-xs font-medium text-muted">{g.caption}</p>}
                       </div>
                     ))}
                   </div>
                 </div>
               )}
-
             </div>
 
             {/* Right Sticky Enquiry Form Column */}
@@ -324,34 +315,6 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
           </div>
         </div>
       </div>
-
-      {/* ================= INTERACTIVE POPUP MODAL LIGHTBOX ================= */}
-      {selectedPoster && (
-        <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
-          onClick={() => setSelectedPoster(null)}
-        >
-          <div 
-            className="relative max-w-3xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl p-4 border border-slate-200"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button 
-              onClick={() => setSelectedPoster(null)}
-              className="absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white font-bold hover:bg-black"
-            >
-              ✕
-            </button>
-
-            <div className="max-h-[85vh] overflow-auto flex items-center justify-center bg-slate-100 rounded-xl p-2">
-              <img 
-                src={selectedPoster.image} 
-                alt="Enlarged Poster" 
-                className="max-h-[80vh] w-auto object-contain rounded-lg shadow-sm"
-              />
-            </div>
-          </div>
-        </div>
-      )}
 
     </div>
   );

@@ -146,6 +146,17 @@ class Product(TimeStampedModel, SlugMixin):
     play_store_url = models.URLField(blank=True)
     download_url = models.URLField(blank=True, help_text="Direct download link, e.g. for desktop software.")
 
+    # --- ThermaCheck-style ("badge_heavy") hardware/device product content.
+    # These fields exist on every Product row but are only rendered by the
+    # frontend when hero_layout == "badge_heavy"; leave them blank for
+    # ordinary mobile/web/desktop products. ---
+    concept_title = models.CharField(max_length=150, blank=True, default="THERMACHECK SCREENING CONCEPT")
+    concept_description = models.TextField(blank=True)
+    why_use_title = models.CharField(max_length=150, blank=True, default="WHY SHOULD YOU USE THERMACHECK?")
+    why_use_points = models.TextField(blank=True, help_text="One 'Why use' bullet point per line.")
+    software_suite_title = models.CharField(max_length=150, blank=True, default="OPTIMIZED IN MEDICAL USE (SOFTWARE SUITE)")
+    spec_sheet_pdf = models.FileField(upload_to="products/pdfs/", blank=True, null=True, help_text="Downloadable spec sheet PDF file.")
+
     is_featured = models.BooleanField(default=False, help_text="Show on the homepage highlights.")
     highlight_features = models.TextField(
         blank=True,
@@ -170,6 +181,9 @@ class Product(TimeStampedModel, SlugMixin):
 
     def key_feature_list(self):
         return [f.strip() for f in self.key_features.splitlines() if f.strip()]
+
+    def why_use_point_list(self):
+        return [p.strip() for p in self.why_use_points.splitlines() if p.strip()]
 
     def specification_rows(self):
         rows = []
@@ -215,6 +229,22 @@ class ProductLink(TimeStampedModel):
 
     def __str__(self):
         return f"{self.product.name} — {self.label}"
+
+
+class ProductSoftwareCard(TimeStampedModel):
+    """One of the 4 dark software suite feature cards on the product page."""
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="software_cards")
+    badge = models.CharField(max_length=40, blank=True, help_text="e.g. 'AUTO ROI', 'AI ASSIST'")
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    footer_text = models.CharField(max_length=100, blank=True, help_text="e.g. 'Automated Contouring', '53 Disease Profiles'")
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order", "id"]
+
+    def __str__(self):
+        return f"{self.product.name} — {self.title}"
 
 
 # ---------------------------------------------------------------------------

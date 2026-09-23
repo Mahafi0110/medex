@@ -4,6 +4,7 @@ from .models import (
     ProductCategory,
     Product,
     ProductScreenshot,
+    ProductSoftwareCard,
     HomeHero,
     HomeTrustPoint,
     ProductLink,
@@ -44,6 +45,12 @@ class ProductLinkInline(admin.TabularInline):
     extra = 1
 
 
+class ProductSoftwareCardInline(admin.TabularInline):
+    model = ProductSoftwareCard
+    extra = 1
+    fields = ("badge", "title", "description", "footer_text", "order")
+
+
 @admin.register(ProductCategory)
 class ProductCategoryAdmin(admin.ModelAdmin):
     list_display = ("name", "order", "product_count")
@@ -61,7 +68,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ("category", "product_type", "status", "is_featured")
     search_fields = ("name", "tagline", "summary")
     prepopulated_fields = {"slug": ("name",)}
-    inlines = [ProductScreenshotInline, ProductLinkInline]
+    inlines = [ProductSoftwareCardInline, ProductScreenshotInline, ProductLinkInline]
     fieldsets = (
         ("Basic info", {
             "fields": ("name", "slug", "category", "product_type", "status", "is_featured", "order")
@@ -69,9 +76,13 @@ class ProductAdmin(admin.ModelAdmin):
         ("Content (Overview tab)", {
             "fields": ("tagline", "summary", "description", "key_features")
         }),
-        ("Specifications tab", {
-            "fields": ("specifications",),
-            "description": "One 'Label: Value' pair per line — rendered as a two-column table.",
+        ("Thermacheck Concept & Why-Use (Overview tab)", {
+            "fields": ("concept_title", "concept_description", "why_use_title", "why_use_points"),
+            "classes": ("collapse",),
+        }),
+        ("Specifications tab & PDF Spec Sheet", {
+            "fields": ("specifications", "spec_sheet_pdf"),
+            "description": "One 'Label: Value' pair per line for specifications. Upload PDF for spec sheet download.",
         }),
         ("Products-page hero banner (shown when this product is selected)", {
             "fields": (
@@ -227,9 +238,7 @@ class AboutSectionAdmin(admin.ModelAdmin):
         return False
 
     def changelist_view(self, request, extra_context=None):
-        # Skip the list page entirely — go straight to editing the one row.
         obj = AboutSection.load()
-        from django.shortcuts import redirect
         return redirect("admin:core_aboutsection_change", obj.pk)
 
 

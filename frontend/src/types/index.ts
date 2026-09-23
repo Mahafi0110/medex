@@ -26,6 +26,16 @@ export interface ProductLink {
   order: number;
 }
 
+/** One of the 4 dark "software suite" feature cards on the product page. */
+export interface ProductSoftwareCard {
+  id: number;
+  badge: string;
+  title: string;
+  description: string;
+  footer_text: string;
+  order: number;
+}
+
 /** Dedicated Products page — full listing. */
 export interface ProductSummary {
   id: number;
@@ -82,6 +92,16 @@ export interface ProductDetail extends ProductSummary {
   extra_links: ProductLink[];
   created_at: string;
   updated_at: string;
+
+  // ThermaCheck-style ("badge_heavy") hardware/device products only —
+  // present on the serializer for every product, blank/empty otherwise.
+  concept_title: string;
+  concept_description: string;
+  why_use_title: string;
+  why_use_point_list: string[];
+  software_suite_title: string;
+  software_cards: ProductSoftwareCard[];
+  spec_sheet_pdf: string | null;
 }
 
 /**

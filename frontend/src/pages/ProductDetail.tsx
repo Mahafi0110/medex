@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "@/api/client";
 import { useAsync } from "@/hooks/useAsync";
@@ -9,6 +9,7 @@ import ProductHeroCircularImage from "@/components/products/ProductHeroCircularI
 import ProductHeroDashboardMockup from "@/components/products/ProductHeroDashboardMockup";
 import ProductHeroPhotoCard from "@/components/products/ProductHeroPhotoCard";
 import ProductHeroBadgeHeavy from "@/components/products/ProductHeroBadgeHeavy";
+import Icon from "@/components/Icon";
 import type { ProductDetail as ProductDetailType, ProductHeroLayout } from "@/types";
 
 const heroLayouts: Record<ProductHeroLayout, React.ComponentType<{ product: ProductDetailType }>> = {
@@ -22,28 +23,41 @@ export default function ProductDetail() {
   const { slug = "" } = useParams();
   const product = useAsync(() => api.getProduct(slug), [slug]);
   const sidebar = useAsync(() => api.getProductSidebar(), []);
-  
-  const isThermocheckPage = slug.includes("thermocheck");
-  const tabs = isThermocheckPage 
+
+  // Single source of truth for "is this a hardware/device-style page" —
+  // driven primarily by the admin-set hero_layout, with the slug check
+  // kept only as a fallback for older products.
+  const isThermocheck = Boolean(
+    product.data?.hero_layout === "badge_heavy" || product.data?.slug?.includes("thermocheck")
+  );
+
+  const tabs = isThermocheck
     ? (["Overview & Pain Screening", "Specification"] as const)
     : (["Overview", "Specifications"] as const);
 
-  const [tab, setTab] = useState<string>(isThermocheckPage ? "Overview & Pain Screening" : "Overview");
+  const [tab, setTab] = useState<string>(tabs[0]);
   const [mediaIndex, setMediaIndex] = useState(0);
+
+  // Keep the active tab + media index in sync once the real product data
+  // (and therefore the real isThermocheck value) arrives.
+  useEffect(() => {
+    setTab(tabs[0]);
+    setMediaIndex(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug, isThermocheck]);
 
   if (product.loading && !product.data) return <LoadingState label="Loading product…" />;
   if (product.error && !product.data) return <div className="container-page py-16"><ErrorState message={product.error} /></div>;
   if (!product.data) return null;
 
   const p = product.data;
-  const isThermocheck = p.slug?.includes("thermocheck") || p.hero_layout === "badge_heavy";
 
   // 8-Way Hero Banner Routing Matrix (Product Slug + Tab)
   const getHeroComponent = () => {
     const s = p.slug || "";
     if (isThermocheck) return ProductHeroBadgeHeavy;
     if (s.includes("patient") && !s.includes("tehomed")) {
-      return tab.includes("Overview") ? ProductHeroCircularImage : ProductHeroDashboardMockup; 
+      return tab.includes("Overview") ? ProductHeroCircularImage : ProductHeroDashboardMockup;
     }
     if (s.includes("doctor")) {
       return tab.includes("Overview") ? ProductHeroDashboardMockup : ProductHeroCircularImage;
@@ -58,7 +72,9 @@ export default function ProductDetail() {
 
   const screenshots = p.screenshots ?? [];
   const keyFeatures = p.key_feature_list ?? [];
+  const whyUsePoints = p.why_use_point_list ?? [];
   const specRows = p.specification_rows ?? [];
+  const softwareCards = p.software_cards ?? [];
 
   // Combine cover image (index 0) and up to 3 screenshots to form exactly up to 4 interactive media tabs
   const mediaItems = [
@@ -69,9 +85,14 @@ export default function ProductDetail() {
   const activeMedia = mediaItems[mediaIndex] || mediaItems[0];
   const activeImage = activeMedia?.image ?? p.cover_image;
 
+  // Sidebar CTA priority: an uploaded spec-sheet PDF > a custom CTA url set
+  // by the admin > fall back to the Contact page.
+  const sidebarCtaHref = p.spec_sheet_pdf || p.sidebar_note_cta_url || "";
+  const sidebarCtaLabel = p.sidebar_note_cta_label || "Request Spec Sheet (PDF)";
+
   return (
     <div className="bg-[#f8fafc] min-h-screen transition-opacity duration-300 ease-in-out">
-      
+
       {/* ================= DYNAMIC HERO BANNER ================= */}
       <section className="bg-blue-dark py-12 md:py-16 text-white relative shadow-md transition-all duration-300">
         <div className="container-page">
@@ -90,7 +111,7 @@ export default function ProductDetail() {
         </nav>
 
         <div className="grid gap-8 lg:grid-cols-[280px_1fr] items-start">
-          
+
           {/* ================= LEFT SIDEBAR & CLINICAL SUPPORT ================= */}
           <div className="space-y-6">
             {sidebar.data && (
@@ -98,28 +119,51 @@ export default function ProductDetail() {
             )}
 
             {isThermocheck && (
-              <div className="rounded-2xl bg-blue-dark p-6 text-white shadow-md border border-white/10">
-                <div className="flex items-center gap-2 text-red font-bold text-xs uppercase tracking-wider mb-2">
-                  <span>🛡️</span> Clinical Specialist Assistance
+              <div className="rounded-2xl bg-[#111827] p-6 text-white shadow-xl border border-slate-800 space-y-5">
+                <div className="flex items-start gap-3">
+                  <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-red text-white font-bold text-sm">
+                    i
+                  </span>
+                  <div>
+                    <h3 className="text-base font-bold text-white">
+                      {p.sidebar_note_title || "Clinical Specialist Assistance"}
+                    </h3>
+                    <p className="mt-1 text-xs text-slate-300 leading-relaxed">
+                      {p.sidebar_note_text || "Need turnkey installation guidance or ROI estimation for your diagnostic center?"}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-xs text-white/80 leading-relaxed">
-                  Need turnkey installation guidance or ROI estimation for your diagnostic center?
-                </p>
-                <div className="mt-4 pt-3 border-t border-white/10 text-xs">
-                  <span className="text-white/60 block">Technical Support</span>
-                  <span className="font-bold text-white text-sm">+91 8851212483</span>
-                  <span className="text-white/70 block text-[11px] mt-0.5">dealer.desk@agakipl.com</span>
+
+                <div className="border-t border-slate-800 pt-4 space-y-2">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Technical Support</p>
+                  <p className="text-base font-extrabold text-white">{p.sidebar_note_phone || "+91 8851212483"}</p>
+                  <p className="text-xs text-slate-300">{p.sidebar_note_email || "dealer.desk@agskipl.com"}</p>
                 </div>
-                <Link to="/contact" className="mt-4 block text-center rounded-xl bg-white/10 hover:bg-white/20 py-2.5 text-xs font-semibold text-white transition-colors border border-white/15">
-                  Request Spec Sheet (PDF)
-                </Link>
+
+                {/* Download / Request Spec Sheet PDF Button */}
+                {sidebarCtaHref ? (
+                  <a
+                    href={sidebarCtaHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 py-3 text-xs font-bold text-white transition-all shadow-md"
+                  >
+                    <Icon name="file" className="h-4 w-4 text-red" />
+                    <span>{sidebarCtaLabel}</span>
+                  </a>
+                ) : (
+                  <Link to="/contact" className="w-full flex items-center justify-center gap-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 py-3 text-xs font-bold text-white transition-all shadow-md">
+                    <Icon name="file" className="h-4 w-4 text-red" />
+                    <span>{sidebarCtaLabel}</span>
+                  </Link>
+                )}
               </div>
             )}
           </div>
 
           {/* ================= RIGHT MAIN CONTENT CARD ================= */}
           <div className="bg-white rounded-2xl border border-slate-200/80 p-6 md:p-8 shadow-sm">
-            
+
             {/* Top Media & Summary Section */}
             {isThermocheck ? (
               <div className="grid gap-8 lg:grid-cols-[minmax(0,340px)_1fr] items-start">
@@ -194,15 +238,14 @@ export default function ProductDetail() {
                     )}
                   </div>
 
-                  {/* ================= 4 DYNAMIC PRODUCT MEDIA TABS ================= */}
                   <div className="mt-6 flex items-center justify-center gap-3">
                     {mediaItems.map((item, i) => (
                       <button
                         key={i}
                         onClick={() => setMediaIndex(i)}
                         className={`flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border-2 transition-all duration-200 bg-white ${
-                          mediaIndex === i 
-                            ? "border-red shadow-md ring-2 ring-red/20 scale-105" 
+                          mediaIndex === i
+                            ? "border-red shadow-md ring-2 ring-red/20 scale-105"
                             : "border-slate-200 opacity-70 hover:opacity-100 hover:border-slate-300"
                         }`}
                       >
@@ -256,18 +299,20 @@ export default function ProductDetail() {
                     <div className="space-y-10">
                       <div>
                         <h3 className="text-sm font-extrabold text-red tracking-wider uppercase flex items-center gap-2">
-                          <span>▶</span> THERMACHECK SCREENING CONCEPT
+                          <span>▶</span> {p.concept_title || "THERMACHECK SCREENING CONCEPT"}
                         </h3>
-                        <p className="mt-3 leading-relaxed text-slate-600 text-sm md:text-base">{p.description || p.summary}</p>
+                        <p className="mt-3 leading-relaxed text-slate-600 text-sm md:text-base">
+                          {p.concept_description || p.description || p.summary}
+                        </p>
                       </div>
 
-                      {keyFeatures.length > 0 && (
+                      {whyUsePoints.length > 0 && (
                         <div>
                           <h3 className="text-sm font-extrabold text-red tracking-wider uppercase flex items-center gap-2 mb-4">
-                            <span>▶</span> WHY SHOULD YOU USE THERMACHECK?
+                            <span>▶</span> {p.why_use_title || "WHY SHOULD YOU USE THERMACHECK?"}
                           </h3>
                           <div className="grid gap-4 sm:grid-cols-2">
-                            {keyFeatures.map((f: string, idx: number) => {
+                            {whyUsePoints.map((f: string, idx: number) => {
                               const parts = f.includes(":") ? f.split(":") : [f, ""];
                               return (
                                 <div key={idx} className="rounded-xl border border-slate-200/80 bg-slate-50/50 p-4 shadow-sm flex items-start gap-3">
@@ -285,22 +330,28 @@ export default function ProductDetail() {
 
                       <div>
                         <h3 className="text-sm font-extrabold text-red tracking-wider uppercase flex items-center gap-2 mb-4">
-                          <span>▶</span> OPTIMIZED IN MEDICAL USE (SOFTWARE SUITE)
+                          <span>▶</span> {p.software_suite_title || "OPTIMIZED IN MEDICAL USE (SOFTWARE SUITE)"}
                         </h3>
                         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                          {[
-                            { tag: "AUTO ROI", title: "Thermal Pattern Identification", desc: "Automatic region of interest recognition and temperature histogram analysis.", footer: "Automated Contouring" },
-                            { tag: "AI ASSIST", title: "Automatic Diagnosis Function", desc: "AI-supported clinical temperature differential correlation for medical practitioners.", footer: "Differential Scoring" },
-                            { tag: "GUIDE", title: "Clinical Guide Program", desc: "Standardized positioning guide for 22 poses and clinical guides for 53 disease profiles.", footer: "53 Disease Profiles" },
-                            { tag: "INTERACTIVE", title: "Pain Drawing Chart", desc: "Patients or clinicians draw actual pain zones to directly compare with IR thermal maps.", footer: "Real-Time Overlay" }
-                          ].map((card, idx) => (
-                            <div key={idx} className="rounded-2xl bg-[#0d1b2a] p-5 text-white flex flex-col justify-between shadow-lg border border-slate-800">
+                          {(softwareCards.length > 0 ? softwareCards : [
+                            { badge: "AUTO ROI", title: "Thermal Pattern Identification", description: "Automatic region of interest recognition and temperature histogram analysis.", footer_text: "Automated Contouring" },
+                            { badge: "AI ASSIST", title: "Automatic Diagnosis Function", description: "AI-supported clinical temperature differential correlation for medical practitioners.", footer_text: "Differential Scoring" },
+                            { badge: "GUIDE", title: "Clinical Guide Program", description: "Standardized positioning guide for 22 poses and clinical guides for 53 disease profiles.", footer_text: "53 Disease Profiles" },
+                            { badge: "INTERACTIVE", title: "Pain Drawing Chart", description: "Patients or clinicians draw actual pain zones to directly compare with IR thermal maps.", footer_text: "Real-Time Overlay" }
+                          ]).map((card, idx: number) => (
+                            <div key={(card as any).id || idx} className="rounded-2xl bg-[#0d1b2a] p-5 text-white flex flex-col justify-between shadow-lg border border-slate-800">
                               <div>
-                                <span className="inline-block rounded bg-red px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-white mb-3">{card.tag}</span>
+                                {card.badge && (
+                                  <span className="inline-block rounded bg-red px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-white mb-3">
+                                    {card.badge}
+                                  </span>
+                                )}
                                 <h4 className="text-sm font-bold text-white">{card.title}</h4>
-                                <p className="text-[11px] text-white/70 mt-2 leading-relaxed">{card.desc}</p>
+                                <p className="text-[11px] text-white/70 mt-2 leading-relaxed">{card.description}</p>
                               </div>
-                              <div className="mt-6 pt-3 border-t border-white/10 text-[10px] font-semibold text-white/50 uppercase tracking-wider">{card.footer}</div>
+                              <div className="mt-6 pt-3 border-t border-white/10 text-[10px] font-semibold text-white/50 uppercase tracking-wider">
+                                {card.footer_text}
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -315,8 +366,8 @@ export default function ProductDetail() {
                         <>
                           <h3 className="mt-8 text-lg font-bold text-[#0d1b2a]">Key Features</h3>
                           <div className="mt-4 grid gap-x-12 gap-y-3.5 sm:grid-cols-2">
-                            {keyFeatures.map((f: string) => (
-                              <div key={f} className="flex items-center gap-3 text-sm text-slate-700 font-medium">
+                            {keyFeatures.map((f: string, idx: number) => (
+                              <div key={idx} className="flex items-center gap-3 text-sm text-slate-700 font-medium">
                                 <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-red text-white">✓</span>
                                 <span>{f}</span>
                               </div>
@@ -346,6 +397,9 @@ export default function ProductDetail() {
                           </span>
                         </div>
 
+                        {/* NOTE: these 3 hardware-model cards are static placeholder
+                            content — there's no backend model for them yet, so they
+                            don't reflect anything set in the admin. */}
                         <div className="mt-6 grid gap-6 md:grid-cols-3">
                           {[
                             { badge: "PREMIUM TYPE", title: "Premium Type", desc: "Complete clinical suite for hospitals and high-volume diagnostic centers.", image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=400&q=80", features: ["Camera (Auto-Focusing)", "Motorized Column Stand", "Dedicated Work Station Cart"], footerLabel: "Head Rotation", footerVal: "Remote Controlled", isFeatured: true },
@@ -418,8 +472,8 @@ export default function ProductDetail() {
                             const rows = specRows.slice(col * half, col * half + half);
                             return (
                               <div key={col} className="divide-y divide-slate-100">
-                                {rows.map((row: any) => (
-                                  <div key={row.label} className="flex items-center justify-between gap-4 py-3.5 text-sm">
+                                {rows.map((row: any, idx: number) => (
+                                  <div key={idx} className="flex items-center justify-between gap-4 py-3.5 text-sm">
                                     <span className="text-slate-500 font-medium">{row.label}</span>
                                     <span className="text-right font-semibold text-blue-600 bg-blue-50/60 px-2.5 py-1 rounded-md">{row.value}</span>
                                   </div>
@@ -439,6 +493,7 @@ export default function ProductDetail() {
             </div>
 
           </div>
+
         </div>
       </div>
     </div>

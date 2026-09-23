@@ -3,6 +3,7 @@ from .models import (
     ProductCategory,
     Product,
     ProductScreenshot,
+    ProductSoftwareCard,   # add this line    
     HomeHero,
     HomeTrustPoint,
     ProductLink,
@@ -30,6 +31,7 @@ from .models import (
     OfficeLocation,
     ContactPageContent,
     ContactHighlight,
+    
 )
 
 
@@ -96,12 +98,20 @@ class ProductSidebarSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "slug", "category", "product_type", "logo"]
 
 
+class ProductSoftwareCardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductSoftwareCard
+        fields = ["id", "badge", "title", "description", "footer_text", "order"]
+
+
 class ProductDetailSerializer(serializers.ModelSerializer):
     """Full serializer for the dedicated product detail page."""
 
     category = ProductCategorySerializer(read_only=True)
     screenshots = ProductScreenshotSerializer(many=True, read_only=True)
     extra_links = ProductLinkSerializer(many=True, read_only=True)
+    software_cards = ProductSoftwareCardSerializer(many=True, read_only=True)
+    why_use_point_list = serializers.ListField(child=serializers.CharField(), read_only=True)
     key_feature_list = serializers.ListField(child=serializers.CharField(), read_only=True)
     specification_rows = serializers.ListField(read_only=True)
     hero_badges = serializers.ListField(child=serializers.CharField(), read_only=True)
@@ -110,7 +120,12 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             "id", "name", "slug", "category", "product_type",
-            "tagline", "summary", "description", "key_feature_list",
+            "tagline", "summary", "description", 
+            "concept_title", "concept_description",
+            "why_use_title", "why_use_point_list",
+            "software_suite_title", "software_cards",
+            "spec_sheet_pdf",
+            "key_feature_list",
             "specification_rows",
             "logo", "cover_image",
             "hero_layout", "hero_eyebrow", "hero_title", "hero_subtitle", "hero_badges",
