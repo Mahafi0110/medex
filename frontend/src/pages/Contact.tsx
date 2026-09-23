@@ -1,19 +1,30 @@
 import { FormEvent, useState } from "react";
 import { api } from "@/api/client";
+import { useAsync } from "@/hooks/useAsync";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 import SectionHeading from "@/components/SectionHeading";
+import Icon from "@/components/Icon";
+import { LoadingState, ErrorState } from "@/components/AsyncState";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
 export default function Contact() {
+  const intro = useAsync(() => api.getPageIntro("contact"), []);
+  const content = useAsync(() => api.getContactPageContent(), []);
+  const locations = useAsync(() => api.getOfficeLocations(), []);
+  const services = useAsync(() => api.getServices(), []);
+  const settings = useSiteSettings();
+
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
-  const [activeTab, setActiveTab] = useState<"chennai" | "madurai">("chennai");
+  const [activeLocationId, setActiveLocationId] = useState<number | null>(null);
 
-async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  const activeLocation =
+    locations.data?.find((l) => l.id === activeLocationId) ?? locations.data?.[0] ?? null;
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const formElement = e.currentTarget; // 1. Store a reference to the form element
-    const form = new FormData(formElement);
-    
+    const form = new FormData(e.currentTarget);
     setStatus("submitting");
     try {
       await api.submitContact({
@@ -25,85 +36,108 @@ async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         message: String(form.get("message") ?? ""),
       });
       setStatus("success");
-      formElement?.reset(); // 2. Safely call reset on the captured element reference
+      e.currentTarget.reset();
     } catch (err) {
       setStatus("error");
       setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
     }
   }
+
   return (
     <div>
-      {/* 1. Hero Banner Section (White background with right-side image layout) */}
-      <section className="relative bg-white py-16 lg:py-24 border-b border-line">
-        <div className="container-page flex flex-col lg:flex-row items-center justify-between gap-12">
-          {/* Left Text Content */}
+      {/* 1. Hero */}
+      <section className="relative border-b border-line bg-white py-16 lg:py-24">
+        <div className="container-page flex flex-col items-center justify-between gap-12 lg:flex-row">
           <div className="max-w-xl">
-            <span className="inline-block rounded-full bg-pink-light px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-red">
-              Contact Us
-            </span>
-            <h1 className="mt-4 text-4xl font-extrabold leading-tight text-blue-dark md:text-5xl">
-              Let's Keep Healthcare Technology Running
-            </h1>
-            <p className="mt-4 text-base text-muted leading-relaxed">
-              Tell us what you need serviced, calibrated or installed — our expert biomedical team will get back to you fast.
-            </p>
+            {intro.loading && <LoadingState />}
+            {intro.error && <ErrorState message={intro.error} />}
+            {intro.data && (
+              <>
+                <span className="inline-block rounded-full bg-pink-light px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-red">
+                  {intro.data.eyebrow}
+                </span>
+                <h1 className="mt-4 text-4xl font-extrabold leading-tight text-blue-dark md:text-5xl">
+                  {intro.data.title}
+                </h1>
+                {intro.data.description && (
+                  <p className="mt-4 text-base leading-relaxed text-muted">{intro.data.description}</p>
+                )}
+              </>
+            )}
           </div>
 
-          {/* Right Side Hero Image/Graphic */}
           <div className="w-full lg:w-[460px]">
-            <div className="rounded-2xl overflow-hidden shadow-lg border border-line bg-surface">
-              <img
-                src="/contact-hero.png"
-                alt="MedEx Support & Biomedical Services"
-                className="w-full h-auto object-cover max-h-[300px]"
-              />
+            <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-lg">
+              {intro.data?.image ? (
+                <img
+                  src={intro.data.image}
+                  alt="MedEx Support & Biomedical Services"
+                  className="h-auto max-h-[300px] w-full object-cover"
+                />
+              ) : (
+                <div className="flex h-[220px] items-center justify-center text-sm text-muted">
+                  Support / facility photo goes here
+                </div>
+              )}
             </div>
           </div>
+          {/* <div className="w-full lg:w-[460px]">
+            <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-lg">
+              <img
+                src={intro.data?.image || "/contact-hero.png"}
+                alt="MedEx Support & Biomedical Services"
+                className="h-auto max-h-[300px] w-full object-cover"
+              />
+            </div>
+          </div> */}
         </div>
       </section>
 
-      {/* 2. Main Enquiry & Details Section */}
+      {/* 2. Enquiry form + contact details */}
       <div className="container-page py-16">
         <div className="grid gap-10 lg:grid-cols-[1fr_480px]">
-          {/* Send Us an Enquiry Form */}
           <form onSubmit={handleSubmit} className="card space-y-5 p-8">
-            <div>
-              <h2 className="text-lg font-bold text-blue-dark">Send Us an Enquiry</h2>
-              <p className="text-xs text-muted mt-0.5">Fill in the details and our team will get back to you shortly.</p>
+            {content.data && (
+              <div>
+                <h2 className="text-lg font-bold text-blue-dark">{content.data.form_title}</h2>
+                {content.data.form_description && (
+                  <p className="mt-0.5 text-xs text-muted">{content.data.form_description}</p>
+                )}
+              </div>
+            )}
+
+            <div className="grid gap-5 sm:grid-cols-2">
+              <Field label="Your Name" name="name" required />
+              <Field label="Organization / Hospital" name="organization" required />
             </div>
 
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Your Name *" name="name" required placeholder="Your Name *" />
-              <Field label="Organization / Hospital *" name="organization" required placeholder="Organization / Hospital *" />
-            </div>
-
-            <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Phone Number *" name="phone" required placeholder="Phone Number *" />
-              <Field label="Email Address *" name="email" type="email" required placeholder="Email Address *" />
+              <Field label="Phone Number" name="phone" required />
+              <Field label="Email Address" name="email" type="email" required />
             </div>
 
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-ink">Select Service / Product *</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink">Select Service / Product</label>
               <select
                 name="subject"
                 required
-                className="w-full rounded-lg border border-line bg-white px-4 py-3 text-sm outline-none focus:border-blue text-ink"
+                defaultValue=""
+                className="w-full rounded-lg border border-line bg-white px-4 py-3 text-sm text-ink outline-none focus:border-blue"
               >
-                <option value="">Select Service / Product *</option>
-                <option value="Biomedical Equipment Support">Biomedical Equipment Support</option>
-                <option value="Digital Health Solutions">Digital Health Solutions</option>
-                <option value="Hospital Maintenance">Hospital Maintenance</option>
+                <option value="" disabled>Select Service / Product</option>
+                {services.data?.results.map((s) => (
+                  <option key={s.id} value={s.name}>{s.name}</option>
+                ))}
                 <option value="General Inquiry">General Inquiry</option>
               </select>
             </div>
 
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-ink">Your Message *</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink">Your Message</label>
               <textarea
                 name="message"
                 required
                 rows={4}
-                placeholder="Your Message *"
                 className="w-full rounded-lg border border-line px-4 py-3 text-sm outline-none focus:border-blue"
               />
             </div>
@@ -113,160 +147,138 @@ async function handleSubmit(e: FormEvent<HTMLFormElement>) {
             </button>
 
             {status === "success" && (
-              <p className="text-sm font-medium text-green-700 text-center">
+              <p className="text-center text-sm font-medium text-green-700">
                 Thanks — your message has been sent. We'll be in touch soon.
               </p>
             )}
             {status === "error" && (
-              <p className="text-sm font-medium text-red-dark text-center">Couldn't send your message: {errorMsg}</p>
+              <p className="text-center text-sm font-medium text-red-dark">Couldn't send your message: {errorMsg}</p>
             )}
 
-            <p className="text-center text-xs text-muted">🔒 Your information is safe with us.</p>
+            <p className="flex items-center justify-center gap-1.5 text-center text-xs text-muted">
+              <Icon name="shield" className="h-3.5 w-3.5" />
+              Your information is safe with us.
+            </p>
           </form>
 
-          {/* Contact Details Card */}
-          <div className="card grid gap-0 overflow-hidden p-0 border border-line bg-surface/50 sm:grid-cols-2">
-            {/* Left side: Addresses, Reach Us, & Email */}
+          {/* Contact details card */}
+          <div className="card grid gap-0 overflow-hidden border border-line bg-surface/50 p-0 sm:grid-cols-2">
             <div className="space-y-6 p-8">
-              <div>
-                <span className="text-xs font-semibold uppercase tracking-wide text-red">Support & Reach</span>
-                <h3 className="text-lg font-bold text-blue-dark mt-1">Our Contact Details</h3>
-                <p className="text-xs text-muted">Reach out to us.</p>
-              </div>
+              {content.data && (
+                <div>
+                  {content.data.details_eyebrow && (
+                    <span className="text-xs font-semibold uppercase tracking-wide text-red">
+                      {content.data.details_eyebrow}
+                    </span>
+                  )}
+                  <h3 className="mt-1 text-lg font-bold text-blue-dark">{content.data.details_title}</h3>
+                  {content.data.details_subtitle && (
+                    <p className="text-xs text-muted">{content.data.details_subtitle}</p>
+                  )}
+                </div>
+              )}
 
               <div className="space-y-4 text-sm">
-                <div className="space-y-1">
-                  <h4 className="font-semibold text-blue-dark flex items-center gap-1.5 text-xs">
-                    <svg viewBox="0 0 24 24" className="h-4 w-4 text-red flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2}>
-                      <path d="M12 21c-4.97-4.97-8-8.97-8-12a8 8 0 1116 0c0 3.03-3.03 7.03-8 12z" />
-                      <circle cx="12" cy="9" r="2.5" />
-                    </svg>
-                    Head Office — Chennai
-                  </h4>
-                  <p className="text-muted text-xs leading-relaxed pl-5">
-                    No.134/2 C, Gandhi Road, Srinivasa Nagar Post, Alapakkam, near Perungalathur, Chennai - 600 063
-                  </p>
-                </div>
+                {locations.data?.map((loc, i) => (
+                  <div key={loc.id} className={i > 0 ? "space-y-1 border-t border-line pt-3" : "space-y-1"}>
+                    <h4 className="flex items-center gap-1.5 text-xs font-semibold text-blue-dark">
+                      <Icon name="building" className="h-4 w-4 flex-shrink-0 text-red" />
+                      {loc.name}
+                    </h4>
+                    <p className="pl-5 text-xs leading-relaxed text-muted">{loc.address}</p>
+                  </div>
+                ))}
 
-                <div className="space-y-1 pt-3 border-t border-line">
-                  <h4 className="font-semibold text-blue-dark flex items-center gap-1.5 text-xs">
-                    <svg viewBox="0 0 24 24" className="h-4 w-4 text-red flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2}>
-                      <path d="M12 21c-4.97-4.97-8-8.97-8-12a8 8 0 1116 0c0 3.03-3.03 7.03-8 12z" />
-                      <circle cx="12" cy="9" r="2.5" />
-                    </svg>
-                    Branch — Madurai
-                  </h4>
-                  <p className="text-muted text-xs leading-relaxed pl-5">
-                    Vadipatti, Madurai, Tamil Nadu, India
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-line text-xs">
-                  <span className="font-semibold text-blue-dark block">Reach Us</span>
-                  <span className="text-muted">+91 93037 06371</span>
-                </div>
-
-                <div className="pt-3 border-t border-line text-xs">
-                  <span className="font-semibold text-blue-dark block">Email</span>
-                  <span className="text-muted">support@medexbiomed.com</span>
-                </div>
+                {settings?.phone && (
+                  <div className="border-t border-line pt-3 text-xs">
+                    <span className="block font-semibold text-blue-dark">Reach Us</span>
+                    <span className="text-muted">{settings.phone}</span>
+                  </div>
+                )}
+                {settings?.email && (
+                  <div className="border-t border-line pt-3 text-xs">
+                    <span className="block font-semibold text-blue-dark">Email</span>
+                    <span className="text-muted">{settings.email}</span>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Right side: Support Highlights block with soft pink background */}
-            <div className="space-y-4 p-8 bg-pink-light/50 flex flex-col justify-between border-t border-line sm:border-t-0 sm:border-l sm:border-line">
+            <div className="flex flex-col justify-between space-y-4 border-t border-line bg-pink-light/50 p-8 sm:border-l sm:border-t-0">
               <div className="space-y-3">
-                <div className="h-8 w-8 rounded-full bg-red/10 flex items-center justify-center text-red font-bold">
-                  🎧
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red/10 text-red">
+                  <Icon name="headset" className="h-4 w-4" />
                 </div>
-                <p className="text-xs text-muted leading-relaxed font-medium">
-                  We're always here to support your healthcare technology needs.
-                </p>
-                <ul className="space-y-2 text-xs font-medium text-ink pt-2">
-                  <li className="flex items-center gap-2">
-                    <span className="text-red font-bold">✔</span> Quick Response
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-red font-bold">✔</span> Expert Support
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-red font-bold">✔</span> Reliable Partnership
-                  </li>
-                </ul>
+                {content.data?.highlights_intro && (
+                  <p className="text-xs font-medium leading-relaxed text-muted">{content.data.highlights_intro}</p>
+                )}
+                {content.data && content.data.highlights.length > 0 && (
+                  <ul className="space-y-2 pt-2 text-xs font-medium text-ink">
+                    {content.data.highlights.map((h) => (
+                      <li key={h.id} className="flex items-center gap-2">
+                        <Icon name="check" className="h-3.5 w-3.5 text-red" />
+                        {h.text}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           </div>
         </div>
 
-        {/* 3. Find Us on Map Section */}
-        <div className="mt-20">
-          <SectionHeading
-            eyebrow="Location"
-            title="Find Us on Map"
-            description="Get directions to our Head Office in Chennai or our Branch in Madurai."
-          />
-
-          <div className="mt-6 flex gap-4">
-            <button
-              onClick={() => setActiveTab("chennai")}
-              className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
-                activeTab === "chennai" ? "bg-red text-white" : "bg-surface text-ink hover:bg-line"
-              }`}
-            >
-              Head Office – Chennai
-            </button>
-            <button
-              onClick={() => setActiveTab("madurai")}
-              className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
-                activeTab === "madurai" ? "bg-red text-white" : "bg-surface text-ink hover:bg-line"
-              }`}
-            >
-              Branch – Madurai
-            </button>
-          </div>
-
-          <div className="mt-6 overflow-hidden rounded-xl border border-line bg-white shadow-sm h-[400px]">
-            {activeTab === "chennai" ? (
-              <iframe
-                title="Chennai Head Office Map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.8953151833595!2d80.098!3d12.923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU1JzI0LjgiTiA4MCUwNSc1Mi44IkU!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen={true}
-                loading="lazy"
-              />
-            ) : (
-              <iframe
-                title="Madurai Branch Map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.85!2d78.1198!3d9.9252!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sOcKwNTUnMzAuNyJOIDc4wrAwNzExLjMiRQ!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen={true}
-                loading="lazy"
+        {/* 3. Map */}
+        {locations.data && locations.data.length > 0 && (
+          <div className="mt-20">
+            {content.data && (
+              <SectionHeading
+                eyebrow={content.data.map_eyebrow}
+                title={content.data.map_title}
+                description={content.data.map_description}
               />
             )}
+
+            <div className="mt-6 flex flex-wrap gap-4">
+              {locations.data.map((loc) => (
+                <button
+                  key={loc.id}
+                  onClick={() => setActiveLocationId(loc.id)}
+                  className={`rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors ${(activeLocation?.id ?? locations.data![0].id) === loc.id
+                      ? "bg-red text-white"
+                      : "bg-surface text-ink hover:bg-line"
+                    }`}
+                >
+                  {loc.name}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-6 h-[400px] overflow-hidden rounded-xl border border-line bg-white shadow-sm">
+              {activeLocation?.map_embed_url ? (
+                <iframe
+                  title={activeLocation.name}
+                  src={activeLocation.map_embed_url}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center text-sm text-muted">
+                  Map for {activeLocation?.name} goes here — add a Google Maps embed URL in Django Admin.
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
 }
 
 function Field({
-  label,
-  name,
-  type = "text",
-  required = false,
-  placeholder = "",
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  required?: boolean;
-  placeholder?: string;
-}) {
+  label, name, type = "text", required = false,
+}: { label: string; name: string; type?: string; required?: boolean }) {
   return (
     <div>
       <label className="mb-1.5 block text-sm font-medium text-ink">{label}</label>
@@ -274,8 +286,7 @@ function Field({
         name={name}
         type={type}
         required={required}
-        placeholder={placeholder}
-        className="w-full rounded-lg border border-line px-4 py-3 text-sm outline-none focus:border-blue placeholder:text-muted/60"
+        className="w-full rounded-lg border border-line px-4 py-3 text-sm outline-none focus:border-blue"
       />
     </div>
   );

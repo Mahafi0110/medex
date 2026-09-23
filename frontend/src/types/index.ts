@@ -1,8 +1,4 @@
-export type IconKey =
-  | "shield" | "clock" | "monitor" | "building" | "check"
-  | "wrench" | "video" | "chart" | "package" | "link" | "file" | "bolt" | "eye"
-  | "headset" | "users" | "heart" | "flask" | "calendar"
-  | "";
+export type IconKey = "shield" | "clock" | "monitor" | "building" | "check" | "wrench" | "video" | "chart" | "package" | "link" | "file" | "bolt" | "eye" | "headset" | "users" | "heart" | "flask" | "calendar" | "mail" | "settings" | "graduation-cap" | "";
 
 export interface ProductCategory {
   id: number;

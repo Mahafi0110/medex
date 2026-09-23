@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 import { api } from "@/api/client";
 import { useSiteSettings } from "@/context/SiteSettingsContext";
 import type { Service, ProductHighlight } from "@/types";
+import ctaImage from "@/assets/contact-cta-image.png"; // 👈 Imported directly from src/assets to guarantee bundle success on deployment
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -41,9 +42,9 @@ export default function ContactCTASection({ services, products }: Props) {
       <div className="card grid gap-8 bg-pink-light p-8 lg:grid-cols-2 lg:p-10">
         {/* Left: photo + quick contact */}
         <div className="flex flex-col">
-          <div className="aspect-[4/3] overflow-hidden rounded-card bg-white">
+          <div className="aspect-[4/3] overflow-hidden rounded-card bg-white shadow-sm border border-line">
             <img
-              src="/contact-cta-image.png"
+              src={ctaImage} // 👈 Uses the bundled imported module reference safely
               alt="Clinical & Patient Care Support"
               className="h-full w-full object-cover"
             />
