@@ -38,7 +38,6 @@ export default function ProductDetail() {
   const [tab, setTab] = useState<string>(tabs[0]);
   const [mediaIndex, setMediaIndex] = useState(0);
 
-  // Keep the active tab + media index in sync once the real product data arrives
   useEffect(() => {
     setTab(tabs[0]);
     setMediaIndex(0);
@@ -51,7 +50,6 @@ export default function ProductDetail() {
 
   const p = product.data;
 
-  // 8-Way Hero Banner Routing Matrix (Product Slug + Tab)
   const getHeroComponent = () => {
     const s = p.slug || "";
     if (isThermocheck) return ProductHeroBadgeHeavy;
@@ -75,7 +73,6 @@ export default function ProductDetail() {
   const specRows = p.specification_rows ?? [];
   const softwareCards = p.software_cards ?? [];
 
-  // Combine cover image (index 0) and up to 3 screenshots to form exactly up to 4 interactive media tabs
   const mediaItems = [
     { type: "cover", image: p.cover_image },
     ...screenshots.map((s) => ({ type: "screenshot", image: s.image }))
@@ -84,7 +81,6 @@ export default function ProductDetail() {
   const activeMedia = mediaItems[mediaIndex] || mediaItems[0];
   const activeImage = activeMedia?.image ?? p.cover_image;
 
-  // Sidebar CTA priority: an uploaded spec-sheet PDF > a custom CTA url set by admin > fallback to contact page
   const sidebarCtaHref = p.spec_sheet_pdf || p.sidebar_note_cta_url || "";
   const sidebarCtaLabel = p.sidebar_note_cta_label || "Request Spec Sheet (PDF)";
 
@@ -138,7 +134,6 @@ export default function ProductDetail() {
                   <p className="text-xs text-slate-300">{p.sidebar_note_email || "dealer.desk@agskipl.com"}</p>
                 </div>
 
-                {/* Download / Request Spec Sheet PDF Button */}
                 {sidebarCtaHref ? (
                   <a
                     href={sidebarCtaHref}
@@ -296,6 +291,7 @@ export default function ProductDetail() {
                   {isThermocheck ? (
                     <div className="space-y-10">
                       <div>
+                        {/* Editable via Django Admin: concept_title and concept_description / description / summary */}
                         <h3 className="text-sm font-extrabold text-red tracking-wider uppercase flex items-center gap-2">
                           <span>▶</span> {p.concept_title || "THERMACHECK SCREENING CONCEPT"}
                         </h3>
@@ -306,6 +302,7 @@ export default function ProductDetail() {
 
                       {whyUsePoints.length > 0 && (
                         <div>
+                          {/* Editable via Django Admin: why_use_title and why_use_point_list */}
                           <h3 className="text-sm font-extrabold text-red tracking-wider uppercase flex items-center gap-2 mb-4">
                             <span>▶</span> {p.why_use_title || "WHY SHOULD YOU USE THERMACHECK?"}
                           </h3>
@@ -327,6 +324,7 @@ export default function ProductDetail() {
                       )}
 
                       <div>
+                        {/* Editable via Django Admin: software_suite_title and software_cards */}
                         <h3 className="text-sm font-extrabold text-red tracking-wider uppercase flex items-center gap-2 mb-4">
                           <span>▶</span> {p.software_suite_title || "OPTIMIZED IN MEDICAL USE (SOFTWARE SUITE)"}
                         </h3>
@@ -434,6 +432,7 @@ export default function ProductDetail() {
                           <h3 className="text-xl font-extrabold text-[#0d1b2a] tracking-tight mt-0.5">ThermaCheck™ Medical Infrared Imaging System</h3>
                         </div>
 
+                        {/* Editable via Django Admin: specification_rows */}
                         <div className="rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-sm text-sm">
                           <div className="divide-y divide-slate-200">
                             {specRows.length > 0 ? (
