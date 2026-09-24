@@ -88,11 +88,11 @@ export default function Footer({ logoUrl }: FooterProps) {
        <div>
           <h4 className="text-sm font-semibold tracking-wide text-white">Our Services</h4>
           <ul className="mt-4 space-y-2.5 text-xs text-white/70">
-            <li><Link to="/services/amc-cmc-contracts" className="hover:text-white transition-colors">Preventive Maintenance</Link></li>
-            <li><Link to="/services/amc-cmc-contracts" className="hover:text-white transition-colors">Calibration & Safety</Link></li>
+            <li><Link to="/services" className="hover:text-white transition-colors">Preventive Maintenance</Link></li>
+            <li><Link to="/services" className="hover:text-white transition-colors">Calibration & Safety</Link></li>
             <li><Link to="/services/training" className="hover:text-white transition-colors">Training</Link></li>
-            <li><Link to="/services/amc-cmc-contracts" className="hover:text-white transition-colors">AMC & CMC Contracts</Link></li>
-            <li><Link to="/services/amc-cmc-contracts" className="hover:text-white transition-colors">Technical Support</Link></li>
+            <li><Link to="/services" className="hover:text-white transition-colors">AMC & CMC Contracts</Link></li>
+            <li><Link to="/services" className="hover:text-white transition-colors">Technical Support</Link></li>
           </ul>
         </div>
 
