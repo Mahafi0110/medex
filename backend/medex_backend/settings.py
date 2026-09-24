@@ -283,9 +283,6 @@ LOGGING = {
 }
 
 # ---------------------------------------------------------------------------
-# Django REST Framework
-# ---------------------------------------------------------------------------
-# ---------------------------------------------------------------------------
 # Email — Contact-form notifications
 # ---------------------------------------------------------------------------
 # Email credentials live in backend/.env locally and in the Render Dashboard
@@ -297,11 +294,12 @@ EMAIL_HOST = config("EMAIL_HOST", default="")
 EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
-# A host with a blank password would make every submission wait for a failed
-# login and only log an error, so a real SMTP server is used only once the
-# credentials it needs are present too (Google Workspace/Gmail and Microsoft 365
-# both authenticate, so EMAIL_HOST_USER is never empty in practice).
-if EMAIL_HOST and (not EMAIL_HOST_USER or EMAIL_HOST_PASSWORD):
+# A host with a blank user/password would make every submission wait for a
+# failed login and only log an error, so a real SMTP server is used only once
+# ALL THREE of host, user and password are present (Google Workspace/Gmail
+# and Microsoft 365 both authenticate, so EMAIL_HOST_USER is never empty in
+# practice).
+if EMAIL_HOST and EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 else:
     EMAIL_BACKEND = config(
@@ -320,7 +318,6 @@ DEFAULT_FROM_EMAIL = config(
 # Who receives Contact-form / Career-application notifications. Falls back to
 # Site Settings -> email when empty.
 CONTACT_NOTIFY_EMAILS = config("CONTACT_NOTIFY_EMAILS", default="", cast=Csv())
-
 # ---------------------------------------------------------------------------
 # Django REST Framework
 # ---------------------------------------------------------------------------
