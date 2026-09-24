@@ -275,7 +275,10 @@ export default function About() {
                   {satellites.map((s) => (
                     <div key={s.id} className="rounded-lg bg-white/5 p-3 text-center">
                       <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-white/10">
-                        <Icon name={s.icon} className="h-4 w-4" />
+                        {/* <Icon name={s.icon} className="h-4 w-4" /> */}
+                        {s.logo && (
+                          <img src={s.logo} alt={s.title} className="h-full w-full object-contain p-1" />
+                        )}
                       </div>
                       <p className="mt-2 text-[11px] font-bold uppercase tracking-wide">{s.title}</p>
                       {s.bullet_list[0] && <p className="mt-1 text-[10px] text-white/60">{s.bullet_list[0]}</p>}

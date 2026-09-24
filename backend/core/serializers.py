@@ -276,7 +276,7 @@ class EcosystemPillarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EcosystemPillar
-        fields = ["id", "icon", "title", "bullet_list", "link_label", "link_url", "order"]
+        fields = ["id", "logo", "title", "bullet_list", "link_label", "link_url", "order"]
 
 
 class OperatingPillarSerializer(serializers.ModelSerializer):

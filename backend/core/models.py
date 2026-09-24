@@ -613,8 +613,10 @@ class EcosystemPillar(TimeStampedModel):
     Distinct from Product/Service — this is homepage marketing copy that
     summarizes the ecosystem, not a listing of individual products.
     """
-
-    icon = models.CharField(max_length=20, choices=ICON_CHOICES, default="link")
+   
+   
+# icon = models.CharField(max_length=20, choices=ICON_CHOICES, default="link")
+    logo = models.ImageField(upload_to="ecosystem/logos/", blank=True, null=True)
     title = models.CharField(max_length=150)
     bullets = models.TextField(help_text="One bullet point per line.")
     link_label = models.CharField(max_length=80, blank=True, help_text="e.g. 'Field Verified'")

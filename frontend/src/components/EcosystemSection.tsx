@@ -1,5 +1,4 @@
 import type { EcosystemPillar } from "@/types";
-import Icon from "@/components/Icon";
 import SectionHeading from "@/components/SectionHeading";
 
 export default function EcosystemSection({ pillars }: { pillars: EcosystemPillar[] }) {
@@ -15,9 +14,11 @@ export default function EcosystemSection({ pillars }: { pillars: EcosystemPillar
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {pillars.map((p) => (
           <div key={p.id} className="card flex flex-col gap-4 p-6">
-            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-pink-light text-red">
-              <Icon name={p.icon} className="h-5 w-5" />
-            </div>
+            {p.logo && (
+              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-pink-light overflow-hidden">
+                <img src={p.logo} alt={p.title} className="h-full w-full object-contain p-1.5" />
+              </div>
+            )}
             <h3 className="text-base font-semibold text-blue-dark">{p.title}</h3>
             <ul className="flex-1 space-y-1.5 text-sm text-muted">
               {p.bullet_list.map((b) => (

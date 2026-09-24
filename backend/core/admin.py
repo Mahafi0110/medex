@@ -244,7 +244,7 @@ class AboutSectionAdmin(admin.ModelAdmin):
 
 @admin.register(EcosystemPillar)
 class EcosystemPillarAdmin(admin.ModelAdmin):
-    list_display = ("title", "icon", "order")
+    list_display = ("title", "logo", "order")
     ordering = ("order",)
 
 

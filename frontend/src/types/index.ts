@@ -312,7 +312,7 @@ export interface AboutSection {
 /** Homepage-only 'The MedEx Biomed Ecosystem' card. */
 export interface EcosystemPillar {
   id: number;
-  icon: IconKey;
+  logo: string | null;
   title: string;
   bullet_list: string[];
   link_label: string;
