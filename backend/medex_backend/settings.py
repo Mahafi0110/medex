@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     "corsheaders",
+    "anymail",  # <--- Add this here
     # local
     "core",
 ]
@@ -290,34 +291,27 @@ LOGGING = {
 # EMAIL_HOST (plus the credentials it needs) and the SMTP backend is used
 # automatically; with nothing configured, Django's console backend prints each
 # message into the log stream, so a submission is never silently lost.
-EMAIL_HOST = config("EMAIL_HOST", default="")
-EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
-EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
+
 # A host with a blank user/password would make every submission wait for a
 # failed login and only log an error, so a real SMTP server is used only once
 # ALL THREE of host, user and password are present (Google Workspace/Gmail
 # and Microsoft 365 both authenticate, so EMAIL_HOST_USER is never empty in
 # practice).
-if EMAIL_HOST and EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-else:
-    EMAIL_BACKEND = config(
-        "EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
-    )
-EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
-EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=False, cast=bool)
-if EMAIL_USE_SSL:
-    # Port 465 uses SSL instead of STARTTLS; Django rejects both being enabled.
-    EMAIL_USE_TLS = False
-EMAIL_TIMEOUT = config("EMAIL_TIMEOUT", default=15, cast=int)
+EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
+
+ANYMAIL = {
+    "RESEND_API_KEY": config("RESEND_API_KEY", default=""),
+}
+
 DEFAULT_FROM_EMAIL = config(
-    "DEFAULT_FROM_EMAIL", default="MedEX Website <info@medexbiomed.com>"
+    "DEFAULT_FROM_EMAIL", default="MedEX Website <onboarding@resend.dev>"
 )
+
+# Who receives Contact-form / Career-application notifications.
+CONTACT_NOTIFY_EMAILS = config("CONTACT_NOTIFY_EMAILS", default="", cast=Csv())
 
 # Who receives Contact-form / Career-application notifications. Falls back to
 # Site Settings -> email when empty.
-CONTACT_NOTIFY_EMAILS = config("CONTACT_NOTIFY_EMAILS", default="", cast=Csv())
 # ---------------------------------------------------------------------------
 # Django REST Framework
 # ---------------------------------------------------------------------------
