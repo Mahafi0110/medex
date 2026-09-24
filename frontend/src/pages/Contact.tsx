@@ -22,27 +22,27 @@ export default function Contact() {
   const activeLocation =
     locations.data?.find((l) => l.id === activeLocationId) ?? locations.data?.[0] ?? null;
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = new FormData(e.currentTarget);
-    setStatus("submitting");
-    try {
-      await api.submitContact({
-        name: String(form.get("name") ?? ""),
-        email: String(form.get("email") ?? ""),
-        phone: String(form.get("phone") ?? ""),
-        organization: String(form.get("organization") ?? ""),
-        subject: String(form.get("subject") ?? ""),
-        message: String(form.get("message") ?? ""),
-      });
-      setStatus("success");
-      e.currentTarget.reset();
-    } catch (err) {
-      setStatus("error");
-      setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
-    }
+async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  e.preventDefault();
+  const formEl = e.currentTarget;           // capture the DOM node now
+  const form = new FormData(formEl);
+  setStatus("submitting");
+  try {
+    await api.submitContact({
+      name: String(form.get("name") ?? ""),
+      email: String(form.get("email") ?? ""),
+      phone: String(form.get("phone") ?? ""),
+      organization: String(form.get("organization") ?? ""),
+      subject: String(form.get("subject") ?? ""),
+      message: String(form.get("message") ?? ""),
+    });
+    setStatus("success");
+    formEl.reset();                          // use the captured node, not e.currentTarget
+  } catch (err) {
+    setStatus("error");
+    setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
   }
-
+}
   return (
     <div>
       {/* 1. Hero */}
