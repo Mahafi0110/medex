@@ -38,9 +38,9 @@ export default function ContactCTASection({ services, products }: Props) {
   }
 
   return (
-    /* Removed top padding (pt-0) and kept compact bottom padding (pb-12) to hug the right side perfectly */
     <section className="container-page pt-0 pb-12">
-      <div className="card grid gap-8 bg-pink-light p-8 lg:grid-cols-2 lg:p-10 w-full">
+      {/* Added lg:items-center to vertically center the form and left content */}
+      <div className="card grid gap-8 bg-pink-light p-8 lg:grid-cols-2 lg:items-center lg:p-10 w-full">
         {/* Left: photo + quick contact */}
         <div className="flex flex-col">
           <div className="aspect-[4/3] overflow-hidden rounded-card bg-white shadow-sm border border-line">

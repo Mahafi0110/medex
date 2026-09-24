@@ -85,14 +85,14 @@ export default function Footer({ logoUrl }: FooterProps) {
           </ul>
         </div>
 
-        <div>
+       <div>
           <h4 className="text-sm font-semibold tracking-wide text-white">Our Services</h4>
           <ul className="mt-4 space-y-2.5 text-xs text-white/70">
-            <li><Link to="/services" className="hover:text-white transition-colors">Preventive Maintenance</Link></li>
-            <li><Link to="/services" className="hover:text-white transition-colors">Calibration & Safety</Link></li>
-            <li><Link to="/services" className="hover:text-white transition-colors">Equipment Repairs</Link></li>
-            <li><Link to="/services" className="hover:text-white transition-colors">AMC & CMC Contracts</Link></li>
-            <li><Link to="/services" className="hover:text-white transition-colors">Technical Support</Link></li>
+            <li><Link to="/services/amc-cmc-contracts" className="hover:text-white transition-colors">Preventive Maintenance</Link></li>
+            <li><Link to="/services/amc-cmc-contracts" className="hover:text-white transition-colors">Calibration & Safety</Link></li>
+            <li><Link to="/services/training" className="hover:text-white transition-colors">Training</Link></li>
+            <li><Link to="/services/amc-cmc-contracts" className="hover:text-white transition-colors">AMC & CMC Contracts</Link></li>
+            <li><Link to="/services/amc-cmc-contracts" className="hover:text-white transition-colors">Technical Support</Link></li>
           </ul>
         </div>
 
@@ -110,8 +110,8 @@ export default function Footer({ logoUrl }: FooterProps) {
             <h4 className="text-sm font-semibold tracking-wide text-white">Contact Us</h4>
             <ul className="mt-4 space-y-1.5 text-xs text-white/70">
               <li>{settings?.address || "Chennai | Madurai | Others"}</li>
-              <li>{settings?.phone || "+91 (0) 44 2345 6789"}</li>
-              <li>{settings?.email || "contact@medexbiomed.com"}</li>
+              <li>{settings?.phone || "+91 (0) 44 46533312"}</li>
+              <li>{settings?.email || "support@medexbiomed.com"}</li>
             </ul>
           </div>
         </div>

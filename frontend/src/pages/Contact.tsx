@@ -1,293 +1,425 @@
 import { FormEvent, useState } from "react";
 import { api } from "@/api/client";
-import { useAsync } from "@/hooks/useAsync";
-import { useSiteSettings } from "@/context/SiteSettingsContext";
-import SectionHeading from "@/components/SectionHeading";
-import Icon from "@/components/Icon";
-import { LoadingState, ErrorState } from "@/components/AsyncState";
+import type { ServicePageDetail } from "@/types";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-export default function Contact() {
-  const intro = useAsync(() => api.getPageIntro("contact"), []);
-  const content = useAsync(() => api.getContactPageContent(), []);
-  const locations = useAsync(() => api.getOfficeLocations(), []);
-  const services = useAsync(() => api.getServices(), []);
-  const settings = useSiteSettings();
+const indianStates = [
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa",
+  "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala",
+  "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland",
+  "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
+  "Uttar Pradesh", "Uttarakhand", "West Bengal", "Delhi",
+];
 
+export default function ServiceEnquiryForm({ page }: { page: ServicePageDetail }) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
-  const [activeLocationId, setActiveLocationId] = useState<number | null>(null);
 
-  const activeLocation =
-    locations.data?.find((l) => l.id === activeLocationId) ?? locations.data?.[0] ?? null;
+  // States for dynamic pincode auto-fill
+  const [pincode, setPincode] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+
+  async function handlePincodeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const code = e.target.value.replace(/\D/g, "").slice(0, 6);
+    setPincode(code);
+
+    if (code.length === 6) {
+      try {
+        const res = await fetch(`https://api.postalpincode.in/pincode/${code}`);
+        const data = await res.json();
+        if (data && data[0] && data[0].Status === "Success") {
+          const postOffice = data[0].PostOffice[0];
+          setCity(postOffice.District || postOffice.Region || "");
+          setState(postOffice.State || "");
+        }
+      } catch (err) {
+        console.error("Failed to fetch location from pincode", err);
+      }
+    } else {
+      setCity("");
+      setState("");
+    }
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
+    const get = (k: string) => String(form.get(k) ?? "").trim();
+
+    if (page.form_type === "career_application") {
+      const payload = new FormData();
+      payload.set("name", get("full_name"));
+      payload.set("email", get("email"));
+      payload.set("phone", get("mobile_number"));
+      payload.set("subject", `Career application — ${get("role")}`);
+      payload.set("interested_in", get("role"));
+      payload.set("message", "");
+      const resumeFile = form.get("resume");
+      if (resumeFile instanceof File && resumeFile.size > 0) {
+        payload.set("resume", resumeFile);
+      }
+      payload.set(
+        "additional_info",
+        [
+          get("dob") && `Date of Birth: ${get("dob")}`,
+          get("qualification") && `Qualification: ${get("qualification")}`,
+          get("college") && `College: ${get("college")}`,
+          get("completion_year") && `Year of Completion: ${get("completion_year")}`,
+          get("previous_employer") && `Previous Employer: ${get("previous_employer")}`,
+          get("base_location") && `Base Location: ${get("base_location")}`,
+          get("experience") && `Experience: ${get("experience")}`,
+          get("experience_duration") && `Experience Duration: ${get("experience_duration")}`,
+          get("address") && `Address: ${get("address")}`,
+          pincode && `Pin Code: ${pincode}`,
+          city && `City: ${city}`,
+          state && `State: ${state}`,
+        ].filter(Boolean).join("\n"),
+      );
+
+      setStatus("submitting");
+      try {
+        await api.submitContactMultipart(payload);
+        setStatus("success");
+        setPincode("");
+        setCity("");
+        setState("");
+        e.currentTarget?.reset();
+      } catch (err) {
+        setStatus("error");
+        setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
+      }
+      return;
+    }
+
+    let name = "";
+    let email = "";
+    let phone = "";
+    let organization = "";
+    let interestedIn = "";
+    let extraLines: string[] = [];
+
+    if (page.form_type === "support_demo") {
+      name = get("customer_name");
+      email = get("email");
+      phone = get("mobile_number") || get("landline");
+      interestedIn = get("product_name");
+      extraLines = [
+        get("landline") && `Landline: ${get("landline")}`,
+        get("model_number") && `Model: ${get("model_number")}`,
+        get("serial_number") && `Serial Number: ${get("serial_number")}`,
+        get("purchase_year") && `Year of Purchase: ${get("purchase_year")}`,
+        get("landmark") && `Landmark: ${get("landmark")}`,
+        pincode && `Pin Code: ${pincode}`,
+        city && `City: ${city}`,
+        state && `State: ${state}`,
+      ].filter(Boolean) as string[];
+    } else if (page.form_type === "training_enquiry") {
+      name = get("full_name");
+      email = get("email");
+      phone = get("mobile_number");
+      organization = get("organization");
+      interestedIn = get("training_requirement");
+      extraLines = [
+        get("preferred_date") && `Preferred Date: ${get("preferred_date")}`,
+        city && `City/Location: ${city}`,
+      ].filter(Boolean) as string[];
+    } else {
+      name = get("name");
+      email = get("email");
+    }
+
     setStatus("submitting");
     try {
       await api.submitContact({
-        name: String(form.get("name") ?? ""),
-        email: String(form.get("email") ?? ""),
-        phone: String(form.get("phone") ?? ""),
-        organization: String(form.get("organization") ?? ""),
-        subject: String(form.get("subject") ?? ""),
-        message: String(form.get("message") ?? ""),
+        name,
+        email,
+        phone,
+        organization,
+        subject: `${page.nav_label} enquiry`,
+        interested_in: interestedIn,
+        additional_info: extraLines.join("\n"),
+        message: get("message"),
       });
       setStatus("success");
-      e.currentTarget.reset();
+      setPincode("");
+      setCity("");
+      setState("");
+      e.currentTarget?.reset();
     } catch (err) {
       setStatus("error");
       setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
     }
   }
 
+  const trainingOptions = page.feature_items.map((f) => f.title);
+
   return (
-    <div>
-      {/* 1. Hero */}
-      <section className="relative border-b border-line bg-white py-16 lg:py-24">
-        <div className="container-page flex flex-col items-center justify-between gap-12 lg:flex-row">
-          <div className="max-w-xl">
-            {intro.loading && <LoadingState />}
-            {intro.error && <ErrorState message={intro.error} />}
-            {intro.data && (
-              <>
-                <span className="inline-block rounded-full bg-pink-light px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-red">
-                  {intro.data.eyebrow}
-                </span>
-                <h1 className="mt-4 text-4xl font-extrabold leading-tight text-blue-dark md:text-5xl">
-                  {intro.data.title}
-                </h1>
-                {intro.data.description && (
-                  <p className="mt-4 text-base leading-relaxed text-muted">{intro.data.description}</p>
-                )}
-              </>
-            )}
-          </div>
+    <div className="card p-6">
+      {page.form_title && <h3 className="text-lg font-semibold text-blue-dark">{page.form_title}</h3>}
+      {page.form_description && <p className="mt-1 text-sm text-muted">{page.form_description}</p>}
 
-          <div className="w-full lg:w-[460px]">
-            <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-lg">
-              {intro.data?.image ? (
-                <img
-                  src={intro.data.image}
-                  alt="MedEx Support & Biomedical Services"
-                  className="h-auto max-h-[300px] w-full object-cover"
-                />
-              ) : (
-                <div className="flex h-[220px] items-center justify-center text-sm text-muted">
-                  Support / facility photo goes here
-                </div>
-              )}
+      <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+        {page.form_type === "support_demo" && (
+          <>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Customer Name" name="customer_name" required />
+              <Field label="Mobile Number" name="mobile_number" />
             </div>
-          </div>
-          {/* <div className="w-full lg:w-[460px]">
-            <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-lg">
-              <img
-                src={intro.data?.image || "/contact-hero.png"}
-                alt="MedEx Support & Biomedical Services"
-                className="h-auto max-h-[300px] w-full object-cover"
-              />
-            </div>
-          </div> */}
-        </div>
-      </section>
-
-      {/* 2. Enquiry form + contact details */}
-      <div className="container-page py-16">
-        <div className="grid gap-10 lg:grid-cols-[1fr_480px]">
-          <form onSubmit={handleSubmit} className="card space-y-5 p-8">
-            {content.data && (
-              <div>
-                <h2 className="text-lg font-bold text-blue-dark">{content.data.form_title}</h2>
-                {content.data.form_description && (
-                  <p className="mt-0.5 text-xs text-muted">{content.data.form_description}</p>
-                )}
-              </div>
-            )}
-
-            <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Your Name" name="name" required />
-              <Field label="Organization / Hospital" name="organization" required />
-            </div>
-
-            <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Phone Number" name="phone" required />
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Landline" name="landline" placeholder="044 46533312" />
               <Field label="Email Address" name="email" type="email" required />
             </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Product Name" name="product_name" />
+              <Field label="Model Name and Number" name="model_number" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Serial Number" name="serial_number" />
+              <Field label="Year of Manufacture / Purchase" name="purchase_year" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Brief about the issue" name="issue_brief" />
+              <Field label="Landmark" name="landmark" />
+            </div>
+            
+            {/* Pincode with Auto-fill Integration */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-ink">Pin code</label>
+                <input
+                  name="pincode"
+                  type="text"
+                  maxLength={6}
+                  value={pincode}
+                  onChange={handlePincodeChange}
+                  placeholder="6-digit pincode"
+                  className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-blue"
+                />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-ink">City</label>
+                <input
+                  name="city"
+                  type="text"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  placeholder="Auto-filled or type"
+                  className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-blue"
+                />
+              </div>
+            </div>
 
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-ink">Select Service / Product</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink">State</label>
+              <input
+                name="state"
+                type="text"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+                placeholder="Auto-filled or type"
+                className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-blue"
+              />
+            </div>
+
+            <TextArea label="Detailed Message" name="message" />
+            <SubmitButton status={status} label="Submit Service Request" />
+          </>
+        )}
+
+        {page.form_type === "training_enquiry" && (
+          <>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Full Name" name="full_name" required />
+              <Field label="Mobile Number" name="mobile_number" required />
+            </div>
+            <Field label="Email Address" name="email" type="email" required />
+            <Field label="Organization / Institution" name="organization" />
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-ink">Training Requirement</label>
               <select
-                name="subject"
-                required
+                name="training_requirement"
                 defaultValue=""
-                className="w-full rounded-lg border border-line bg-white px-4 py-3 text-sm text-ink outline-none focus:border-blue"
+                className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-blue"
               >
-                <option value="" disabled>Select Service / Product</option>
-                {services.data?.results.map((s) => (
-                  <option key={s.id} value={s.name}>{s.name}</option>
+                <option value="" disabled>Select Training Requirement</option>
+                {trainingOptions.map((t) => (
+                  <option key={t} value={t}>{t}</option>
                 ))}
-                <option value="General Inquiry">General Inquiry</option>
               </select>
             </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Preferred Training Date" name="preferred_date" type="date" />
+              <Field label="City / Location" name="city" />
+            </div>
+            <TextArea label="Detailed Message" name="message" />
+            <SubmitButton status={status} label="Submit Training Request" />
+          </>
+        )}
+
+        {page.form_type === "general" && (
+          <>
+            <Field label="Your Name" name="name" required />
+            <Field label="Email Address" name="email" type="email" required />
+            <TextArea label="Message" name="message" required />
+            <SubmitButton status={status} label="Submit" />
+          </>
+        )}
+
+        {page.form_type === "career_application" && (
+          <>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Name" name="full_name" required />
+              <Field label="DOB" name="dob" type="date" required />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Mobile Number" name="mobile_number" required />
+              <Field label="Email" name="email" type="email" required />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Qualification" name="qualification" placeholder="e.g. B.E Biomedical" required />
+              <Field label="College Name" name="college" placeholder="University / College" required />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Year of Completion" name="completion_year" placeholder="e.g. 2023" required />
+              <Field label="Previous Employer" name="previous_employer" placeholder="Company Name or Freshers" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Base Location" name="base_location" placeholder="Preferred City" required />
+              <Field label="Role" name="role" placeholder="e.g. Service Engineer" required />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Experience" name="experience" placeholder="e.g. 2 Years" required />
+              <Field label="Year and Month" name="experience_duration" placeholder="e.g. 2 yrs 4 mos" />
+            </div>
+            <Field label="Address" name="address" placeholder="Street address" required />
+            
+            {/* Career Pincode with Auto-fill */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-ink">Pincode *</label>
+                <input
+                  name="pincode"
+                  type="text"
+                  maxLength={6}
+                  required
+                  value={pincode}
+                  onChange={handlePincodeChange}
+                  placeholder="6-digit pincode"
+                  className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-blue"
+                />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-ink">City *</label>
+                <input
+                  name="city"
+                  type="text"
+                  required
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  placeholder="City name"
+                  className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-blue"
+                />
+              </div>
+            </div>
 
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-ink">Your Message</label>
-              <textarea
-                name="message"
+              <label className="mb-1.5 block text-sm font-medium text-ink">State *</label>
+              <select
+                name="state"
                 required
-                rows={4}
-                className="w-full rounded-lg border border-line px-4 py-3 text-sm outline-none focus:border-blue"
-              />
-            </div>
-
-            <button type="submit" disabled={status === "submitting"} className="btn-primary w-full justify-center">
-              {status === "submitting" ? "Sending…" : "Submit Enquiry"}
-            </button>
-
-            {status === "success" && (
-              <p className="text-center text-sm font-medium text-green-700">
-                Thanks — your message has been sent. We'll be in touch soon.
-              </p>
-            )}
-            {status === "error" && (
-              <p className="text-center text-sm font-medium text-red-dark">Couldn't send your message: {errorMsg}</p>
-            )}
-
-            <p className="flex items-center justify-center gap-1.5 text-center text-xs text-muted">
-              <Icon name="shield" className="h-3.5 w-3.5" />
-              Your information is safe with us.
-            </p>
-          </form>
-
-          {/* Contact details card */}
-          <div className="card grid gap-0 overflow-hidden border border-line bg-surface/50 p-0 sm:grid-cols-2">
-            <div className="space-y-6 p-8">
-              {content.data && (
-                <div>
-                  {content.data.details_eyebrow && (
-                    <span className="text-xs font-semibold uppercase tracking-wide text-red">
-                      {content.data.details_eyebrow}
-                    </span>
-                  )}
-                  <h3 className="mt-1 text-lg font-bold text-blue-dark">{content.data.details_title}</h3>
-                  {content.data.details_subtitle && (
-                    <p className="text-xs text-muted">{content.data.details_subtitle}</p>
-                  )}
-                </div>
-              )}
-
-              <div className="space-y-4 text-sm">
-                {locations.data?.map((loc, i) => (
-                  <div key={loc.id} className={i > 0 ? "space-y-1 border-t border-line pt-3" : "space-y-1"}>
-                    <h4 className="flex items-center gap-1.5 text-xs font-semibold text-blue-dark">
-                      <Icon name="building" className="h-4 w-4 flex-shrink-0 text-red" />
-                      {loc.name}
-                    </h4>
-                    <p className="pl-5 text-xs leading-relaxed text-muted">{loc.address}</p>
-                  </div>
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+                className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-blue"
+              >
+                <option value="" disabled>Select State</option>
+                {indianStates.map((s) => (
+                  <option key={s} value={s}>{s}</option>
                 ))}
-
-                {settings?.phone && (
-                  <div className="border-t border-line pt-3 text-xs">
-                    <span className="block font-semibold text-blue-dark">Reach Us</span>
-                    <span className="text-muted">{settings.phone}</span>
-                  </div>
-                )}
-                {settings?.email && (
-                  <div className="border-t border-line pt-3 text-xs">
-                    <span className="block font-semibold text-blue-dark">Email</span>
-                    <span className="text-muted">{settings.email}</span>
-                  </div>
-                )}
-              </div>
+              </select>
             </div>
-
-            <div className="flex flex-col justify-between space-y-4 border-t border-line bg-pink-light/50 p-8 sm:border-l sm:border-t-0">
-              <div className="space-y-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red/10 text-red">
-                  <Icon name="headset" className="h-4 w-4" />
-                </div>
-                {content.data?.highlights_intro && (
-                  <p className="text-xs font-medium leading-relaxed text-muted">{content.data.highlights_intro}</p>
-                )}
-                {content.data && content.data.highlights.length > 0 && (
-                  <ul className="space-y-2 pt-2 text-xs font-medium text-ink">
-                    {content.data.highlights.map((h) => (
-                      <li key={h.id} className="flex items-center gap-2">
-                        <Icon name="check" className="h-3.5 w-3.5 text-red" />
-                        {h.text}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 3. Map */}
-        {locations.data && locations.data.length > 0 && (
-          <div className="mt-20">
-            {content.data && (
-              <SectionHeading
-                eyebrow={content.data.map_eyebrow}
-                title={content.data.map_title}
-                description={content.data.map_description}
-              />
-            )}
-
-            <div className="mt-6 flex flex-wrap gap-4">
-              {locations.data.map((loc) => (
-                <button
-                  key={loc.id}
-                  onClick={() => setActiveLocationId(loc.id)}
-                  className={`rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors ${(activeLocation?.id ?? locations.data![0].id) === loc.id
-                      ? "bg-red text-white"
-                      : "bg-surface text-ink hover:bg-line"
-                    }`}
-                >
-                  {loc.name}
-                </button>
-              ))}
-            </div>
-
-            <div className="mt-6 h-[400px] overflow-hidden rounded-xl border border-line bg-white shadow-sm">
-              {activeLocation?.map_embed_url ? (
-                <iframe
-                  title={activeLocation.name}
-                  src={activeLocation.map_embed_url}
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center text-sm text-muted">
-                  Map for {activeLocation?.name} goes here — add a Google Maps embed URL in Django Admin.
-                </div>
-              )}
-            </div>
-          </div>
+            <FileField label="Resume Upload" name="resume" required />
+            <SubmitButton status={status} label="Send Application" />
+          </>
         )}
-      </div>
+
+        {status === "success" && (
+          <p className="text-sm font-medium text-green-700">Thanks — we'll be in touch shortly.</p>
+        )}
+        {status === "error" && (
+          <p className="text-sm font-medium text-red-dark">Couldn't send: {errorMsg}</p>
+        )}
+
+        <p className="flex items-center gap-1.5 text-xs text-muted">
+          <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2}>
+            <path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z" />
+          </svg>
+          Your information is safe with us.
+        </p>
+      </form>
     </div>
   );
 }
 
 function Field({
-  label, name, type = "text", required = false,
-}: { label: string; name: string; type?: string; required?: boolean }) {
+  label, name, type = "text", required = false, placeholder,
+}: { label: string; name: string; type?: string; required?: boolean; placeholder?: string }) {
   return (
     <div>
-      <label className="mb-1.5 block text-sm font-medium text-ink">{label}</label>
+      <label className="mb-1.5 block text-sm font-medium text-ink">
+        {label}{required && " *"}
+      </label>
       <input
         name={name}
         type={type}
         required={required}
-        className="w-full rounded-lg border border-line px-4 py-3 text-sm outline-none focus:border-blue"
+        placeholder={placeholder}
+        className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-blue"
       />
     </div>
+  );
+}
+
+function FileField({ label, name, required = false }: { label: string; name: string; required?: boolean }) {
+  return (
+    <div>
+      <label className="mb-1.5 block text-sm font-medium text-ink">
+        {label}{required && " *"}
+      </label>
+      <input
+        name={name}
+        type="file"
+        required={required}
+        accept=".pdf,.doc,.docx"
+        className="w-full rounded-lg border border-line px-3 py-2 text-sm text-muted outline-none file:mr-3 file:rounded-md file:border-0 file:bg-pink-light file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-red"
+      />
+    </div>
+  );
+}
+
+function TextArea({ label, name, required = false }: { label: string; name: string; required?: boolean }) {
+  return (
+    <div>
+      <label className="mb-1.5 block text-sm font-medium text-ink">
+        {label}{required && " *"}
+      </label>
+      <textarea
+        name={name}
+        required={required}
+        rows={4}
+        maxLength={180}
+        placeholder="Enter your detailed requirements or issue..."
+        className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-blue"
+      />
+    </div>
+  );
+}
+
+function SubmitButton({ status, label }: { status: Status; label: string }) {
+  return (
+    <button type="submit" disabled={status === "submitting"} className="btn-primary w-full justify-center">
+      {status === "submitting" ? "Sending…" : label}
+    </button>
   );
 }
