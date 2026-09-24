@@ -24,11 +24,11 @@ export default function ProductDetail() {
   const product = useAsync(() => api.getProduct(slug), [slug]);
   const sidebar = useAsync(() => api.getProductSidebar(), []);
 
-  // Single source of truth for "is this a hardware/device-style page" —
-  // driven primarily by the admin-set hero_layout, with the slug check
-  // kept only as a fallback for older products.
+  // Precise check for thermacheck pages
   const isThermocheck = Boolean(
-    product.data?.hero_layout === "badge_heavy" || product.data?.slug?.includes("thermocheck")
+    product.data?.hero_layout === "badge_heavy" || 
+    product.data?.slug?.toLowerCase().includes("thermacheck") ||
+    product.data?.name?.toLowerCase().includes("thermacheck")
   );
 
   const tabs = isThermocheck
@@ -38,8 +38,7 @@ export default function ProductDetail() {
   const [tab, setTab] = useState<string>(tabs[0]);
   const [mediaIndex, setMediaIndex] = useState(0);
 
-  // Keep the active tab + media index in sync once the real product data
-  // (and therefore the real isThermocheck value) arrives.
+  // Keep the active tab + media index in sync once the real product data arrives
   useEffect(() => {
     setTab(tabs[0]);
     setMediaIndex(0);
@@ -85,8 +84,7 @@ export default function ProductDetail() {
   const activeMedia = mediaItems[mediaIndex] || mediaItems[0];
   const activeImage = activeMedia?.image ?? p.cover_image;
 
-  // Sidebar CTA priority: an uploaded spec-sheet PDF > a custom CTA url set
-  // by the admin > fall back to the Contact page.
+  // Sidebar CTA priority: an uploaded spec-sheet PDF > a custom CTA url set by admin > fallback to contact page
   const sidebarCtaHref = p.spec_sheet_pdf || p.sidebar_note_cta_url || "";
   const sidebarCtaLabel = p.sidebar_note_cta_label || "Request Spec Sheet (PDF)";
 
@@ -397,9 +395,6 @@ export default function ProductDetail() {
                           </span>
                         </div>
 
-                        {/* NOTE: these 3 hardware-model cards are static placeholder
-                            content — there's no backend model for them yet, so they
-                            don't reflect anything set in the admin. */}
                         <div className="mt-6 grid gap-6 md:grid-cols-3">
                           {[
                             { badge: "PREMIUM TYPE", title: "Premium Type", desc: "Complete clinical suite for hospitals and high-volume diagnostic centers.", image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=400&q=80", features: ["Camera (Auto-Focusing)", "Motorized Column Stand", "Dedicated Work Station Cart"], footerLabel: "Head Rotation", footerVal: "Remote Controlled", isFeatured: true },
