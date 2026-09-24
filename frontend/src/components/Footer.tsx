@@ -53,11 +53,13 @@ export default function Footer({ logoUrl }: FooterProps) {
       <div className="container-page grid gap-12 py-16 md:grid-cols-4">
         <div>
           {logoUrl ? (
-            <img 
-              src={logoUrl} 
-              alt="Logo" 
-              className="h-16 w-auto object-contain" 
-            />
+            <div className="inline-block overflow-hidden rounded-xl border border-white/10 bg-white/5 p-2 shadow-sm">
+              <img 
+                src={logoUrl} 
+                alt="Logo" 
+                className="h-12 w-auto object-contain rounded-lg" 
+              />
+            </div>
           ) : (
             <Logo theme="light" className="h-16" />
           )}

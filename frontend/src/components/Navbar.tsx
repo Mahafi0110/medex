@@ -22,11 +22,13 @@ export default function Navbar({ logoUrl }: NavbarProps) {
       <div className="container-page flex h-20 items-center justify-between">
         <Link to="/" onClick={() => setOpen(false)} className="flex items-center">
           {logoUrl ? (
-            <img 
-              src={logoUrl} 
-              alt="Logo" 
-              className="h-16 w-auto object-contain" 
-            />
+            <div className="inline-block overflow-hidden rounded-xl border border-line bg-white/5 p-1.5 shadow-2xs">
+              <img 
+                src={logoUrl} 
+                alt="Logo" 
+                className="h-12 w-auto object-contain rounded-lg" 
+              />
+            </div>
           ) : (
             <Logo theme="dark" className="h-16" />
           )}

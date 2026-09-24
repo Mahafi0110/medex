@@ -1,10 +1,11 @@
+import { useState } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { api } from "@/api/client";
 import { useAsync } from "@/hooks/useAsync";
 import Icon from "@/components/Icon";
 import ServiceEnquiryForm from "@/components/ServiceEnquiryForm";
 import { LoadingState, ErrorState } from "@/components/AsyncState";
-import type { ServicePageSidebarItem } from "@/types";
+import type { ServicePageSidebarItem, ServicePosterItem } from "@/types";
 
 export default function Services() {
   const { slug } = useParams();
@@ -24,6 +25,7 @@ export default function Services() {
 
 function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: ServicePageSidebarItem[] }) {
   const page = useAsync(() => api.getServicePage(slug), [slug]);
+  const [activePoster, setActivePoster] = useState<ServicePosterItem | null>(null);
 
   if (page.loading && !page.data) return <LoadingState label="Loading…" />;
   if (page.error && !page.data) return <div className="container-page py-16"><ErrorState message={page.error} /></div>;
@@ -32,18 +34,15 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
   const p = page.data;
   const isCareer = p.feature_items.some((f) => f.focus_text);
   const isTraining = slug.includes("training");
-  // const isIconOnlyService = !isCareer && !isTraining; // Services 1 & 2 (Installation & AMC)
 
   return (
     <div className="transition-opacity duration-300 ease-in-out bg-[#f8fafc] min-h-screen">
 
       {/* ================= DYNAMIC HERO BANNER ================= */}
-      {/* ================= DYNAMIC ADMIN-POWERED HERO BANNER ================= */}
       <section
         className="relative bg-cover bg-center text-ink min-h-[460px] lg:min-h-[500px] flex flex-col justify-center transition-all duration-300 shadow-md"
         style={p.hero_image ? { backgroundImage: `url(${p.hero_image})` } : undefined}
       >
-        {/* White-to-Transparent Gradient Overlay matching your mockup */}
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-transparent" />
 
         <div className="container-page relative grid gap-8 py-12 lg:grid-cols-[1fr_320px] lg:items-center z-10">
@@ -98,13 +97,14 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
                 <Link
                   key={item.slug}
                   to={`/services/${item.slug}`}
-                  className={`flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-xs md:text-sm font-bold transition-all duration-200 ${active
+                  className={`flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-xs md:text-sm font-bold text-center transition-all duration-200 ${
+                    active
                       ? "bg-red text-white shadow-md shadow-red/20"
                       : "bg-white text-slate-700 hover:text-blue-dark hover:bg-slate-100 border border-slate-200/60"
-                    }`}
+                  }`}
                 >
-                  <Icon name={item.nav_icon} className={`h-4 w-4 ${active ? "text-white" : "text-red"}`} />
-                  <span className="truncate">{item.nav_label}</span>
+                  <Icon name={item.nav_icon} className={`h-4 w-4 flex-shrink-0 ${active ? "text-white" : "text-red"}`} />
+                  <span className="whitespace-normal break-words leading-tight">{item.nav_label}</span>
                 </Link>
               );
             })}
@@ -132,11 +132,10 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
                 </div>
               )}
 
-              {/* Dynamic Features Grid (Separated for Services 1&2 vs 3&4) */}
+              {/* Dynamic Features Grid */}
               {p.feature_items.length > 0 && (
                 <div>
                   {isCareer ? (
-                    // Service 4: Career Roles Grid
                     <div className="grid gap-6 sm:grid-cols-2">
                       {p.feature_items.map((f) => (
                         <div key={f.id} className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm flex flex-col justify-between hover:shadow-md transition-all">
@@ -179,7 +178,6 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
                       ))}
                     </div>
                   ) : isTraining ? (
-                    // Service 3: Training Programs Grid (With Images & Floating Icons)
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                       {p.feature_items.map((f) => (
                         <div key={f.id} className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm flex flex-col justify-between group hover:shadow-md transition-all">
@@ -205,7 +203,6 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
                       ))}
                     </div>
                   ) : (
-                    // Services 1 & 2: Icon-Only Feature Cards (No Images, matching Mockups 1 & 2)
                     <div>
                       {p.overview_title && <h2 className="text-xl font-extrabold text-blue-dark mb-1">{p.overview_title}</h2>}
                       {p.overview_subtitle && <p className="text-sm text-muted mb-6">{p.overview_subtitle}</p>}
@@ -228,7 +225,7 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
                 </div>
               )}
 
-              {/* Process Steps ("How Training Works" / Installation & AMC Process) */}
+              {/* Process Steps */}
               {p.process_steps.length > 0 && (
                 <div className="bg-white rounded-2xl border border-slate-200/80 p-6 md:p-8 shadow-sm">
                   {p.process_title && <h2 className="text-xl font-bold text-blue-dark">{p.process_title}</h2>}
@@ -263,6 +260,31 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
                         </div>
                         <p className="text-xs font-medium text-ink">{eq.title}</p>
                       </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Poster / Hiring Announcements Section */}
+              {p.poster_title && p.poster_items?.length > 0 && (
+                <div className="bg-white rounded-2xl border border-slate-200/80 p-6 md:p-8 shadow-sm">
+                  <h2 className="text-xl font-bold text-blue-dark">{p.poster_title}</h2>
+                  {p.poster_subtitle && <p className="mt-1 text-sm text-muted">{p.poster_subtitle}</p>}
+                  <div className="mt-6 grid gap-4 sm:grid-cols-3">
+                    {p.poster_items.map((poster) => (
+                      <button
+                        key={poster.id}
+                        type="button"
+                        onClick={() => setActivePoster(poster)}
+                        className="group relative overflow-hidden rounded-xl border border-slate-200 shadow-xs focus:outline-none focus:ring-2 focus:ring-red/50"
+                      >
+                        <img
+                          src={poster.image}
+                          alt={poster.title || "Hiring announcement"}
+                          className="h-56 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -315,6 +337,33 @@ function ServiceTab({ slug, sidebarItems }: { slug: string; sidebarItems: Servic
           </div>
         </div>
       </div>
+
+      {/* ================= POSTER POPUP MODAL ================= */}
+      {activePoster && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+          onClick={() => setActivePoster(null)}
+        >
+          <div className="relative max-h-[90vh] w-full max-w-3xl" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              onClick={() => setActivePoster(null)}
+              aria-label="Close"
+              className="absolute -top-10 right-0 text-2xl font-bold text-white transition-colors hover:text-red"
+            >
+              ✕
+            </button>
+            <img
+              src={activePoster.image}
+              alt={activePoster.title || "Hiring announcement"}
+              className="max-h-[85vh] w-full rounded-xl object-contain shadow-2xl"
+            />
+            {activePoster.title && (
+              <p className="mt-3 text-center text-sm font-medium text-white">{activePoster.title}</p>
+            )}
+          </div>
+        </div>
+      )}
 
     </div>
   );

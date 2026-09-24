@@ -192,6 +192,14 @@ export interface ServiceGalleryImage {
   order: number;
 }
 
+/** One poster/announcement tile in a ServicePage's 'Hiring Announcements' section. */
+export interface ServicePosterItem {
+  id: number;
+  image: string;
+  title: string;
+  order: number;
+}
+
 export type ServiceFormType = "support_demo" | "training_enquiry" | "career_application" | "general";
 
 /** Full content for one Services page tab (e.g. 'AMC & Maintenance'). */
@@ -222,6 +230,8 @@ export interface ServicePageDetail {
   secondary_subtitle: string;
   gallery_title: string;
   gallery_subtitle: string;
+  poster_title: string;
+  poster_subtitle: string;
   cta_icon: IconKey;
   cta_title: string;
   cta_subtitle: string;
@@ -236,6 +246,7 @@ export interface ServicePageDetail {
   equipment_items: ServiceEquipmentItem[];
   value_items: ServiceValueItem[];
   gallery_images: ServiceGalleryImage[];
+  poster_items: ServicePosterItem[];
 }
 
 export interface TeamMember {

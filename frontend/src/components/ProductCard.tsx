@@ -31,7 +31,8 @@ export default function ProductCard({ product }: { product: ProductSummary }) {
         <span className="text-xs font-semibold uppercase tracking-wide text-red">
           {typeLabel[product.product_type] ?? product.product_type}
         </span>
-        <h3 className="mt-2 text-lg font-semibold text-blue-dark group-hover:text-red">
+        {/* Changed title container to allow wrapping naturally for long names */}
+        <h3 className="mt-2 text-lg font-semibold text-blue-dark group-hover:text-red whitespace-normal break-words leading-snug">
           {product.name}
         </h3>
         <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{product.summary}</p>

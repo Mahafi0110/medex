@@ -16,11 +16,11 @@ function getProductConfig(productName: string) {
   
   if (name.includes("thermacheck") || name.includes("medical ir")) {
     return {
-      website: "https://thermacheck.com", // Replace with your target URL
-      download: "https://thermacheck.com/demo", // Replace with your target URL
+      website: "https://thermacheck.com",
+      download: "https://thermacheck.com/demo",
       primaryBtnText: "Explore ThermaCheck IR",
       secondaryBtnText: "Request Demo & Specs",
-      isDarkTheme: true, // Uses dark buttons like in your screenshot
+      isDarkTheme: true,
     };
   }
   if (name.includes("tehomed")) {
@@ -68,41 +68,28 @@ function ProductHighlightCard({ p }: { p: ProductHighlight }) {
   return (
     <div className="card flex w-[380px] flex-shrink-0 flex-col justify-between bg-white p-7 sm:w-[420px] lg:w-[450px] rounded-2xl border border-line shadow-sm">
       <div>
-        {/* Top Header: Brand/Logo Box on Left, Image Preview on Right */}
-        <div className="flex items-start justify-between gap-4">
-          <div className="space-y-3">
-            {/* Logo / Badge Frame */}
-            <div className="inline-block rounded-lg border border-line bg-white px-3 py-2 shadow-2xs">
-              {p.logo ? (
-                <img src={p.logo} alt={`${p.name} logo`} className="h-6 w-auto object-contain" />
-              ) : (
-                <div className="flex h-6 items-center text-xs font-bold text-red tracking-wider uppercase">
-                  {p.name.split(" ")[0]}
-                </div>
-              )}
-            </div>
-
-            {/* Title & Tagline */}
-            <div>
-              <h3 className="text-2xl font-bold tracking-tight text-red">{p.name}</h3>
-              {p.tagline && <p className="mt-1 text-sm font-semibold text-blue-dark">{p.tagline}</p>}
-            </div>
-          </div>
-
-          {/* Feature Image Positioned on the Right */}
-          <div className="relative flex h-36 w-32 flex-shrink-0 flex-col items-center justify-center overflow-hidden rounded-xl bg-surface border border-line shadow-2xs">
-            {p.cover_image ? (
-              <img src={p.cover_image} alt={p.name} className="h-full w-full object-cover" />
+        {/* Top Header: Centered Logo/Badge and Centered Titles */}
+        <div className="flex flex-col items-center text-center">
+          {/* Logo / Badge Frame */}
+          <div className="inline-block rounded-lg border border-line bg-white px-3 py-2 shadow-2xs mb-4">
+            {p.logo ? (
+              <img src={p.logo} alt={`${p.name} logo`} className="h-6 w-auto object-contain" />
             ) : (
-              <div className="flex h-full w-full items-center justify-center text-xs font-semibold text-muted">
-                Preview
+              <div className="flex h-6 items-center text-xs font-bold text-red tracking-wider uppercase">
+                {p.name.split(" ")[0]}
               </div>
             )}
+          </div>
+
+          {/* Centered Title & Tagline */}
+          <div>
+            <h3 className="text-2xl font-bold tracking-tight text-red">{p.name}</h3>
+            {p.tagline && <p className="mt-1 text-sm font-semibold text-blue-dark">{p.tagline}</p>}
           </div>
         </div>
 
         {/* Summary Description */}
-        {p.summary && <p className="mt-4 text-sm leading-relaxed text-muted">{p.summary}</p>}
+        {p.summary && <p className="mt-4 text-sm leading-relaxed text-muted text-center">{p.summary}</p>}
 
         {/* Feature List with Icon Bullets */}
         {p.highlight_feature_list.length > 0 && (
@@ -128,7 +115,7 @@ function ProductHighlightCard({ p }: { p: ProductHighlight }) {
         )}
       </div>
 
-      {/* Action Buttons Container (Supports Dark or Red theme based on product) */}
+      {/* Action Buttons Container */}
       <div className="mt-8 space-y-3 pt-2">
         <a
           href={websiteUrl}

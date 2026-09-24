@@ -14,6 +14,7 @@ from .models import (
     ServiceEquipmentItem,
     ServiceValueItem,
     ServiceGalleryImage,
+    ServicePosterItem,
     AboutSection,
     EcosystemPillar,
     OperatingPillar,
@@ -31,6 +32,7 @@ from .models import (
     OfficeLocation,
     ContactPageContent,
     ContactHighlight,
+    
     
 )
 
@@ -188,6 +190,10 @@ class ServiceGalleryImageSerializer(serializers.ModelSerializer):
         model = ServiceGalleryImage
         fields = ["id", "image", "caption", "order"]
 
+class ServicePosterItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServicePosterItem
+        fields = ["id", "image", "title", "order"]
 
 class ServicePageDetailSerializer(serializers.ModelSerializer):
     feature_items = ServiceFeatureItemSerializer(many=True, read_only=True)
@@ -195,6 +201,7 @@ class ServicePageDetailSerializer(serializers.ModelSerializer):
     equipment_items = ServiceEquipmentItemSerializer(many=True, read_only=True)
     value_items = ServiceValueItemSerializer(many=True, read_only=True)
     gallery_images = ServiceGalleryImageSerializer(many=True, read_only=True)
+    poster_items = ServicePosterItemSerializer(many=True, read_only=True)   # <-- add
     hero_badges = serializers.ListField(read_only=True)
     hero_tagline_lines = serializers.ListField(child=serializers.CharField(), read_only=True)
 
@@ -209,9 +216,11 @@ class ServicePageDetailSerializer(serializers.ModelSerializer):
             "equipment_title", "equipment_subtitle",
             "secondary_eyebrow", "secondary_title", "secondary_subtitle",
             "gallery_title", "gallery_subtitle",
+            "poster_title", "poster_subtitle",   # <-- add
             "cta_icon", "cta_title", "cta_subtitle", "cta_image", "cta_button_label", "cta_button_url",
             "form_title", "form_description", "form_type",
-            "feature_items", "process_steps", "equipment_items", "value_items", "gallery_images",
+            "feature_items", "process_steps", "equipment_items", "value_items",
+            "gallery_images", "poster_items",   # <-- add
         ]
 
 
@@ -222,7 +231,7 @@ class TeamMemberSerializer(serializers.ModelSerializer):
         model = TeamMember
         fields = [
             "id", "name", "role", "title", "photo", "bio", "bio_paragraphs",
-            "quote", "quote_label", "badge_text", "years_text",
+            "quote", "about_quote", "quote_label", "badge_text", "years_text",
             "prior_leadership", "domain_expertise", "operational_base",
             "is_leadership", "order",
         ]

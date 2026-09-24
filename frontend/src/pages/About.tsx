@@ -220,7 +220,8 @@ export default function About() {
       {/* 4. Mission + Ecosystem diagram */}
       {visionMission.data && (
         <section className="border-t border-line bg-white py-20">
-          <div className="container-page grid items-start gap-12 lg:grid-cols-[1.2fr_1fr]">
+          {/* Changed items-start to items-center so the right-side box aligns vertically in the middle */}
+          <div className="container-page grid items-center gap-12 lg:grid-cols-[1.2fr_1fr]">
             <div className="space-y-8">
               <div>
                 <span className="text-xs font-semibold uppercase tracking-wide text-red">— Our Mission —</span>
@@ -245,7 +246,7 @@ export default function About() {
               </div>
             </div>
 
-            {/* Ecosystem diagram */}
+            {/* Ecosystem diagram card */}
             <div className="rounded-2xl border border-line bg-blue-dark p-6 text-white shadow-xl">
               {visionMission.data.ecosystem_eyebrow && (
                 <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-pink-accent">
@@ -293,7 +294,6 @@ export default function About() {
           </div>
         </section>
       )}
-
       {/* 5. About Director & Founder */}
       {leader && content.data && (
         <section className="border-t border-line bg-surface/50 py-20">

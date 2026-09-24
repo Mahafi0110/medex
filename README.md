@@ -121,8 +121,9 @@ pip install -r requirements.txt && python manage.py collectstatic --noinput && p
 | `DB_NAME` / `DB_USER` / `DB_PASSWORD` / `DB_HOST` / `DB_PORT` | from the Postgres page (hostname only, no `/dbname`) |
 | `FRONTEND_URL` | `https://<your-frontend>.onrender.com` |
 | `DJANGO_SUPERUSER_USERNAME` / `_EMAIL` / `_PASSWORD` | your Django Admin login; `create_admin` creates it during the build |
-| `EMAIL_HOST` / `EMAIL_PORT` / `EMAIL_HOST_USER` / `EMAIL_HOST_PASSWORD` | SMTP mailbox used to email Contact-form submissions (see "Contact-form notifications") |
-| `CONTACT_NOTIFY_EMAILS` | comma-separated recipients for enquiry emails; defaults to Site Settings → email |
+| `EMAIL_HOST` / `EMAIL_PORT` / `EMAIL_HOST_USER` / `EMAIL_HOST_PASSWORD` | SMTP mailbox that **sends** the enquiry notifications: `smtp.gmail.com`, `info@medexbiomed.com` + a Google **App Password** (see "Contact-form notifications") |
+| `DEFAULT_FROM_EMAIL` | `MedEX Website <info@medexbiomed.com>` — must be the authenticated mailbox above |
+| `CONTACT_NOTIFY_EMAILS` | who **receives** the enquiries, e.g. `info@medexbiomed.com`; defaults to Site Settings → email |
 | `CONTACT_THROTTLE_RATE` | per-IP limit on the public Contact/Career forms (default `10/hour`) |
 
 `ALLOWED_HOSTS` and `CSRF_TRUSTED_ORIGINS` do **not** need to be set: the
@@ -186,20 +187,35 @@ single deploy, then remove it:
 
 When someone submits the Contact or Career form the record is **always** stored
 (Django Admin → Contact messages), and the backend then emails the enquiry to
-the site's team:
+the site owner — **`info@medexbiomed.com`**:
 
-- Set `EMAIL_HOST` / `EMAIL_PORT` / `EMAIL_HOST_USER` / `EMAIL_HOST_PASSWORD`
-  (plus `DEFAULT_FROM_EMAIL`) and Django switches to the SMTP backend
-  automatically.
-- `CONTACT_NOTIFY_EMAILS` is the comma-separated recipient list; if it is empty,
-  **Site Settings → email** is used. If neither is set, the submission is still
-  stored and a warning is logged.
-- With `EMAIL_HOST` empty, Django's console backend prints the full message into
-  the server log, so nothing is ever silently lost.
+- The mail configuration lives in **`backend/.env`** locally (git-ignored; copy
+  **`backend/.env.example`**) and in the backend service's Render
+  **Environment** tab when deployed (mirrored in `render.yaml`). The code that
+  reads it is the "Email — Contact-form notifications" block in `settings.py`;
+  the message itself is built and sent in `core/emails.py`, triggered from
+  `ContactMessageViewSet.perform_create()` in `core/views.py`.
+- `medexbiomed.com` mail runs on **Google Workspace** (its MX records point at
+  Google), so `EMAIL_HOST=smtp.gmail.com`, `EMAIL_PORT=587`,
+  `EMAIL_HOST_USER=info@medexbiomed.com`, and `EMAIL_HOST_PASSWORD` must be a
+  16-character Google **App Password** — 2-Step Verification has to be on for
+  that account, because Google rejects the normal account password for SMTP.
+- Django switches to the SMTP backend only when `EMAIL_HOST` **and** its
+  credentials are present; otherwise the console backend prints the full message
+  into the server log, so nothing is ever silently lost.
+- `CONTACT_NOTIFY_EMAILS` is the comma-separated recipient list
+  (`info@medexbiomed.com`); if it is empty, **Site Settings → email** is used. If
+  neither is set, the submission is still stored and a warning is logged.
+- **Visitors are never emailed automatically.** You answer them by hitting
+  **Reply** in the notification — that reaches them because the mail carries
+  `Reply-To: <visitor address>`.
 - Notifications are best-effort: a failing SMTP server can never turn a valid
   submission into an error for the visitor. Failures are logged
   (`django.core.mail`, see the LOGGING config) and the record stays in Admin.
 - Resumes uploaded through the Career form are attached when they are ≤ 5 MB.
+- Deliverability: `medexbiomed.com` currently has **no SPF record**, so add
+  `v=spf1 include:_spf.google.com ~all` (and DKIM in the Google Admin console)
+  or Gmail may file the notifications under Spam.
 
 The public form is rate-limited **per visitor IP** (`CONTACT_THROTTLE_RATE`,
 default `10/hour`) to keep spam out of the database. Read-only endpoints are not
@@ -274,7 +290,7 @@ separately instead of everyone sharing the proxy's IP.
 | Contact form fails in the browser console (CORS) | Frontend origin not allowed | Set `FRONTEND_URL` (or `CORS_ALLOWED_ORIGINS`) to the frontend's exact origin |
 | Frontend routes 404 on refresh | Static site has no SPA rewrite | Add rewrite `/*` → `/index.html` |
 | `loaddata` fails with `UnicodeDecodeError` | Fixture written by `dumpdata --output` on Windows (cp1252) | Regenerate with `python manage.py dump_site_content` |
-| Tester submitted the form, no email arrived | `EMAIL_HOST` / `CONTACT_NOTIFY_EMAILS` not set, or (on Render **Free**) outbound SMTP ports 25/465/587 are blocked | The submission is always in Django Admin → Contact messages; set the `EMAIL_*` vars (paid instance or office server), or look for the printed message in the log stream |
+| Tester submitted the form, no email arrived | `EMAIL_HOST_PASSWORD` (App Password) or `CONTACT_NOTIFY_EMAILS` not set, the mail landed in Spam (no SPF record yet), or (on Render **Free**) outbound SMTP ports 25/465/587 are blocked | The submission is always in Django Admin → Contact messages; look for the message the console backend prints in the log, fill in the `EMAIL_*` keys in `backend/.env` / the Render Environment tab (paid instance or office server), and add the SPF record |
 | Visitor sees "Too many submissions from this device" | Contact-form rate limit reached | Raise `CONTACT_THROTTLE_RATE` |
 | Enquiry emails all appear to come from one IP / limits hit globally | Proxy hops not configured | Keep `NUM_PROXIES=1` on Render |
 

@@ -288,19 +288,25 @@ LOGGING = {
 # ---------------------------------------------------------------------------
 # Email — Contact-form notifications
 # ---------------------------------------------------------------------------
-# Set EMAIL_HOST (plus user/password) and the SMTP backend is used
+# Email credentials live in backend/.env locally and in the Render Dashboard
+# ("Environment") when deployed — see .env.example for the full list. Set
+# EMAIL_HOST (plus the credentials it needs) and the SMTP backend is used
 # automatically; with nothing configured, Django's console backend prints each
 # message into the log stream, so a submission is never silently lost.
 EMAIL_HOST = config("EMAIL_HOST", default="")
-if EMAIL_HOST:
+EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
+# A host with a blank password would make every submission wait for a failed
+# login and only log an error, so a real SMTP server is used only once the
+# credentials it needs are present too (Google Workspace/Gmail and Microsoft 365
+# both authenticate, so EMAIL_HOST_USER is never empty in practice).
+if EMAIL_HOST and (not EMAIL_HOST_USER or EMAIL_HOST_PASSWORD):
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 else:
     EMAIL_BACKEND = config(
         "EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
     )
-EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
-EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
 EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=False, cast=bool)
 if EMAIL_USE_SSL:
@@ -308,7 +314,7 @@ if EMAIL_USE_SSL:
     EMAIL_USE_TLS = False
 EMAIL_TIMEOUT = config("EMAIL_TIMEOUT", default=15, cast=int)
 DEFAULT_FROM_EMAIL = config(
-    "DEFAULT_FROM_EMAIL", default="MedEX Website <no-reply@medexbiomed.com>"
+    "DEFAULT_FROM_EMAIL", default="MedEX Website <info@medexbiomed.com>"
 )
 
 # Who receives Contact-form / Career-application notifications. Falls back to

@@ -354,6 +354,10 @@ class ServicePage(TimeStampedModel, SlugMixin):
     gallery_title = models.CharField(max_length=150, blank=True, help_text="Leave blank to hide this section.")
     gallery_subtitle = models.CharField(max_length=250, blank=True)
 
+    # --- Poster / hiring announcements (optional, e.g. 'Hiring Announcements') ---
+    poster_title = models.CharField(max_length=150, blank=True, help_text="Leave blank to hide this section.")
+    poster_subtitle = models.CharField(max_length=250, blank=True)
+
     # --- CTA banner ---
     # Two supported layouts, chosen by what's filled in: leaving
     # cta_button_label blank shows the icon + Call Now/WhatsApp banner
@@ -402,7 +406,6 @@ class ServicePage(TimeStampedModel, SlugMixin):
 
     def hero_tagline_lines(self):
         return [line.strip() for line in self.hero_tagline.splitlines() if line.strip()]
-
 
 class ServiceFeatureItem(TimeStampedModel):
     """
@@ -475,7 +478,19 @@ class ServiceValueItem(TimeStampedModel):
     def __str__(self):
         return f"{self.service_page.nav_label} — {self.title}"
 
+class ServicePosterItem(TimeStampedModel):
+    """One poster/announcement tile shown in the Career tab's 'Hiring Announcements' section — click opens it full-size in a popup."""
+    service_page = models.ForeignKey(ServicePage, on_delete=models.CASCADE, related_name="poster_items")
+    image = models.ImageField(upload_to="services/posters/")
+    title = models.CharField(max_length=150, blank=True, help_text="Optional caption shown under the poster in the popup.")
+    order = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        ordering = ["order", "id"]
+
+    def __str__(self):
+        return f"{self.service_page.nav_label} — {self.title or 'poster'}"
+    
 class ServiceGalleryImage(TimeStampedModel):
     """One photo in a ServicePage's gallery, e.g. 'Life at MedEx'."""
     service_page = models.ForeignKey(ServicePage, on_delete=models.CASCADE, related_name="gallery_images")
@@ -749,7 +764,8 @@ class TeamMember(TimeStampedModel):
         blank=True,
         help_text="Full biography for the About page's leadership profile. Separate paragraphs with a blank line.",
     )
-    quote = models.CharField(max_length=250, blank=True, help_text="Pull-quote shown on the homepage and About page.")
+    quote = models.CharField(max_length=250, blank=True, help_text="Pull-quote shown on the homepage.")
+    about_quote = models.TextField(blank=True, help_text="Detailed quote/philosophy shown on the About page profile.")
     quote_label = models.CharField(max_length=60, blank=True, default="Leadership Philosophy")
     badge_text = models.CharField(max_length=80, blank=True, help_text="e.g. 'Verified Bio-Engineer' / 'Technical Leader'")
     years_text = models.CharField(max_length=80, blank=True, help_text="e.g. '10+ Years Biomedical Leadership'")

@@ -72,6 +72,33 @@ services:
         sync: false
       - key: DJANGO_SUPERUSER_PASSWORD
         sync: false
+      # --- Enquiry notification email ---------------------------------------
+      # medexbiomed.com mail is hosted on Google Workspace (MX -> Google), so
+      # the SMTP host is smtp.gmail.com. These are the deployed twins of the
+      # EMAIL_* keys in backend/.env - see ".env.example" for the full notes.
+      - key: EMAIL_HOST
+        value: smtp.gmail.com
+      - key: EMAIL_PORT
+        value: "587"
+      - key: EMAIL_USE_TLS
+        value: "True"
+      - key: EMAIL_USE_SSL
+        value: "False"
+      # Mailbox that sends the notifications; must match the App Password below.
+      - key: EMAIL_HOST_USER
+        value: info@medexbiomed.com
+      # Google App Password (16 chars, no spaces) for EMAIL_HOST_USER. Set it in
+      # the Dashboard: sync:false keys are never read from this file. Until it is
+      # filled in, Django keeps its console backend and prints each enquiry into
+      # the deploy log instead of trying (and failing) to log in to Gmail.
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: DEFAULT_FROM_EMAIL
+        value: MedEX Website <info@medexbiomed.com>
+      # Who receives every enquiry: the website owner. Visitors are never
+      # emailed automatically - replying to the notification answers them.
+      - key: CONTACT_NOTIFY_EMAILS
+        value: info@medexbiomed.com
 
   # -------------------------------------------------------------------------
   # React + Vite static site
