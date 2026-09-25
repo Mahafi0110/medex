@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, ChangeEvent, useState, useRef, forwardRef } from "react";
 import { api } from "@/api/client";
 import type { ServicePageDetail } from "@/types";
 
@@ -12,13 +12,52 @@ const indianStates = [
   "Uttar Pradesh", "Uttarakhand", "West Bengal", "Delhi",
 ];
 
+/** Looks up city/state from a 6-digit Indian pincode via the free India Post API.
+ * Silently does nothing on invalid pincode, no match, or network failure —
+ * the user can always type the fields manually. */
+async function lookupPincode(
+  pincode: string,
+  cityEl: HTMLInputElement | null,
+  stateEl: HTMLInputElement | HTMLSelectElement | null,
+) {
+  if (!/^\d{6}$/.test(pincode)) return;
+  try {
+    const res = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+    const data = await res.json();
+    const postOffice = data?.[0]?.Status === "Success" ? data[0].PostOffice?.[0] : null;
+    if (!postOffice) return;
+
+    if (cityEl && !cityEl.value) {
+      cityEl.value = postOffice.District || postOffice.Name || "";
+    }
+    if (stateEl && postOffice.State) {
+      if (stateEl instanceof HTMLSelectElement) {
+        const match = Array.from(stateEl.options).find(
+          (o) => o.value.toLowerCase() === postOffice.State.toLowerCase(),
+        );
+        if (match) stateEl.value = match.value;
+      } else if (!stateEl.value) {
+        stateEl.value = postOffice.State;
+      }
+    }
+  } catch {
+    // Network/API failure — fail silently, form remains fully usable manually.
+  }
+}
+
 export default function ServiceEnquiryForm({ page }: { page: ServicePageDetail }) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
+  const supportCityRef = useRef<HTMLInputElement>(null);
+  const supportStateRef = useRef<HTMLInputElement>(null);
+  const careerCityRef = useRef<HTMLInputElement>(null);
+  const careerStateRef = useRef<HTMLSelectElement>(null);
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = new FormData(e.currentTarget);
+    const formEl = e.currentTarget;
+    const form = new FormData(formEl);
     const get = (k: string) => String(form.get(k) ?? "").trim();
 
     if (page.form_type === "career_application") {
@@ -55,7 +94,7 @@ export default function ServiceEnquiryForm({ page }: { page: ServicePageDetail }
       try {
         await api.submitContactMultipart(payload);
         setStatus("success");
-        e.currentTarget?.reset();
+        formEl.reset();
       } catch (err) {
         setStatus("error");
         setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
@@ -113,7 +152,7 @@ export default function ServiceEnquiryForm({ page }: { page: ServicePageDetail }
         message: get("message"),
       });
       setStatus("success");
-      e.currentTarget?.reset();
+      formEl.reset();
     } catch (err) {
       setStatus("error");
       setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
@@ -151,10 +190,17 @@ export default function ServiceEnquiryForm({ page }: { page: ServicePageDetail }
               <Field label="Landmark" name="landmark" />
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Pin code" name="pincode" />
-              <Field label="City" name="city" />
+              <Field
+                label="Pin code"
+                name="pincode"
+                maxLength={6}
+                onChange={(e) =>
+                  lookupPincode(e.target.value, supportCityRef.current, supportStateRef.current)
+                }
+              />
+              <Field label="City" name="city" ref={supportCityRef} />
             </div>
-            <Field label="State" name="state" />
+            <Field label="State" name="state" ref={supportStateRef} />
             <TextArea label="Detailed Message" name="message" />
             <SubmitButton status={status} label="Submit Service Request" />
           </>
@@ -227,8 +273,17 @@ export default function ServiceEnquiryForm({ page }: { page: ServicePageDetail }
             </div>
             <Field label="Address" name="address" placeholder="Street address" required />
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Pincode" name="pincode" placeholder="6-digit pincode" required />
-              <Field label="City" name="city" placeholder="City name" required />
+              <Field
+                label="Pincode"
+                name="pincode"
+                placeholder="6-digit pincode"
+                maxLength={6}
+                required
+                onChange={(e) =>
+                  lookupPincode(e.target.value, careerCityRef.current, careerStateRef.current)
+                }
+              />
+              <Field label="City" name="city" placeholder="City name" required ref={careerCityRef} />
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-ink">State *</label>
@@ -236,6 +291,7 @@ export default function ServiceEnquiryForm({ page }: { page: ServicePageDetail }
                 name="state"
                 required
                 defaultValue=""
+                ref={careerStateRef}
                 className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-blue"
               >
                 <option value="" disabled>Select State</option>
@@ -266,25 +322,38 @@ export default function ServiceEnquiryForm({ page }: { page: ServicePageDetail }
     </div>
   );
 }
+interface FieldProps {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+  placeholder?: string;
+  maxLength?: number;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+}
 
-function Field({
-  label, name, type = "text", required = false, placeholder,
-}: { label: string; name: string; type?: string; required?: boolean; placeholder?: string }) {
+const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
+  { label, name, type = "text", required = false, placeholder, maxLength, onChange },
+  ref,
+) {
   return (
     <div>
       <label className="mb-1.5 block text-sm font-medium text-ink">
         {label}{required && " *"}
       </label>
       <input
+        ref={ref}
         name={name}
         type={type}
         required={required}
         placeholder={placeholder}
+        maxLength={maxLength}
+        onChange={onChange}
         className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-blue"
       />
     </div>
   );
-}
+});
 
 function FileField({ label, name, required = false }: { label: string; name: string; required?: boolean }) {
   return (

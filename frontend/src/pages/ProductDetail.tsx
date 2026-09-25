@@ -26,7 +26,7 @@ export default function ProductDetail() {
 
   // Precise check for thermacheck pages
   const isThermocheck = Boolean(
-    product.data?.hero_layout === "badge_heavy" || 
+    product.data?.hero_layout === "badge_heavy" ||
     product.data?.slug?.toLowerCase().includes("thermacheck") ||
     product.data?.name?.toLowerCase().includes("thermacheck")
   );
@@ -130,8 +130,12 @@ export default function ProductDetail() {
 
                 <div className="border-t border-slate-800 pt-4 space-y-2">
                   <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Technical Support</p>
-                  <p className="text-base font-extrabold text-white">{p.sidebar_note_phone || "+91 8851212483"}</p>
-                  <p className="text-xs text-slate-300">{p.sidebar_note_email || "dealer.desk@agskipl.com"}</p>
+                  <p className="text-base font-extrabold text-white">
+                    {p.sidebar_note_phone || "+91 8851212483"}
+                  </p>
+                  <p className="text-xs text-slate-300">
+                    {p.sidebar_note_email || "dealer.desk@agskipl.com"}
+                  </p>
                 </div>
 
                 {sidebarCtaHref ? (
@@ -169,9 +173,8 @@ export default function ProductDetail() {
                       <button
                         key={i}
                         onClick={() => setMediaIndex(i)}
-                        className={`h-16 rounded-lg border overflow-hidden transition-all bg-white ${
-                          mediaIndex === i ? "border-red ring-2 ring-red/20 shadow-sm" : "border-slate-200 opacity-70 hover:opacity-100"
-                        }`}
+                        className={`h-16 rounded-lg border overflow-hidden transition-all bg-white ${mediaIndex === i ? "border-red ring-2 ring-red/20 shadow-sm" : "border-slate-200 opacity-70 hover:opacity-100"
+                          }`}
                       >
                         <img src={item.image || undefined} alt="Thumbnail" className="h-full w-full object-cover" />
                       </button>
@@ -201,19 +204,13 @@ export default function ProductDetail() {
                     ))}
                   </div>
 
-                  <div className="pt-2 flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-600">
-                    <span>🛡️ US-FDA Cleared</span>
-                    <span>🛡️ CE Certified</span>
-                    <span>🛡️ ISO 13485</span>
-                  </div>
-
                   <div className="pt-4 flex flex-wrap gap-3">
                     <Link to="/contact" className="inline-flex items-center justify-center rounded-xl bg-red hover:bg-red-600 text-white font-semibold px-6 py-3.5 text-sm shadow-lg shadow-red/20 transition-all">
                       Request Quotation & Demo →
                     </Link>
-                    <Link to="/contact" className="inline-flex items-center justify-center rounded-xl border border-slate-300 hover:border-slate-400 bg-white text-slate-700 font-semibold px-6 py-3.5 text-sm transition-all">
+                    {/* <Link to="/contact" className="inline-flex items-center justify-center rounded-xl border border-slate-300 hover:border-slate-400 bg-white text-slate-700 font-semibold px-6 py-3.5 text-sm transition-all">
                       View Hardware Models
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
               </div>
@@ -236,11 +233,10 @@ export default function ProductDetail() {
                       <button
                         key={i}
                         onClick={() => setMediaIndex(i)}
-                        className={`flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border-2 transition-all duration-200 bg-white ${
-                          mediaIndex === i
-                            ? "border-red shadow-md ring-2 ring-red/20 scale-105"
-                            : "border-slate-200 opacity-70 hover:opacity-100 hover:border-slate-300"
-                        }`}
+                        className={`flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border-2 transition-all duration-200 bg-white ${mediaIndex === i
+                          ? "border-red shadow-md ring-2 ring-red/20 scale-105"
+                          : "border-slate-200 opacity-70 hover:opacity-100 hover:border-slate-300"
+                          }`}
                       >
                         {item.image ? (
                           <img src={item.image} alt={`Thumbnail ${i + 1}`} className="h-full w-full object-cover" />
@@ -276,9 +272,8 @@ export default function ProductDetail() {
                   <button
                     key={t}
                     onClick={() => { setTab(t); setMediaIndex(0); }}
-                    className={`-mb-px border-b-2 pb-3 text-sm font-bold transition-colors ${
-                      tab === t ? "border-red text-red" : "border-transparent text-slate-500 hover:text-slate-800"
-                    }`}
+                    className={`-mb-px border-b-2 pb-3 text-sm font-bold transition-colors ${tab === t ? "border-red text-red" : "border-transparent text-slate-500 hover:text-slate-800"
+                      }`}
                   >
                     {t}
                   </button>
@@ -291,7 +286,6 @@ export default function ProductDetail() {
                   {isThermocheck ? (
                     <div className="space-y-10">
                       <div>
-                        {/* Editable via Django Admin: concept_title and concept_description / description / summary */}
                         <h3 className="text-sm font-extrabold text-red tracking-wider uppercase flex items-center gap-2">
                           <span>▶</span> {p.concept_title || "THERMACHECK SCREENING CONCEPT"}
                         </h3>
@@ -302,7 +296,6 @@ export default function ProductDetail() {
 
                       {whyUsePoints.length > 0 && (
                         <div>
-                          {/* Editable via Django Admin: why_use_title and why_use_point_list */}
                           <h3 className="text-sm font-extrabold text-red tracking-wider uppercase flex items-center gap-2 mb-4">
                             <span>▶</span> {p.why_use_title || "WHY SHOULD YOU USE THERMACHECK?"}
                           </h3>
@@ -324,7 +317,6 @@ export default function ProductDetail() {
                       )}
 
                       <div>
-                        {/* Editable via Django Admin: software_suite_title and software_cards */}
                         <h3 className="text-sm font-extrabold text-red tracking-wider uppercase flex items-center gap-2 mb-4">
                           <span>▶</span> {p.software_suite_title || "OPTIMIZED IN MEDICAL USE (SOFTWARE SUITE)"}
                         </h3>
@@ -382,51 +374,6 @@ export default function ProductDetail() {
                   {isThermocheck ? (
                     <div className="space-y-10">
                       <div>
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-4">
-                          <div>
-                            <span className="text-xs font-extrabold text-red uppercase tracking-wider">SYSTEM CONFIGURATIONS</span>
-                            <h3 className="text-xl font-extrabold text-[#0d1b2a] tracking-tight mt-0.5">Hardware Models & Workstations</h3>
-                            <p className="text-xs text-slate-500 mt-0.5">Customized turnkey setups engineered for specialized diagnostic clinics and tertiary hospitals.</p>
-                          </div>
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 border border-slate-200">
-                            <span className="h-2 w-2 rounded-full bg-blue-600"></span> 3 Standard Form Factors
-                          </span>
-                        </div>
-
-                        <div className="mt-6 grid gap-6 md:grid-cols-3">
-                          {[
-                            { badge: "PREMIUM TYPE", title: "Premium Type", desc: "Complete clinical suite for hospitals and high-volume diagnostic centers.", image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=400&q=80", features: ["Camera (Auto-Focusing)", "Motorized Column Stand", "Dedicated Work Station Cart"], footerLabel: "Head Rotation", footerVal: "Remote Controlled", isFeatured: true },
-                            { badge: "", title: "Standard Type", desc: "Versatile setup for specialized outpatient clinics and physical rehabilitation.", image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=400&q=80", features: ["Camera (Auto / Manual)", "Motorized Column Stand", "IRIS-XP Diagnostic Software"], footerLabel: "Focusing Mode", footerVal: "Manual / Auto", isFeatured: false },
-                            { badge: "", title: "Economy Type", desc: "Portable thermal imaging solution for mobile screening and compact practices.", image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=400&q=80", features: ["Camera (Manual Focus)", "Tripod Stand", "IRIS-XP Diagnostic Software"], footerLabel: "Portability", footerVal: "High (Compact Case)", isFeatured: false }
-                          ].map((model, idx) => (
-                            <div key={idx} className={`relative rounded-2xl bg-white p-5 shadow-sm flex flex-col justify-between ${model.isFeatured ? "border-2 border-red shadow-md" : "border border-slate-200"}`}>
-                              {model.badge && (
-                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-red px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-white shadow-sm">{model.badge}</div>
-                              )}
-                              <div>
-                                <div className="mt-3 flex h-40 w-full items-center justify-center bg-slate-50 rounded-xl p-2 border border-slate-100">
-                                  <img src={model.image} alt={model.title} className="h-full object-contain" />
-                                </div>
-                                <h4 className="mt-4 text-base font-extrabold text-[#0d1b2a]">{model.title}</h4>
-                                <p className="text-xs text-slate-600 mt-1 leading-relaxed">{model.desc}</p>
-                                <ul className="mt-4 space-y-2 text-xs text-slate-700 font-medium">
-                                  {model.features.map((f, i) => (
-                                    <li key={i} className="flex items-center gap-2">
-                                      <span className={`h-1.5 w-1.5 rounded-full ${model.isFeatured ? "bg-red" : "bg-slate-400"}`}></span>{f}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                              <div className="mt-6 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold">
-                                <span className="text-slate-400">{model.footerLabel}</span>
-                                <span className={model.isFeatured ? "text-red" : "text-slate-700"}>{model.footerVal}</span>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="mt-12">
                         <div className="border-b border-slate-200 pb-3 mb-6">
                           <span className="text-xs font-extrabold text-red uppercase tracking-wider">TECHNICAL SPECIFICATIONS</span>
                           <h3 className="text-xl font-extrabold text-[#0d1b2a] tracking-tight mt-0.5">ThermaCheck™ Medical Infrared Imaging System</h3>

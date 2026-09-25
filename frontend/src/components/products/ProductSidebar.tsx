@@ -36,13 +36,14 @@ export default function ProductSidebar({ items, activeSlug, activeProduct }: Pro
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className={`truncate text-sm font-semibold ${active ? "text-blue-dark" : "text-ink"}`}>
+                  {/* Removed truncate and added whitespace-normal break-words to wrap long titles */}
+                  <p className={`whitespace-normal break-words text-sm font-semibold leading-tight ${active ? "text-blue-dark" : "text-ink"}`}>
                     {item.name}
                   </p>
-                  <p className="truncate text-xs text-muted">{item.category.name}</p>
+                  <p className="whitespace-normal break-words text-xs text-muted mt-0.5">{item.category.name}</p>
                 </div>
               </div>
-              <span className={active ? "text-blue" : "text-muted"}>›</span>
+              <span className={active ? "text-blue flex-shrink-0 ml-2" : "text-muted flex-shrink-0 ml-2"}>›</span>
             </Link>
           );
         })}

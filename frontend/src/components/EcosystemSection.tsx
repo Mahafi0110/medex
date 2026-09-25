@@ -16,7 +16,7 @@ export default function EcosystemSection({ pillars }: { pillars: EcosystemPillar
           <div key={p.id} className="card flex flex-col gap-4 p-6">
             {p.logo && (
               <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-pink-light overflow-hidden">
-                <img src={p.logo} alt={p.title} className="h-full w-full object-contain p-1.5" />
+                <img src={p.logo} alt={p.title} className="h-full w-full object-contain p-1" />
               </div>
             )}
             <h3 className="text-base font-semibold text-blue-dark">{p.title}</h3>

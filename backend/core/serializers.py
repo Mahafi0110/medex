@@ -137,6 +137,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             "website_url", "app_store_url", "play_store_url", "download_url",
             "screenshots", "extra_links",
             "is_featured", "created_at", "updated_at",
+            
         ]
 
 

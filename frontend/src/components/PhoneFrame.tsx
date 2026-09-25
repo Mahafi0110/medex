@@ -1,6 +1,6 @@
 export default function PhoneFrame({ appName = "App" }: { appName?: string }) {
   return (
-    <div className="mx-auto h-72 w-40 rounded-[28px] border-[6px] border-blue-dark bg-blue-dark p-1.5 shadow-lg">
+    <div className="mx-auto h-72 w-40 rounded-[28px] border-[3px] border-blue-dark bg-blue-dark p-1.5 shadow-lg">
       <div className="flex h-full w-full flex-col rounded-[20px] bg-white p-3">
         <div className="flex items-center justify-between">
           <span className="text-[10px] font-bold text-blue-dark">{appName}</span>

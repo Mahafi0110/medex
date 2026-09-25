@@ -10,7 +10,7 @@ function ExternalArrowIcon() {
   );
 }
 
-// Maps specific custom links and button themes based on product name
+// Maps specific custom links and button text based on product name
 function getProductConfig(productName: string) {
   const name = productName.toLowerCase();
   
@@ -20,7 +20,6 @@ function getProductConfig(productName: string) {
       download: "https://thermacheck.com/demo",
       primaryBtnText: "Explore ThermaCheck IR",
       secondaryBtnText: "Request Demo & Specs",
-      isDarkTheme: true,
     };
   }
   if (name.includes("tehomed")) {
@@ -29,7 +28,6 @@ function getProductConfig(productName: string) {
       download: "https://tehomed.com/mobile-app",
       primaryBtnText: "Visit Tehomed.com",
       secondaryBtnText: "Download App Here",
-      isDarkTheme: false,
     };
   }
   if (name.includes("doctor") || name.includes("console")) {
@@ -38,7 +36,6 @@ function getProductConfig(productName: string) {
       download: "https://avtelemed.com/doctor-console/",
       primaryBtnText: "Visit Avtelemed.com",
       secondaryBtnText: "Download App Here",
-      isDarkTheme: false,
     };
   }
   if (name.includes("patient") || name.includes("avtelemed")) {
@@ -47,7 +44,6 @@ function getProductConfig(productName: string) {
       download: "https://avtelemed.com/patient-app/",
       primaryBtnText: "Visit Avtelemed.com",
       secondaryBtnText: "Download App Here",
-      isDarkTheme: false,
     };
   }
   return {
@@ -55,7 +51,6 @@ function getProductConfig(productName: string) {
     download: "#",
     primaryBtnText: "Visit Website",
     secondaryBtnText: "Download App Here",
-    isDarkTheme: false,
   };
 }
 
@@ -121,11 +116,7 @@ function ProductHighlightCard({ p }: { p: ProductHighlight }) {
           href={websiteUrl}
           target="_blank"
           rel="noreferrer"
-          className={`flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-semibold text-white shadow-md transition-all ${
-            config.isDarkTheme 
-              ? "bg-[#222222] hover:bg-black" 
-              : "bg-red hover:bg-red-dark"
-          }`}
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-red py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-red-dark"
         >
           {config.primaryBtnText} <ExternalArrowIcon />
         </a>
@@ -134,11 +125,7 @@ function ProductHighlightCard({ p }: { p: ProductHighlight }) {
           href={downloadUrl}
           target="_blank"
           rel="noreferrer"
-          className={`flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-semibold text-white shadow-md transition-all ${
-            config.isDarkTheme 
-              ? "bg-[#222222] hover:bg-black" 
-              : "bg-red hover:bg-red-dark"
-          }`}
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-red py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-red-dark"
         >
           {config.secondaryBtnText} <ExternalArrowIcon />
         </a>

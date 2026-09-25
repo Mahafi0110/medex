@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.shortcuts import redirect
+from django.utils.html import format_html
 from .models import (
     ProductCategory,
     Product,
@@ -10,6 +11,7 @@ from .models import (
     ProductLink,
     Service,
     ServicePage,
+    ServicePosterItem,
     ServiceFeatureItem,
     ServiceProcessStep,
     ServiceEquipmentItem,
@@ -147,7 +149,11 @@ class ServiceValueItemInline(admin.TabularInline):
 class ServiceGalleryImageInline(admin.TabularInline):
     model = ServiceGalleryImage
     extra = 1
-
+# 1. Create the inline class
+class ServicePosterItemInline(admin.TabularInline):
+    model = ServicePosterItem
+    extra = 1
+    fields = ("image", "title", "order")
 
 @admin.register(ServicePage)
 class ServicePageAdmin(admin.ModelAdmin):
@@ -159,6 +165,7 @@ class ServicePageAdmin(admin.ModelAdmin):
         ServiceEquipmentItemInline,
         ServiceValueItemInline,
         ServiceGalleryImageInline,
+        ServicePosterItemInline,  # <--- ADD THIS LINE HERE
     ]
     fieldsets = (
         ("Tab", {"fields": ("nav_label", "slug", "nav_icon", "order")}),
@@ -183,6 +190,9 @@ class ServicePageAdmin(admin.ModelAdmin):
         ("Photo gallery (optional, e.g. 'Life at MedEx')", {
             "fields": ("gallery_title", "gallery_subtitle"),
         }),
+        ("Poster / hiring announcements (optional)", {  # <--- ADD THIS FIELDSET
+            "fields": ("poster_title", "poster_subtitle"),
+        }),
         ("CTA banner", {
             "fields": ("cta_icon", "cta_title", "cta_subtitle", "cta_image", "cta_button_label", "cta_button_url"),
             "description": "Leave 'CTA button label' blank for the default Call Now/WhatsApp banner. "
@@ -190,7 +200,6 @@ class ServicePageAdmin(admin.ModelAdmin):
         }),
         ("Enquiry form", {"fields": ("form_title", "form_description", "form_type")}),
     )
-
 
 class HomeTrustPointInline(admin.TabularInline):
     model = HomeTrustPoint
@@ -244,8 +253,15 @@ class AboutSectionAdmin(admin.ModelAdmin):
 
 @admin.register(EcosystemPillar)
 class EcosystemPillarAdmin(admin.ModelAdmin):
-    list_display = ("title", "logo", "order")
+    list_display = ("title", "logo_preview", "order")
+    list_editable = ("order",)
     ordering = ("order",)
+
+    def logo_preview(self, obj):
+        if obj.logo:
+            return format_html('<img src="{}" style="height:32px;border-radius:4px;" />', obj.logo.url)
+        return "—"
+    logo_preview.short_description = "Logo"
 
 
 @admin.register(OperatingPillar)
@@ -311,11 +327,12 @@ class VisionMissionAdmin(admin.ModelAdmin):
 class TeamMemberAdmin(admin.ModelAdmin):
     list_display = ("name", "role", "is_leadership", "order")
     list_filter = ("is_leadership",)
+    search_fields = ("name", "role")
     ordering = ("order",)
     fieldsets = (
         ("Basic info", {"fields": ("name", "role", "title", "photo", "bio", "order")}),
         ("About page leadership profile", {
-            "fields": ("prior_leadership", "domain_expertise", "operational_base"),
+            "fields": ("prior_leadership", "domain_expertise", "operational_base", "about_quote"),
         }),
         ("Homepage 'Our Leadership' section & pull-quote", {
             "fields": ("is_leadership", "quote", "quote_label", "badge_text", "years_text"),
@@ -338,6 +355,15 @@ class ContactMessageAdmin(admin.ModelAdmin):
         "name", "email", "phone", "organization", "subject",
         "interested_in", "additional_info", "message", "resume", "created_at",
     )
+    actions = ["mark_as_read", "mark_as_unread"]
+
+    def mark_as_read(self, request, queryset):
+        queryset.update(is_read=True)
+    mark_as_read.short_description = "Mark selected messages as read"
+
+    def mark_as_unread(self, request, queryset):
+        queryset.update(is_read=False)
+    mark_as_unread.short_description = "Mark selected messages as unread"
 
 
 @admin.register(SiteSettings)
@@ -441,3 +467,4 @@ class ContactPageContentAdmin(admin.ModelAdmin):
     def changelist_view(self, request, extra_context=None):
         obj = ContactPageContent.load()
         return redirect("admin:core_contactpagecontent_change", obj.pk)
+

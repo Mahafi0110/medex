@@ -131,11 +131,25 @@ class Product(TimeStampedModel, SlugMixin):
 
     # --- Optional sidebar note (any product can turn this on — not tied to
     # a specific product by name/slug) ---
+    # sidebar_note_title = models.CharField(
+    #     max_length=100, blank=True,
+    #     help_text="Leave blank to hide. e.g. 'Clinical Specialist Assistance'.",
+    # )
     sidebar_note_title = models.CharField(
         max_length=100, blank=True,
-        help_text="Leave blank to hide. e.g. 'Clinical Specialist Assistance'.",
+        default="Clinical Specialist Assistance",
+        help_text="Leave blank to hide.",
     )
-    sidebar_note_text = models.TextField(blank=True)
+    sidebar_note_text = models.TextField(
+        blank=True,
+        default="Need turnkey installation guidance or ROI estimation for your diagnostic center?"
+    )
+    sidebar_note_support_label = models.CharField(
+        max_length=50, blank=True,
+        default="TECHNICAL SUPPORT",
+        help_text="Label above phone/email, e.g. 'TECHNICAL SUPPORT'."
+    )
+    # sidebar_note_text = models.TextField(blank=True)
     sidebar_note_phone = models.CharField(max_length=30, blank=True)
     sidebar_note_email = models.EmailField(blank=True)
     sidebar_note_cta_label = models.CharField(max_length=80, blank=True, help_text="e.g. 'Request Spec Sheet (PDF)'")
@@ -279,7 +293,9 @@ ICON_CHOICES = [
 
 class Service(TimeStampedModel, SlugMixin):
     name = models.CharField(max_length=150)
-    icon = models.CharField(max_length=50, blank=True)
+    # icon = models.CharField(max_length=50, blank=True)
+    # Change this line to use choices=ICON_CHOICES:
+    icon = models.CharField(max_length=20, choices=ICON_CHOICES, blank=True, default="wrench")
     summary = models.TextField()
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to="services/", blank=True, null=True)
